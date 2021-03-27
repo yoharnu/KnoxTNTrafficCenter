@@ -158,14 +158,17 @@ function startPlayers(){
 	addVideo(video1, "top", 1);
 	addVideo(video2, "top", 1);
 	addVideo(video3, "top", 1);
+	
+	var div = document.getElementById("showcase");
 	addVideo(showcase, "showcase", 3);
+	
 	if (support1 == null){
 		if (showcase != 1)
 			addVideo(2, "right", 1);
 		else
 			addVideo(29, "right", 1);
 		addVideo(10, "right", 1);
-		var div = document.getElementById("right");
+		
 		div.appendChild(document.createElement("br"));
 		addVideo(23, "right", 1);
 		addVideo(35, "right", 1);
@@ -222,7 +225,7 @@ function addVideo(id, region, scale){
 		source.src = srcStr;
 		video.appendChild(source);
 		if (region == "showcase")
-			video.onclick = function(){location.href='traffic_cams.html';};
+			video.onclick = function(){location.href='traffic_cams_interior.html';};
 		else
 			video.onclick = function(){location.href='traffic_cam_showcase.html?showcase='+id;};
 		var div = document.getElementById(region);
@@ -246,7 +249,7 @@ float:left;
 
 #right {
 width: 40%;
-float:left
+float:left;
 }
 
 #right .video-js{
