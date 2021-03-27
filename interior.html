@@ -123,7 +123,7 @@ function addSnapshot(id){
 	snapshot.style.height = 240;
 	
 	var link = document.createElement("a");
-	link.href = 'traffic_cam_showcase.html?showcase='+id;
+	link.href = 'showcase.html?showcase='+id;
 	link.appendChild(snapshot);
 	
 	document.body.appendChild(link);
@@ -174,7 +174,7 @@ function addVideo(id){
 	source.src = srcStr;
 	
 	video.appendChild(source);
-	video.onclick = function(){window.location.href='traffic_cam_showcase.html?showcase='+id;};
+	video.onclick = function(){window.location.href='showcase.html?showcase='+id;};
 	document.body.appendChild(video);
 	videojs('knoxville-'+id);
 }
@@ -187,70 +187,7 @@ display:inline-block;
 }
 </style>
 </head>
-<body onLoad="startPlayers()" onResize="location.reload()" style="margin:0 0 0 0; background-color:#001">
-
- <!--<video-js id="knoxville-85" onClick="location.href='traffic_cam_showcase.html?showcase=85'">
- <source src="https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_085/playlist.m3u8">
- </video-js>
-<video-js id="knoxville-2" onClick="location.href='traffic_cam_showcase.html?showcase=2'">
- <source src="https://mcleansfs5.us-east-1.skyvdn.com/rtplive/R1_002/playlist.m3u8">
- </video-js>
-  <video-js id="knoxville-4" onClick="location.href='traffic_cam_showcase.html?showcase=4'">
- <source src="https://mcleansfs5.us-east-1.skyvdn.com/rtplive/R1_004/playlist.m3u8">
- </video-js>
- <video-js id="knoxville-69" onClick="location.href='traffic_cam_showcase.html?showcase=69'">
- <source src="https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_069/playlist.m3u8">
- </video-js>
- <video-js id="knoxville-6" onClick="location.href='traffic_cam_showcase.html?showcase=6'">
- <source src="https://mcleansfs5.us-east-1.skyvdn.com/rtplive/R1_006/playlist.m3u8">
- </video-js>
- <video-js id="knoxville-8" onClick="location.href='traffic_cam_showcase.html?showcase=8'">
- <source src="https://mcleansfs5.us-east-1.skyvdn.com/rtplive/R1_008/playlist.m3u8">
- </video-js> 
-<video-js id="knoxville-10" onClick="location.href='traffic_cam_showcase.html?showcase=10'">
- <source src="https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_010/playlist.m3u8">
- </video-js>
- <video-js id="knoxville-13" onClick="location.href='traffic_cam_showcase.html?showcase=13'">
- <source src="https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_013/playlist.m3u8">
- </video-js>
-  <video-js id="knoxville-16" onClick="location.href='traffic_cam_showcase.html?showcase=16'">
- <source src="https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_016/playlist.m3u8">
- </video-js>
-  <video-js id="knoxville-18" onClick="location.href='traffic_cam_showcase.html?showcase=18'">
- <source src="https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_018/playlist.m3u8">
- </video-js>
- <video-js id="knoxville-20" onClick="location.href='traffic_cam_showcase.html?showcase=20'">
- <source src="https://mcleansfs2.us-east-1.skyvdn.com/rtplive/R1_020/playlist.m3u8">
- </video-js>
- <video-js id="knoxville-23" onClick="location.href='traffic_cam_showcase.html?showcase=23'">
- <source src="https://mcleansfs2.us-east-1.skyvdn.com/rtplive/R1_023/playlist.m3u8">
- </video-js>
- <video-js id="knoxville-26" onClick="location.href='traffic_cam_showcase.html?showcase=26'">
- <source src="https://mcleansfs2.us-east-1.skyvdn.com/rtplive/R1_026/playlist.m3u8">
- </video-js>
- <video-js id="knoxville-35" onClick="location.href='traffic_cam_showcase.html?showcase=35'">
- <source src="https://mcleansfs3.us-east-1.skyvdn.com/rtplive/R1_035/playlist.m3u8">
- </video-js>
- <video-js id="knoxville-39" onClick="location.href='traffic_cam_showcase.html?showcase=39'">
- <source src="https://mcleansfs3.us-east-1.skyvdn.com/rtplive/R1_039/playlist.m3u8">
- </video-js>
- <video-js id="knoxville-44" onClick="location.href='traffic_cam_showcase.html?showcase=44'">
- <source src="https://mcleansfs4.us-east-1.skyvdn.com/rtplive/R1_044/playlist.m3u8">
- </video-js>
- <video-js id="knoxville-50" onClick="location.href='traffic_cam_showcase.html?showcase=50'">
- <source src="https://mcleansfs5.us-east-1.skyvdn.com/rtplive/R1_050/playlist.m3u8">
- </video-js>
- <video-js id="knoxville-29" onClick="location.href='traffic_cam_showcase.html?showcase=29'">
- <source src="https://mcleansfs2.us-east-1.skyvdn.com/rtplive/R1_029/playlist.m3u8">
- </video-js>
- <video-js id="knoxville-31" onClick="location.href='traffic_cam_showcase.html?showcase=31'">
- <source src="https://mcleansfs3.us-east-1.skyvdn.com/rtplive/R1_031/playlist.m3u8">
- </video-js>
- <video-js id="knoxville-88" onClick="location.href='traffic_cam_showcase.html?showcase=88'">
- <source src="https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_088/playlist.m3u8">
- </video-js>-->
- 
-   
+<body onLoad="startPlayers()" onResize="location.reload()" style="margin:0 0 0 0; background-color:#001">   
  <script src="https://vjs.zencdn.net/7.10.2/video.min.js"></script>
 </body>
 </html>
