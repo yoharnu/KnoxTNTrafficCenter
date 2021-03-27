@@ -44,9 +44,9 @@ function startPlayers(){
 		console.log('Vids Tall: '+numVidsTall)
 		console.log('Max Videos: '+maxVids);
 	}
-	var width = window.innerWidth/numVidsWide/1.02;
+	var width = window.innerWidth/numVidsWide;
 	var height = width*2/3;
-	var altHeight = window.innerHeight/numVidsTall/1.02;
+	var altHeight = window.innerHeight/numVidsTall;
 	var altWidth = altHeight*3/2;
 	if (altWidth < width) {
 		width = altWidth;
