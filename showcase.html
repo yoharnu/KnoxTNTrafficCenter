@@ -225,7 +225,7 @@ function addVideo(id, region, scale){
 		source.src = srcStr;
 		video.appendChild(source);
 		if (region == "showcase")
-			video.onclick = function(){location.href='interior.html';};
+			video.onclick = function(){location.href='index.html';};
 		else
 			video.onclick = function(){location.href='showcase.html?showcase='+id;};
 		var div = document.getElementById(region);
