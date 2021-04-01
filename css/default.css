@@ -1,0 +1,45 @@
+.video-js {
+    margin-left:0px;
+    display:inline-block;
+}
+html{
+    height:100%;
+    padding:0px 0px 0px 0px;
+}
+body{
+    margin:0px 0px 0px 0px;
+    background-color:#001;
+    color:white;
+    font-family:sans-serif;
+    height:100%;
+}
+h1{
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin:0px 0px 0px 0px;
+
+}
+iframe#incidents{
+    float:right;
+    width:20%;
+    height:100%;
+    border:0px;
+    padding:0px;
+}
+#top .video-js, #showcase .video-js{
+    display:inline-block;
+}
+
+#left{
+    float:left;
+}
+
+#right {
+    width: 32%;
+    float:left;
+}
+
+#right .video-js{
+    display: inline-block;
+}
