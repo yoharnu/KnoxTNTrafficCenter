@@ -20,20 +20,22 @@ function addSnapshot(id) {
     snapshot.style.width = 320;
     snapshot.style.height = 240;
 
-//    var link = document.createElement("span");
-    //link.href = 'index.html?showcase=' + id;
     snapshot.onclick = function () {
         clearAll();
         var incidents = document.getElementById('incidents');
         incidents.style.display = 'inline';
-        var wrapper = document.getElementById('video-wrapper');
-        wrapper.style.width = '80%';
-        //loadShowcase(id);
+        document.body.style.overflow = 'hidden';
+
+        var button = document.getElementById('showAll');
+        button.innerHTML = "Show all cams";
+        button.onclick = function () {
+            clearAll();
+            showAllCams();
+        };
         showcase = id;
         showAll = null;
         startPlayers();
     };
-//    link.appendChild(snapshot);
 
     var div = document.getElementById("main");
     div.appendChild(snapshot);
@@ -42,21 +44,24 @@ function addSnapshot(id) {
 function showAllCams() {
     var incidents = document.getElementById('incidents');
     incidents.style.display = 'none';
-    var wrapper = document.getElementById('video-wrapper');
-    wrapper.style.width = '100%';
 
+    document.body.style.overflow = 'auto';
     var button = document.getElementById('showAll');
     button.innerHTML = "Return to overview";
     button.onclick = function () {
-        clearAll();
         var incidents = document.getElementById('incidents');
         incidents.style.display = 'inline';
-        var wrapper = document.getElementById('video-wrapper');
-        wrapper.style.width = '80%';
         button.innerHTML = "Show all cams";
-        calcMaxPlayers();
+        button.onclick = function () {
+            clearAll();
+            showAllCams();
+        };
         showcase = null;
         showAll = null;
+        clearAll();
+        document.body.style.overflow = 'hidden';
+
+        calcMaxPlayers();
         startPlayers();
     };
 
@@ -73,7 +78,6 @@ function showAllCams() {
 
 function loadShowcase(p_showcase) {
     var showcase = parseInt(p_showcase);
-//    console.log('showcase type ' + (typeof showcase));
 
     calcMaxPlayers();
 
@@ -170,7 +174,7 @@ function loadShowcase(p_showcase) {
     addVideo(showcase, "showcase", 3);
 
     if (typeof support1 === 'undefined' || support1 === null) {
-        if (showcase !== '1')
+        if (showcase !== 1)
             addVideo(2, "right", 1);
         else
             addVideo(29, "right", 1);

@@ -9,28 +9,21 @@
         <script type="text/javascript">
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
-            var showAll = urlParams.get('all');
-            var test = urlParams.get('test');
-            var showcase = urlParams.get('showcase');
+            var showAll = null;
+            var showcase = null;
 
             calcMaxPlayers();
-
             function startPlayers() {
-//                if (showAll !== null) {
-//                    showAllCams();
-//                } else {
                 videojs.options.controls = false;
                 videojs.options.autoplay = 'muted';
                 videojs.options.preload = 'auto';
                 videojs.options.width = width;
                 videojs.options.height = height;
-
                 if (showcase !== null) {
                     loadShowcase(showcase);
                 } else {
                     loadMain();
                 }
-//                }
             }
 
             function addVideo(id, region, scale) {
@@ -39,7 +32,6 @@
                 var source = document.createElement("source");
                 // Build source string
                 var srcStr = "https://mcleansfs";
-
                 if (id <= 9)
                     srcStr = srcStr + "5";
                 else if (id <= 19)
@@ -66,7 +58,6 @@
                     srcStr = srcStr + "2";
                 else
                     srcStr = srcStr + "1";
-
                 srcStr = srcStr + ".us-east-1.skyvdn.com/rtplive/R1_";
                 if (id < 100)
                     srcStr = srcStr + "0";
@@ -78,82 +69,55 @@
                 video.appendChild(source);
                 if (region === "showcase")
                     video.onclick = function () {
+                        showcase = null;
                         clearAll();
                         loadMain();
                     };
                 else
                     video.onclick = function () {
+                        showcase = id;
                         clearAll();
                         loadShowcase(id);
                     };
                 if (typeof region === 'undefined') {
                     var mainDiv = document.getElementById('main');
                     mainDiv.appendChild(video);
-                    console.log('Initializing video video' + id);
                     videojs('video' + id);
                 } else {
                     var div = document.getElementById(region);
                     div.appendChild(video);
-                    console.log('Initializing video video' + id);
                     videojs('video' + id, {width: width * scale, height: height * scale});
                 }
             }
 
             function clearAll() {
-                var div = document.getElementById("main");
+                clearDiv("main");
+                clearDiv("top");
+                clearDiv("showcase");
+                clearDiv("right");
+            }
+
+            function clearDiv(divID) {
+                var div = document.getElementById(divID);
                 var nodes = div.childNodes;
                 while (nodes.length > 0) {
-                    console.log(nodes[0].nodeName);
-                    if (nodes[0].nodeName === 'VIDEO-JS') {
-                        console.log('Destroying video ' + nodes[0].id);
-                        videojs(nodes[0].id).dispose();
-                    } else {
-                        console.log('Removing node ' + nodes[0]);
-                        nodes[0].remove();
-                    }
+                    destroyNode(nodes[0]);
                 }
+            }
 
-                div = document.getElementById("top");
-                nodes = div.childNodes;
-                while (nodes.length > 0) {
-                    if (nodes[0].id) {
-                        console.log('Destroying video ' + nodes[0].id);
-                        videojs(nodes[0].id).dispose();
-                    } else {
-                        console.log('Removing node ' + nodes[0]);
-                        nodes[0].remove();
-                    }
-                }
-
-                div = document.getElementById("showcase");
-                nodes = div.childNodes;
-                while (nodes.length > 0) {
-                    if (nodes[0].id) {
-                        console.log('Destroying video ' + nodes[0].id);
-                        videojs(nodes[0].id).dispose();
-                    } else {
-                        console.log('Removing node ' + nodes[0]);
-                        nodes[0].remove();
-                    }
-                }
-
-                div = document.getElementById("right");
-                nodes = div.childNodes;
-                while (nodes.length > 0) {
-                    if (nodes[0].id) {
-                        console.log('Destroying video ' + nodes[0].id);
-                        videojs(nodes[0].id).dispose();
-                    } else {
-                        console.log('Removing node ' + nodes[0]);
-                        nodes[0].remove();
-                    }
+            function destroyNode(node) {
+                if (node.nodeName === 'VIDEO-JS') {
+                    videojs(node.id).dispose();
+                } else {
+                    node.remove();
                 }
             }
 
             function resize() {
-                if (showAll !== null)
+                if (showAll !== null) {
                     return;
-                
+                }
+
                 clearAll();
                 calcMaxPlayers();
                 startPlayers();
@@ -163,8 +127,8 @@
     <body onLoad="startPlayers()" onResize="resize()">
         <iframe id="incidents" src="https://smartway.tn.gov/traffic/text/region/1/incidents" sandbox="allow-scripts allow-same-origin"></iframe>
         <h1>Knox County TN Traffic Center</h1>
-<!--        <button id="showAll" onClick="clearAll();
-                showAllCams();">Show all cams</button>-->
+        <button id="showAll" onClick="clearAll();
+                showAllCams();">Show all cams</button>
         <div id="video-wrapper">
             <div id="main"></div>
             <div id="left">
