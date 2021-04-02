@@ -269,3 +269,66 @@ function calcMaxPlayers() {
         height = altHeight;
     }
 }
+
+function clearAll() {
+    clearDiv("main");
+    clearDiv("top");
+    clearDiv("showcase");
+    clearDiv("right");
+}
+
+function clearDiv(divID) {
+    var div = document.getElementById(divID);
+    var nodes = div.childNodes;
+    while (nodes.length > 0) {
+        destroyNode(nodes[0]);
+    }
+}
+
+function resize() {
+    if (showAll !== null) {
+        return;
+    }
+
+    clearAll();
+    calcMaxPlayers();
+    startPlayers();
+}
+
+function getVideoURL(id) {
+    var srcStr = "https://mcleansfs";
+    if (id <= 9)
+        srcStr = srcStr + "5";
+    else if (id <= 19)
+        srcStr = srcStr + "1";
+    else if (id <= 29)
+        srcStr = srcStr + "2";
+    else if (id <= 39)
+        srcStr = srcStr + "3";
+    else if (id <= 49)
+        srcStr = srcStr + "4";
+    else if (id <= 59)
+        srcStr = srcStr + "5";
+    else if (id === 70 || id === 71 || id === 72 || id === 73 || id === 74 || id === 75)
+        srcStr = srcStr + "2";
+    else if (id === 100 || id === 101)
+        srcStr = srcStr + "2";
+    else if (id === 79 || id === 80 || id === 82 || id === 93)
+        srcStr = srcStr + "3";
+    else if (id === 84)
+        srcStr = srcStr + "5";
+    else if (id >= 206 && id <= 210)
+        srcStr = srcStr + "3";
+    else if (id === 86 || id === 87)
+        srcStr = srcStr + "2";
+    else
+        srcStr = srcStr + "1";
+    srcStr = srcStr + ".us-east-1.skyvdn.com/rtplive/R1_";
+    if (id < 100)
+        srcStr = srcStr + "0";
+    if (id < 10)
+        srcStr = srcStr + "0";
+    srcStr = srcStr + id;
+    srcStr = srcStr + "/playlist.m3u8";
+    return srcStr;
+}
