@@ -37,8 +37,18 @@
                         clearAll();
                         loadMain();
                     };
+                    video.ontouchstart = function () {
+                        showcase = null;
+                        clearAll();
+                        loadMain();
+                    };
                 } else {
                     video.onclick = function () {
+                        showcase = id;
+                        clearAll();
+                        loadShowcase(id);
+                    };
+                    video.ontouchstart = function () {
                         showcase = id;
                         clearAll();
                         loadShowcase(id);
