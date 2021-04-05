@@ -42,6 +42,7 @@ function addSnapshot(id) {
 }
 
 function showAllCams() {
+    showAll = true;
     var incidents = document.getElementById('incidents');
     incidents.style.display = 'none';
 
@@ -49,6 +50,7 @@ function showAllCams() {
     var button = document.getElementById('showAll');
     button.innerHTML = "Return to overview";
     button.onclick = function () {
+        showAll = null;
         var incidents = document.getElementById('incidents');
         incidents.style.display = 'inline';
         button.innerHTML = "Show all cams";
