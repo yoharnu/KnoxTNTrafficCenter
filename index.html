@@ -32,13 +32,13 @@
                 source.src = getVideoURL(id);
                 video.appendChild(source);
                 if (region === "showcase") {
-                    video.onclick = function () {
+                    video.onmousedown = function () {
                         showcase = null;
                         clearAll();
                         loadMain();
                     };
                 } else {
-                    video.onclick = function () {
+                    video.onmousedown = function () {
                         showcase = id;
                         clearAll();
                         loadShowcase(id);
