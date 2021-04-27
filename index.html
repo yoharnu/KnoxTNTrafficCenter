@@ -26,40 +26,40 @@
             }
 
             function addVideo(id, region, scale) {
-                var video = document.createElement("video-js");
+                let video = document.createElement("video-js");
                 video.id = 'video' + id;
-                var source = document.createElement("source");
+                let source = document.createElement("source");
                 source.src = getVideoURL(id);
                 video.appendChild(source);
                 if (region === "showcase") {
-                    video.onclick = function () {
+                    video.onclick = () => {
                         showcase = null;
                         clearAll();
                         loadMain();
                     };
-                    video.ontouchstart = function () {
+                    video.ontouchstart = () => {
                         showcase = null;
                         clearAll();
                         loadMain();
                     };
                 } else {
-                    video.onclick = function () {
+                    video.onclick = () => {
                         showcase = id;
                         clearAll();
                         loadShowcase(id);
                     };
-                    video.ontouchstart = function () {
+                    video.ontouchstart = () => {
                         showcase = id;
                         clearAll();
                         loadShowcase(id);
                     };
                 }
                 if (typeof region === 'undefined') {
-                    var mainDiv = document.getElementById('main');
+                    let mainDiv = document.getElementById('main');
                     mainDiv.appendChild(video);
                     videojs('video' + id);
                 } else {
-                    var div = document.getElementById(region);
+                    let div = document.getElementById(region);
                     div.appendChild(video);
                     videojs('video' + id, {width: width * scale, height: height * scale});
                 }

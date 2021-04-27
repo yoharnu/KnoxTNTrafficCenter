@@ -8,9 +8,9 @@ var width;
 var height;
 
 function addSnapshot(id) {
-    var snapshot = document.createElement("img");
+    let snapshot = document.createElement("img");
     snapshot.id = "knoxville-" + id;
-    var srcStr = "https://tnsnapshots.com/thumbs/R1_";
+    let srcStr = "https://tnsnapshots.com/thumbs/R1_";
     if (id < 100)
         srcStr = srcStr + "0";
     if (id < 10)
@@ -20,13 +20,13 @@ function addSnapshot(id) {
     snapshot.style.width = 320;
     snapshot.style.height = 240;
 
-    snapshot.onclick = function () {
+    snapshot.onclick = () => {
         clearAll();
-        var incidents = document.getElementById('incidents');
+        let incidents = document.getElementById('incidents');
         incidents.style.display = 'inline';
         document.body.style.overflow = 'hidden';
 
-        var button = document.getElementById('showAll');
+        let button = document.getElementById('showAll');
         button.innerHTML = "Show all cams";
         button.onclick = function () {
             clearAll();
@@ -37,24 +37,24 @@ function addSnapshot(id) {
         startPlayers();
     };
 
-    var div = document.getElementById("main");
+    let div = document.getElementById("main");
     div.appendChild(snapshot);
 }
 
 function showAllCams() {
     showAll = true;
-    var incidents = document.getElementById('incidents');
+    let incidents = document.getElementById('incidents');
     incidents.style.display = 'none';
 
     document.body.style.overflow = 'auto';
-    var button = document.getElementById('showAll');
+    let button = document.getElementById('showAll');
     button.innerHTML = "Return to overview";
-    button.onclick = function () {
+    button.onclick = () => {
         showAll = null;
-        var incidents = document.getElementById('incidents');
+        let incidents = document.getElementById('incidents');
         incidents.style.display = 'inline';
         button.innerHTML = "Show all cams";
-        button.onclick = function () {
+        button.onclick = () => {
             clearAll();
             showAllCams();
         };
@@ -67,11 +67,10 @@ function showAllCams() {
         startPlayers();
     };
 
-    var i;
-    for (i = 1; i <= 93; i++) {
+    for (let i = 1; i <= 93; i++) {
         addSnapshot(i);
     }
-    for (i = 206; i <= 210; i++) {
+    for (let i = 206; i <= 210; i++) {
         addSnapshot(i);
     }
     addSnapshot(100);
@@ -79,7 +78,7 @@ function showAllCams() {
 }
 
 function loadShowcase(p_showcase) {
-    var showcase = parseInt(p_showcase);
+    const showcase = parseInt(p_showcase);
 
     calcMaxPlayers();
 
@@ -97,11 +96,7 @@ function loadShowcase(p_showcase) {
         height = altHeight;
     }
 
-    var support1;
-    var support2;
-    var video1;
-    var video2;
-    var video3;
+    let support1, support2, video1, video2, video3;
 
     if (showcase === 3) {
         support1 = 2;
@@ -172,7 +167,7 @@ function loadShowcase(p_showcase) {
     addVideo(video2, "top", 1);
     addVideo(video3, "top", 1);
 
-    var div = document.getElementById("showcase");
+    let div = document.getElementById("showcase");
     addVideo(showcase, "showcase", 3);
 
     if (typeof support1 === 'undefined' || support1 === null) {
@@ -264,8 +259,8 @@ function calcMaxPlayers() {
 
     width = window.innerWidth * .8 / numVidsWide;
     height = width * 2 / 3;
-    var altHeight = (window.innerHeight - 70) / numVidsTall;
-    var altWidth = altHeight * 3 / 2;
+    const altHeight = (window.innerHeight - 70) / numVidsTall;
+    const altWidth = altHeight * 3 / 2;
     if (altWidth < width) {
         width = altWidth;
         height = altHeight;
@@ -280,8 +275,8 @@ function clearAll() {
 }
 
 function clearDiv(divID) {
-    var div = document.getElementById(divID);
-    var nodes = div.childNodes;
+    let div = document.getElementById(divID);
+    let nodes = div.childNodes;
     while (nodes.length > 0) {
         destroyNode(nodes[0]);
     }
@@ -298,7 +293,7 @@ function resize() {
 }
 
 function getVideoURL(id) {
-    var srcStr = "https://mcleansfs";
+    let srcStr = "https://mcleansfs";
     if (id <= 9)
         srcStr = srcStr + "5";
     else if (id <= 19)
