@@ -7,38 +7,140 @@ var maxVids;
 var width;
 var height;
 
-function addSnapshot(id) {
-    let snapshot = document.createElement("img");
-    snapshot.id = "knoxville-" + id;
-    let srcStr = "https://tnsnapshots.com/thumbs/R1_";
-    if (id < 100)
-        srcStr = srcStr + "0";
-    if (id < 10)
-        srcStr = srcStr + "0";
-    srcStr = srcStr + id + ".flv.png";
-    snapshot.src = srcStr;
-    snapshot.style.width = 320;
-    snapshot.style.height = 240;
+class Video {
+    constructor(id) {
+        this.id = id;
 
-    snapshot.onclick = () => {
-        clearAll();
-        let incidents = document.getElementById('incidents');
-        incidents.style.display = 'inline';
-        document.body.style.overflow = 'hidden';
+        let tempURL = "https://mcleansfs";
+        if (id <= 9)
+            tempURL = tempURL + "5";
+        else if (id <= 19)
+            tempURL = tempURL + "1";
+        else if (id <= 29)
+            tempURL = tempURL + "2";
+        else if (id <= 39)
+            tempURL = tempURL + "3";
+        else if (id <= 49)
+            tempURL = tempURL + "4";
+        else if (id <= 59)
+            tempURL = tempURL + "5";
+        else if (id === 70 || id === 71 || id === 72 || id === 73 || id === 74 || id === 75)
+            tempURL = tempURL + "2";
+        else if (id === 100 || id === 101)
+            tempURL = tempURL + "2";
+        else if (id === 79 || id === 80 || id === 82 || id === 93)
+            tempURL = tempURL + "3";
+        else if (id === 84)
+            tempURL = tempURL + "5";
+        else if (id >= 206 && id <= 210)
+            tempURL = tempURL + "3";
+        else if (id === 86 || id === 87)
+            tempURL = tempURL + "2";
+        else
+            tempURL = tempURL + "1";
+        tempURL = tempURL + ".us-east-1.skyvdn.com/rtplive/R1_";
+        if (id < 100)
+            tempURL = tempURL + "0";
+        if (id < 10)
+            tempURL = tempURL + "0";
+        tempURL = tempURL + id;
+        tempURL = tempURL + "/playlist.m3u8";
 
-        let button = document.getElementById('showAll');
-        button.innerHTML = "Show all cams";
-        button.onclick = function () {
+        this.url = tempURL;
+
+        tempURL = "https://tnsnapshots.com/thumbs/R1_";
+        if (id < 100)
+            tempURL = tempURL + "0";
+        if (id < 10)
+            tempURL = tempURL + "0";
+        tempURL = tempURL + id + ".flv.png";
+
+        this.snapshot = tempURL;
+
+        this.width = width;
+        this.height = height;
+    }
+
+    setRegion(region) {
+        this.region = region;
+    }
+
+    setSize(width, height, scale = 1) {
+        this.width = width * scale;
+        this.height = height * scale;
+    }
+
+    getVideoElement() {
+        let video = document.createElement("video-js");
+        video.id = 'video' + this.id;
+        let source = document.createElement("source");
+        source.src = this.url;
+        video.appendChild(source);
+
+        if (this.region === "showcase") {
+            video.onclick = () => {
+                showcase = null;
+                clearAll();
+                loadMain();
+            };
+            video.ontouchstart = () => {
+                showcase = null;
+                clearAll();
+                loadMain();
+            };
+        } else {
+            let id = this.id;
+            video.onclick = () => {
+                showcase = id;
+                clearAll();
+                loadShowcase(id);
+            };
+            video.ontouchstart = () => {
+                showcase = id;
+                clearAll();
+                loadShowcase(id);
+            };
+        }
+
+        return video;
+    }
+
+    start() {
+        videojs('video' + this.id, {width: this.width, height: this.height});
+    }
+
+    getSnapshotElement() {
+        let snapshot = document.createElement("img");
+        snapshot.id = "knoxville-" + this.id;
+        snapshot.src = this.snapshot;
+        snapshot.width = 320;
+        snapshot.height = 240;
+
+        snapshot.onclick = () => {
             clearAll();
-            showAllCams();
-        };
-        showcase = id;
-        showAll = null;
-        startPlayers();
-    };
+            let incidents = document.getElementById('incidents');
+            incidents.style.display = 'inline';
+            document.body.style.overflow = 'hidden';
 
+            let button = document.getElementById('showAll');
+            button.innerHTML = "Show all cams";
+            button.onclick = function () {
+                clearAll();
+                showAllCams();
+            };
+            showcase = this.id;
+            showAll = null;
+            startPlayers();
+        };
+
+        return snapshot;
+    }
+}
+
+function addSnapshot(id) {
+    let video = new Video(id);
     let div = document.getElementById("main");
-    div.appendChild(snapshot);
+    div.appendChild(video.getSnapshotElement());
 }
 
 function showAllCams() {
@@ -108,16 +210,16 @@ function loadShowcase(p_showcase) {
         support1 = 3;
         support2 = 4;
     } else if ((showcase >= 2 && showcase <= 31) || (showcase >= 34 && showcase <= 51) || (showcase >= 54 && showcase <= 56) || (showcase >= 60 && showcase <= 65) || (showcase === 68) || (showcase === 72) || (showcase >= 77 && showcase <= 83) || (showcase >= 86 && showcase <= 88) || (showcase >= 91 && showcase <= 92) || (showcase >= 207 && showcase <= 209)) {
-        support1 = parseInt(showcase) - 1;
-        support2 = parseInt(showcase) + 1;
+        support1 = showcase - 1;
+        support2 = showcase + 1;
     } else if (showcase === 1 || showcase === 33 || showcase === 53 || showcase === 58 || showcase === 67 || showcase === 76 || showcase === 84 || showcase === 90 || showcase === 100 || showcase === 71 || showcase === 59 || showcase === 206) {
-        support1 = parseInt(showcase) + 1;
+        support1 = showcase + 1;
         if (showcase === 88) {
             support2 = support1;
-            support1 = parseInt(showcase) - 3;
+            support1 = showcase - 3;
         } else if (showcase === 71) {
             support2 = support1;
-            support1 = parseInt(showcase) - 2;
+            support1 = showcase - 2;
         } else if (showcase === 58) {
             support1 = 21;
             support2 = 75;
@@ -126,15 +228,15 @@ function loadShowcase(p_showcase) {
             support1 = 75;
         }
     } else if (showcase === 32 || showcase === 52 || showcase === 57 || showcase === 66 || showcase === 69 || showcase === 89 || showcase === 93 || showcase === 101 || showcase === 73 || showcase === 210) {
-        support1 = parseInt(showcase) - 1;
+        support1 = showcase - 1;
         if (showcase === 69) {
-            support2 = parseInt(showcase) + 2;
+            support2 = showcase + 2;
         } else if (showcase === 57) {
             support2 = 18;
         }
     } else if (showcase === 85) {
-        support1 = parseInt(showcase) - 2;
-        support2 = parseInt(showcase) + 3;
+        support1 = showcase - 2;
+        support2 = showcase + 3;
     } else if (showcase === 74) {
         support1 = 22;
     } else if (showcase === 75) {
@@ -143,7 +245,7 @@ function loadShowcase(p_showcase) {
     }
 
 
-    if (typeof support2 === 'undefined' && typeof support1 !== 'undefined') {
+    if (support1 && !support2) {
         support2 = support1;
         support1 = null;
     }
@@ -163,28 +265,28 @@ function loadShowcase(p_showcase) {
         video3 = 29;
     }
 
-    addVideo(video1, "top", 1);
-    addVideo(video2, "top", 1);
-    addVideo(video3, "top", 1);
+    addVideo(video1, "top");
+    addVideo(video2, "top");
+    addVideo(video3, "top");
 
     let div = document.getElementById("showcase");
     addVideo(showcase, "showcase", 3);
 
-    if (typeof support1 === 'undefined' || support1 === null) {
+    if (support1) {
+        addVideo(support1, "right", 2);
+    } else {
         if (showcase !== 1)
-            addVideo(2, "right", 1);
+            addVideo(2, "right");
         else
-            addVideo(29, "right", 1);
-        addVideo(10, "right", 1);
+            addVideo(29, "right");
+        addVideo(10, "right");
 
         div.appendChild(document.createElement("br"));
-        addVideo(23, "right", 1);
-        addVideo(35, "right", 1);
+        addVideo(23, "right");
+        addVideo(35, "right");
         div.appendChild(document.createElement("br"));
-    } else {
-        addVideo(support1, "right", 2);
     }
-    if (typeof support2 !== 'undefined')
+    if (support2)
         addVideo(support2, "right", 2);
 }
 
@@ -227,6 +329,22 @@ function loadMain() {
         addVideo(31);
     if (maxVids >= 19)
         addVideo(88);
+}
+
+function addVideo(id, region, scale = 1) {
+    let video = new Video(id);
+    video.setSize(width, height, scale);
+    video.setRegion(region);
+
+    if (region) {
+        let div = document.getElementById(region);
+        div.appendChild(video.getVideoElement());
+    } else {
+        let mainDiv = document.getElementById('main');
+        mainDiv.appendChild(video.getVideoElement());
+    }
+
+    video.start();
 }
 
 function calcMaxPlayers() {
@@ -290,42 +408,4 @@ function resize() {
     clearAll();
     calcMaxPlayers();
     startPlayers();
-}
-
-function getVideoURL(id) {
-    let srcStr = "https://mcleansfs";
-    if (id <= 9)
-        srcStr = srcStr + "5";
-    else if (id <= 19)
-        srcStr = srcStr + "1";
-    else if (id <= 29)
-        srcStr = srcStr + "2";
-    else if (id <= 39)
-        srcStr = srcStr + "3";
-    else if (id <= 49)
-        srcStr = srcStr + "4";
-    else if (id <= 59)
-        srcStr = srcStr + "5";
-    else if (id === 70 || id === 71 || id === 72 || id === 73 || id === 74 || id === 75)
-        srcStr = srcStr + "2";
-    else if (id === 100 || id === 101)
-        srcStr = srcStr + "2";
-    else if (id === 79 || id === 80 || id === 82 || id === 93)
-        srcStr = srcStr + "3";
-    else if (id === 84)
-        srcStr = srcStr + "5";
-    else if (id >= 206 && id <= 210)
-        srcStr = srcStr + "3";
-    else if (id === 86 || id === 87)
-        srcStr = srcStr + "2";
-    else
-        srcStr = srcStr + "1";
-    srcStr = srcStr + ".us-east-1.skyvdn.com/rtplive/R1_";
-    if (id < 100)
-        srcStr = srcStr + "0";
-    if (id < 10)
-        srcStr = srcStr + "0";
-    srcStr = srcStr + id;
-    srcStr = srcStr + "/playlist.m3u8";
-    return srcStr;
 }

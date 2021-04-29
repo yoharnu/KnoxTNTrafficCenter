@@ -18,50 +18,11 @@
                 videojs.options.preload = 'auto';
                 videojs.options.width = width;
                 videojs.options.height = height;
-                if (showcase !== null) {
+
+                if (showcase) {
                     loadShowcase(showcase);
                 } else {
                     loadMain();
-                }
-            }
-
-            function addVideo(id, region, scale) {
-                let video = document.createElement("video-js");
-                video.id = 'video' + id;
-                let source = document.createElement("source");
-                source.src = getVideoURL(id);
-                video.appendChild(source);
-                if (region === "showcase") {
-                    video.onclick = () => {
-                        showcase = null;
-                        clearAll();
-                        loadMain();
-                    };
-                    video.ontouchstart = () => {
-                        showcase = null;
-                        clearAll();
-                        loadMain();
-                    };
-                } else {
-                    video.onclick = () => {
-                        showcase = id;
-                        clearAll();
-                        loadShowcase(id);
-                    };
-                    video.ontouchstart = () => {
-                        showcase = id;
-                        clearAll();
-                        loadShowcase(id);
-                    };
-                }
-                if (typeof region === 'undefined') {
-                    let mainDiv = document.getElementById('main');
-                    mainDiv.appendChild(video);
-                    videojs('video' + id);
-                } else {
-                    let div = document.getElementById(region);
-                    div.appendChild(video);
-                    videojs('video' + id, {width: width * scale, height: height * scale});
                 }
             }
 
