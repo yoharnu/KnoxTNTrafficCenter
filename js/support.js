@@ -10,53 +10,6 @@ var height;
 class Video {
     constructor(id) {
         this.id = id;
-
-        let tempURL = "https://mcleansfs";
-        if (id <= 9)
-            tempURL = tempURL + "5";
-        else if (id <= 19)
-            tempURL = tempURL + "1";
-        else if (id <= 29)
-            tempURL = tempURL + "2";
-        else if (id <= 39)
-            tempURL = tempURL + "3";
-        else if (id <= 49)
-            tempURL = tempURL + "4";
-        else if (id <= 59)
-            tempURL = tempURL + "5";
-        else if (id === 70 || id === 71 || id === 72 || id === 73 || id === 74 || id === 75)
-            tempURL = tempURL + "2";
-        else if (id === 100 || id === 101)
-            tempURL = tempURL + "2";
-        else if (id === 79 || id === 80 || id === 82 || id === 93)
-            tempURL = tempURL + "3";
-        else if (id === 84)
-            tempURL = tempURL + "5";
-        else if (id >= 206 && id <= 210)
-            tempURL = tempURL + "3";
-        else if (id === 86 || id === 87)
-            tempURL = tempURL + "2";
-        else
-            tempURL = tempURL + "1";
-        tempURL = tempURL + ".us-east-1.skyvdn.com/rtplive/R1_";
-        if (id < 100)
-            tempURL = tempURL + "0";
-        if (id < 10)
-            tempURL = tempURL + "0";
-        tempURL = tempURL + id;
-        tempURL = tempURL + "/playlist.m3u8";
-
-        this.url = tempURL;
-
-        tempURL = "https://tnsnapshots.com/thumbs/R1_";
-        if (id < 100)
-            tempURL = tempURL + "0";
-        if (id < 10)
-            tempURL = tempURL + "0";
-        tempURL = tempURL + id + ".flv.png";
-
-        this.snapshot = tempURL;
-
         this.width = width;
         this.height = height;
     }
@@ -70,11 +23,61 @@ class Video {
         this.height = height * scale;
     }
 
+    getURL() {
+        let tempURL = "https://mcleansfs";
+        if (this.id <= 9)
+            tempURL = tempURL + "5";
+        else if (this.id <= 19)
+            tempURL = tempURL + "1";
+        else if (this.id <= 29)
+            tempURL = tempURL + "2";
+        else if (this.id <= 39)
+            tempURL = tempURL + "3";
+        else if (this.id <= 49)
+            tempURL = tempURL + "4";
+        else if (this.id <= 59)
+            tempURL = tempURL + "5";
+        else if (this.id === 70 || this.id === 71 || this.id === 72 || this.id === 73 || this.id === 74 || this.id === 75)
+            tempURL = tempURL + "2";
+        else if (this.id === 100 || this.id === 101)
+            tempURL = tempURL + "2";
+        else if (this.id === 79 || this.id === 80 || this.id === 82 || this.id === 93)
+            tempURL = tempURL + "3";
+        else if (this.id === 84)
+            tempURL = tempURL + "5";
+        else if (this.id >= 206 && this.id <= 210)
+            tempURL = tempURL + "3";
+        else if (this.id === 86 || this.id === 87)
+            tempURL = tempURL + "2";
+        else
+            tempURL = tempURL + "1";
+        tempURL = tempURL + ".us-east-1.skyvdn.com/rtplive/R1_";
+        if (this.id < 100)
+            tempURL = tempURL + "0";
+        if (this.id < 10)
+            tempURL = tempURL + "0";
+        tempURL = tempURL + this.id;
+        tempURL = tempURL + "/playlist.m3u8";
+
+        return tempURL;
+    }
+
+    getSnapshotURL() {
+        let tempURL = "https://tnsnapshots.com/thumbs/R1_";
+        if (this.id < 100)
+            tempURL = tempURL + "0";
+        if (this.id < 10)
+            tempURL = tempURL + "0";
+        tempURL = tempURL + this.id + ".flv.png";
+
+        return tempURL;
+    }
+
     getVideoElement() {
         let video = document.createElement("video-js");
         video.id = 'video' + this.id;
         let source = document.createElement("source");
-        source.src = this.url;
+        source.src = this.getURL();
         video.appendChild(source);
 
         if (this.region === "showcase") {
@@ -112,7 +115,7 @@ class Video {
     getSnapshotElement() {
         let snapshot = document.createElement("img");
         snapshot.id = "knoxville-" + this.id;
-        snapshot.src = this.snapshot;
+        snapshot.src = this.getSnapshotURL();
         snapshot.width = 320;
         snapshot.height = 240;
 
