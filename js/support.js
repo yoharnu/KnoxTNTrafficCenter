@@ -116,6 +116,7 @@ class Video {
         let snapshot = document.createElement("img");
         snapshot.id = "knoxville-" + this.id;
         snapshot.src = this.getSnapshotURL();
+        snapshot.loading = 'lazy';
         snapshot.width = 320;
         snapshot.height = 240;
 
@@ -123,6 +124,7 @@ class Video {
             clearAll();
             let incidents = document.getElementById('incidents');
             incidents.style.display = 'inline';
+            document.body.style.gridTemplateColumns = '4fr 1fr';
             document.body.style.overflow = 'hidden';
 
             let button = document.getElementById('showAll');
@@ -150,6 +152,7 @@ function showAllCams() {
     showAll = true;
     let incidents = document.getElementById('incidents');
     incidents.style.display = 'none';
+    document.body.style.gridTemplateColumns = '1fr';
 
     document.body.style.overflow = 'auto';
     let button = document.getElementById('showAll');
@@ -158,6 +161,7 @@ function showAllCams() {
         showAll = null;
         let incidents = document.getElementById('incidents');
         incidents.style.display = 'inline';
+        document.body.style.gridTemplateColumns = '4fr 1fr';
         button.innerHTML = "Show all cams";
         button.onclick = () => {
             clearAll();

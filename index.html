@@ -4,6 +4,8 @@
         <meta charset="utf-8"/>
         <meta name="description" content="View all TDOT traffic cameras for the Knoxville and Knox County Tennessee area. Conveniently compiles the feeds in one place."/>
         <meta name="keywords" content="Knoxville, Knox County, Knox, traffic, TDOT, transportation, smart way, smartway" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
         <link rel="stylesheet" href="css/video-js.css" />
         <link rel="stylesheet" href="css/default.css" />
         <title>Knox County TN Traffic Center</title>
@@ -38,25 +40,28 @@
         </script>
     </head>
     <body onLoad="startPlayers()" onResize="resize()">
-        <iframe id="incidents" src="https://smartway.tn.gov/traffic/text/region/1/incidents" sandbox="allow-scripts allow-same-origin"></iframe>
-        <h1>Knox County TN Traffic Center</h1>
-        <button id="showAll" onClick="clearAll();
-                showAllCams();">Show all cams</button>
-        <div id="video-wrapper">
-            <div id="main"></div>
-            <div id="left">
-                <div id="top">
+        <div>
+            <h1>Knox County TN Traffic Center</h1>
+            <button id="showAll" onClick="clearAll();
+                    showAllCams();">Show all cams</button>
+            <div id="video-wrapper">
+                <div id="main"></div>
+                <div id="left">
+                    <div id="top">
+                    </div>
+                    <div id="showcase">
+                    </div>
                 </div>
-                <div id="showcase">
+
+                <div id="right">
+                </div>
+
+                <div id="bottom">
                 </div>
             </div>
 
-            <div id="right">
-            </div>
-
-            <div id="bottom">
-            </div>
         </div>
+        <iframe id="incidents" src="https://smartway.tn.gov/traffic/text/region/1/incidents" sandbox="allow-scripts allow-same-origin"></iframe>
 
         <script src="js/video.min.js"></script>
     </body>
