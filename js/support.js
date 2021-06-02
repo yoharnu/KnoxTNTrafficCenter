@@ -144,7 +144,7 @@ class Video {
 
 function addSnapshot(id) {
     let video = new Video(id);
-    let div = document.getElementById("main");
+    let div = document.getElementById("vid-images");
     div.appendChild(video.getSnapshotElement());
 }
 
@@ -397,6 +397,7 @@ function clearAll() {
     clearDiv("top");
     clearDiv("showcase");
     clearDiv("right");
+    clearDiv("vid-images");
 }
 
 function clearDiv(divID) {

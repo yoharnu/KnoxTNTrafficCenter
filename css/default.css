@@ -54,3 +54,10 @@ iframe#incidents{
 button#showAll{
     margin-left:20px;
 }
+
+#vid-images{
+    display:flex;
+    flex-wrap:wrap;
+    flex-direction: row;
+    justify-content: center;
+}
