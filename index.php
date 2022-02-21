@@ -23,18 +23,20 @@
 
                 let videos = document.getElementsByClassName('video-js');
 <?php
-echo "numVidsWide=5;"
- . "numVidsTall=3;\n"
- . "if (maxVids > 12){"
- . "maxVids = 12;}\n"
- . "width = window.innerWidth * .78 / numVidsWide;"
- . "height = width * 2 / 3;\n"
- . "altHeight = (window.innerHeight - 70) / numVidsTall;"
- . "altWidth = altHeight * 3 / 2;\n"
- . "if (altWidth < width) {"
- . "width = altWidth;"
- . "height = altHeight;"
- . "}\n";
+if ($_POST["showcase_id"] > 0) {
+    echo "numVidsWide=5;"
+    . "numVidsTall=3;\n"
+    . "if (maxVids > 12){"
+    . "maxVids = 12;}\n"
+    . "width = window.innerWidth * .78 / numVidsWide;"
+    . "height = width * 2 / 3;\n"
+    . "altHeight = (window.innerHeight - 70) / numVidsTall;"
+    . "altWidth = altHeight * 3 / 2;\n"
+    . "if (altWidth < width) {"
+    . "width = altWidth;"
+    . "height = altHeight;"
+    . "}\n";
+}
 ?>
                 for (let video of videos) {
                     let object = videojs(video.id);
