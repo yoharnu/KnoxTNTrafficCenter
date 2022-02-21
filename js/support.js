@@ -339,19 +339,33 @@ function loadMain() {
 }
 
 function addVideo(id, region, scale = 1) {
-    let video = new Video(id);
-    video.setSize(width, height, scale);
-    video.setRegion(region);
-
-    if (region) {
-        let div = document.getElementById(region);
-        div.appendChild(video.getVideoElement());
-    } else {
-        let mainDiv = document.getElementById('main');
-        mainDiv.appendChild(video.getVideoElement());
-    }
-
-    video.start();
+    /*let video = new Video(id);
+     video.setSize(width, height, scale);
+     video.setRegion(region);
+     
+     if (region) {
+     let div = document.getElementById(region);
+     div.appendChild(video.getVideoElement());
+     } else {
+     let mainDiv = document.getElementById('main');
+     mainDiv.appendChild(video.getVideoElement());
+     }
+     
+     video.start();*/
+    let video = document.getElementById('video'+id);
+//    video.style.display = 'inline-block';
+    video.style.marginRight = '-5px';    
+    //video.style.width = width+'px';
+    //video.style.height = height+'px';
+    //video.style.maxWidth = '33%';
+    let object = videojs('video' + id);//{width: width * scale, height: height * scale}
+    object.show();
+    //object.aspectRatio('3:2');
+    object.height(height*scale);
+    object.width(width*scale);
+    object.play();
+//    object.updateStyleEl_();
+    //object.fluid(true);
 }
 
 function calcMaxPlayers() {
@@ -402,9 +416,11 @@ function clearAll() {
 
 function clearDiv(divID) {
     let div = document.getElementById(divID);
-    let nodes = div.childNodes;
-    while (nodes.length > 0) {
-        destroyNode(nodes[0]);
+    if (div) {
+        let nodes = div.childNodes;
+        while (nodes.length > 0) {
+            destroyNode(nodes[0]);
+        }
     }
 }
 
@@ -413,7 +429,15 @@ function resize() {
         return;
     }
 
-    clearAll();
-    calcMaxPlayers();
-    startPlayers();
+//    clearAll();
+    //calcMaxPlayers();
+//    startPlayers();
+    let videos = document.getElementsByClassName('video-js');
+    for(let video of videos){
+        let object = videojs(video.id);
+        object.pause();
+        object.hide();
+    }
+    
+    loadMain();
 }
