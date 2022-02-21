@@ -154,7 +154,7 @@ if ($_POST["showcase_id"] > 0) {
     . "numVidsTall=3;\n"
     . "if (maxVids > 12){"
     . "maxVids = 12;}\n"
-    . "width = window.innerWidth * .8 / numVidsWide;"
+    . "width = window.innerWidth * .78 / numVidsWide;"
     . "height = width * 2 / 3;\n"
     . "altHeight = (window.innerHeight - 70) / numVidsTall;"
     . "altWidth = altHeight * 3 / 2;\n"
@@ -216,13 +216,22 @@ echo "\n";
 
         <script data-ad-client="ca-pub-9117372724148268" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     </head>
-    <body onLoad="startPlayers()" onResize="resize()">
+    <body onLoad="startPlayers()" onResize="resize()"<?php
+    if ($_POST["showcase_id"] < 0) {
+        echo " style='grid-template-columns:1fr;overflow:\"auto\"'";
+    }
+    ?>>
         <div>
             <h1>Knox County TN Traffic Center</h1>
+            <?php
+            if ($_POST["showcase_id"] == -1) {
+                echo '<button id = "showAll" onClick = "document.forms[0].showcase_id.value = parseInt(0);document.forms[0].submit();">Return to overview</button>';
+            } else {
+                echo '<button id = "showAll" onClick = "document.forms[0].showcase_id.value = parseInt(-1);document.forms[0].submit();">Show all cams</button>';
+            }
+            ?>
             <form action="<?php echo $_SERVER["PHP_SELF"] ?>" method="POST">
                 <input name="showcase_id" type="hidden" value="0"/>
-                <!--<button id="showAll" onClick="clearAll();
-                    showAllCams();">Show all cams</button>-->
             </form>
 
             <?php
@@ -277,7 +286,7 @@ echo "\n";
                 if ($support3) {
                     echo "<video-js id='video" . $support1 . "' scale='1'><source src='" . getVideoURL($support1) . "' /></video-js></a>\n";
                     echo "\t\t\t\t<a href='javascript:document.forms[0].showcase_id.value = parseInt(" . $support3 . ");document.forms[0].submit();'>"
-                    . "<video-js id='video" . $support3 . "'><source src='" . getVideoURL($support3) . "' /></video-js></a>\n";
+                    . "<video-js id='video" . $support3 . "' scale='1'><source src='" . getVideoURL($support3) . "' /></video-js></a>\n";
                 } else {
                     echo "<video-js id='video" . $support1 . "' scale='2'><source src='" . getVideoURL($support1) . "' /></video-js></a>\n";
                 }
@@ -308,11 +317,31 @@ echo "\n";
                     . "\n";
                 }
                 echo "\t\t\t" . '</div>';
+            } else {
+
+                function getSnapshotHTML($id) {
+                    return '<a href="javascript:document.forms[0].showcase_id.value = parseInt(' . $id . ');document.forms[0].submit();"><img id = "knoxville-' . $id . '" src = "https://tnsnapshots.com/thumbs/R1_' . str_pad($id, 3, "0", STR_PAD_LEFT) . '.flv.png" loading = "lazy" width = "320" height = "240" style = "margin-bottom:-5px" /></a>' . "\n";
+                }
+
+                echo '<div id = "vid-images">' . "\n";
+                for ($i = 1; $i <= 93; $i++) {
+                    echo getSnapshotHTML($i);
+                }
+                for ($i = 206; $i <= 210; $i++) {
+                    echo getSnapshotHTML($i);
+                }
+                echo getSnapshotHTML(100);
+                echo getSnapshotHTML(101);
+                echo "</div>";
             }
             ?>
 
         </div>
-        <iframe id="incidents" src="https://smartway.tn.gov/traffic/text/region/1/incidents" sandbox="allow-scripts allow-same-origin"></iframe>
+        <?php
+        if ($_POST["showcase_id"] >= 0) {
+            echo '<iframe id = "incidents" src = "https://smartway.tn.gov/traffic/text/region/1/incidents" sandbox = "allow-scripts allow-same-origin"></iframe>' . "\n";
+        }
+        ?>
 
-        <script src="js/video.min.js"></script>
+        <script src = "js/video.min.js"></script>
     </body>
