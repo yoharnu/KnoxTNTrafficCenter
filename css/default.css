@@ -1,5 +1,6 @@
 .video-js {
     margin-left:0px;
+    margin-right:-5px;
     display:inline-block;
 }
 
@@ -34,8 +35,13 @@ iframe#incidents{
     border:0px;
     padding:0px;
 }
-#top .video-js, #showcase .video-js{
+#top .video-js{
     display:inline-block;
+    margin-right:-3px;
+}
+#showcase .video-js{
+    display:inline-block;
+    margin-right:0px;
 }
 
 #left{
@@ -49,6 +55,7 @@ iframe#incidents{
 
 #right .video-js{
     display: inline-block;
+    margin-right:0px;
 }
 
 button#showAll{

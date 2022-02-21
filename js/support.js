@@ -338,34 +338,13 @@ function loadMain() {
         addVideo(88);
 }
 
-function addVideo(id, region, scale = 1) {
-    /*let video = new Video(id);
-     video.setSize(width, height, scale);
-     video.setRegion(region);
-     
-     if (region) {
-     let div = document.getElementById(region);
-     div.appendChild(video.getVideoElement());
-     } else {
-     let mainDiv = document.getElementById('main');
-     mainDiv.appendChild(video.getVideoElement());
-     }
-     
-     video.start();*/
-    let video = document.getElementById('video'+id);
-//    video.style.display = 'inline-block';
-    video.style.marginRight = '-5px';    
-    //video.style.width = width+'px';
-    //video.style.height = height+'px';
-    //video.style.maxWidth = '33%';
-    let object = videojs('video' + id);//{width: width * scale, height: height * scale}
+function addVideo(id, scale = 1) {
+    let object = videojs('video' + id);
     object.show();
-    //object.aspectRatio('3:2');
-    object.height(height*scale);
-    object.width(width*scale);
-    object.play();
-//    object.updateStyleEl_();
-    //object.fluid(true);
+    object.height(height * scale);
+    object.width(width * scale);
+    if (object.paused())
+        object.play();
 }
 
 function calcMaxPlayers() {
@@ -424,20 +403,3 @@ function clearDiv(divID) {
     }
 }
 
-function resize() {
-    if (showAll !== null) {
-        return;
-    }
-
-//    clearAll();
-    //calcMaxPlayers();
-//    startPlayers();
-    let videos = document.getElementsByClassName('video-js');
-    for(let video of videos){
-        let object = videojs(video.id);
-        object.pause();
-        object.hide();
-    }
-    
-    loadMain();
-}
