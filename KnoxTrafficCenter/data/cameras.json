@@ -1,0 +1,1229 @@
+[
+  {
+    "id": 1,
+    "road": "I-40",
+    "location": "W/O LOVELL RD",
+    "mm": 374,
+    "video": {
+      "URL": "https://mcleansfs5.us-east-1.skyvdn.com/rtplive/R1_001/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_001.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 2,
+    "road": "I-40",
+    "location": "AT LOVELL RD",
+    "mm": 374.7,
+    "video": {
+      "URL": "https://mcleansfs5.us-east-1.skyvdn.com/rtplive/R1_002/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_002.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 3,
+    "road": "I-40",
+    "location": "W/O PELL PKWY",
+    "mm": 375.4,
+    "video": {
+      "URL": "https://mcleansfs5.us-east-1.skyvdn.com/rtplive/R1_003/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_003.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 4,
+    "title": "I-40 E/O PELL PKWY",
+    "mm": 376.6,
+    "video": {
+      "URL": "https://mcleansfs5.us-east-1.skyvdn.com/rtplive/R1_004/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_004.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 5,
+    "title": "I-40 W/O CEDAR BLUFF",
+    "mm": 377.2,
+    "video": {
+      "URL": "https://mcleansfs5.us-east-1.skyvdn.com/rtplive/R1_005/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_005.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 6,
+    "title": "I-40 AT CEDAR BLUFF",
+    "mm": 377.9,
+    "video": {
+      "URL": "https://mcleansfs5.us-east-1.skyvdn.com/rtplive/R1_006/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_006.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 7,
+    "title": "I-40 AT BRIDGEWATER",
+    "mm": 378.6,
+    "video": {
+      "URL": "https://mcleansfs5.us-east-1.skyvdn.com/rtplive/R1_007/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_007.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 8,
+    "title": "I-40 AT WALKER SPRINGS",
+    "mm": 379.3,
+    "video": {
+      "URL": "https://mcleansfs5.us-east-1.skyvdn.com/rtplive/R1_008/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_008.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 9,
+    "title": "I-40 AT GALLAHER",
+    "mm": 380,
+    "video": {
+      "URL": "https://mcleansfs5.us-east-1.skyvdn.com/rtplive/R1_009/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_009.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 10,
+    "title": "I-40 AT WEST HILLS",
+    "mm": 380.8,
+    "video": {
+      "URL": "https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_010/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_010.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 11,
+    "title": "I-40 E/O WEST HILLS",
+    "mm": 381.7,
+    "video": {
+      "URL": "https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_011/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_011.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 12,
+    "title": "I-40 AT WEISGARBER",
+    "mm": 382.2,
+    "video": {
+      "URL": "https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_012/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_012.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 13,
+    "title": "I-40 AT PAPERMILL",
+    "mm": 383,
+    "video": {
+      "URL": "https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_013/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_013.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 14,
+    "title": "I-40 E/O PAPERMILL",
+    "mm": 383.8,
+    "video": {
+      "URL": "https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_014/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_014.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 15,
+    "title": "I-40 W/O I-75/I-640",
+    "mm": 384.5,
+    "video": {
+      "URL": "https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_015/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_015.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 16,
+    "title": "I-40 E/O I-75/I-640",
+    "mm": 385.3,
+    "video": {
+      "URL": "https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_016/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_016.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 17,
+    "title": "I-40 AT MIDDLEBROOK",
+    "mm": 386.1,
+    "video": {
+      "URL": "https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_017/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_017.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 18,
+    "title": "I-40 AT ALCOA HWY",
+    "mm": 386.7,
+    "video": {
+      "URL": "https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_018/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_018.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 19,
+    "title": "I-40 AT 17TH ST",
+    "mm": 387,
+    "video": {
+      "URL": "https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_019/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_019.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 20,
+    "title": "I-40 AT WESTERN",
+    "mm": 387.4,
+    "video": {
+      "URL": "https://mcleansfs2.us-east-1.skyvdn.com/rtplive/R1_020/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_020.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 21,
+    "title": "I-40 AT I-275",
+    "mm": 387.8,
+    "video": {
+      "URL": "https://mcleansfs2.us-east-1.skyvdn.com/rtplive/R1_021/playlist.m3u8",
+      "width": 320,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_021.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 22,
+    "title": "I-40 AT 5TH AVE",
+    "mm": 388.4,
+    "video": {
+      "URL": "https://mcleansfs2.us-east-1.skyvdn.com/rtplive/R1_022/playlist.m3u8",
+      "width": 320,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_022.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 23,
+    "title": "I-40 AT HALL OF FAME",
+    "mm": 389,
+    "video": {
+      "URL": "https://mcleansfs2.us-east-1.skyvdn.com/rtplive/R1_023/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_023.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 24,
+    "title": "I-40 W/O CHERRY ST",
+    "mm": 389.6,
+    "video": {
+      "URL": "https://mcleansfs2.us-east-1.skyvdn.com/rtplive/R1_024/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_024.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 25,
+    "title": "I-40 AT CHERRY ST",
+    "mm": 390.2,
+    "video": {
+      "URL": "https://mcleansfs2.us-east-1.skyvdn.com/rtplive/R1_025/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_025.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 26,
+    "title": "I-40 E/O CHERRY ST",
+    "mm": 390.9,
+    "video": {
+      "URL": "https://mcleansfs2.us-east-1.skyvdn.com/rtplive/R1_026/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_026.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 27,
+    "title": "I-40 W/O RUTLEDGE PK",
+    "mm": 391.4,
+    "video": {
+      "URL": "https://mcleansfs2.us-east-1.skyvdn.com/rtplive/R1_027/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_027.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 28,
+    "title": "I-40 AT RUTLEDGE PK",
+    "mm": 391.9,
+    "video": {
+      "URL": "https://mcleansfs2.us-east-1.skyvdn.com/rtplive/R1_028/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_028.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 29,
+    "title": "I-40 AT I-640",
+    "mm": 392.6,
+    "video": {
+      "URL": "https://mcleansfs2.us-east-1.skyvdn.com/rtplive/R1_029/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_029.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 30,
+    "title": "I-40 E/O I-640",
+    "mm": 393.3,
+    "video": {
+      "URL": "https://mcleansfs3.us-east-1.skyvdn.com/rtplive/R1_030/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_030.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 31,
+    "title": "I-40 AT ASHEVILLE HWY",
+    "mm": 393.9,
+    "video": {
+      "URL": "https://mcleansfs3.us-east-1.skyvdn.com/rtplive/R1_031/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_031.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 32,
+    "title": "I-40 AT HOLSTON BRIDGE",
+    "mm": 394.7,
+    "video": {
+      "URL": "https://mcleansfs3.us-east-1.skyvdn.com/rtplive/R1_032/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_032.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 33,
+    "title": "I-75/I-640 N/O I-40",
+    "mm": 0.4,
+    "video": {
+      "URL": "https://mcleansfs3.us-east-1.skyvdn.com/rtplive/R1_033/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_033.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 34,
+    "title": "I-75/I-640 S/O WESTERN AVE",
+    "mm": 1,
+    "video": {
+      "URL": "https://mcleansfs3.us-east-1.skyvdn.com/rtplive/R1_034/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_034.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 35,
+    "title": "I-75/I-640 AT WESTERN AVE",
+    "mm": 1.4,
+    "video": {
+      "URL": "https://mcleansfs3.us-east-1.skyvdn.com/rtplive/R1_035/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_035.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 36,
+    "title": "I-75/I-640 N/O WESTERN AVE",
+    "mm": 1.9,
+    "video": {
+      "URL": "https://mcleansfs3.us-east-1.skyvdn.com/rtplive/R1_036/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_036.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 37,
+    "title": "I-75/I-640 AT WILSON OPAS",
+    "mm": 2.4,
+    "video": {
+      "URL": "https://mcleansfs3.us-east-1.skyvdn.com/rtplive/R1_037/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_037.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 38,
+    "title": "I-75/I-640 AT GAP RD",
+    "mm": 3,
+    "video": {
+      "URL": "https://mcleansfs3.us-east-1.skyvdn.com/rtplive/R1_038/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_038.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 39,
+    "title": "I-75/I-640 AT CLINTON HWY",
+    "mm": 3.4,
+    "video": {
+      "URL": "https://mcleansfs3.us-east-1.skyvdn.com/rtplive/R1_039/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_039.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 40,
+    "title": "I-640 E/O I-75/I-275",
+    "mm": 3.8,
+    "video": {
+      "URL": "https://mcleansfs4.us-east-1.skyvdn.com/rtplive/R1_040/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_040.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 41,
+    "title": "I-640 AT BRUHIN",
+    "mm": 4.2,
+    "video": {
+      "URL": "https://mcleansfs4.us-east-1.skyvdn.com/rtplive/R1_041/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_041.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 42,
+    "title": "I-640 AT THE HAGUE",
+    "mm": 4.9,
+    "video": {
+      "URL": "https://mcleansfs4.us-east-1.skyvdn.com/rtplive/R1_042/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_042.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 43,
+    "title": "I-640/DUTCH VALLEY DR",
+    "mm": 5.5,
+    "video": {
+      "URL": "https://mcleansfs4.us-east-1.skyvdn.com/rtplive/R1_043/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_043.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 44,
+    "title": "I-640 AT BROADWAY",
+    "mm": 6.1,
+    "video": {
+      "URL": "https://mcleansfs4.us-east-1.skyvdn.com/rtplive/R1_044/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_044.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 45,
+    "title": "I-640 E/O BROADWAY",
+    "mm": 6.8,
+    "video": {
+      "URL": "https://mcleansfs4.us-east-1.skyvdn.com/rtplive/R1_045/playlist.m3u8",
+      "width": 320,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_045.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 46,
+    "title": "I-640 E/O BROADWAY",
+    "mm": 6.8,
+    "video": {
+      "URL": "https://mcleansfs4.us-east-1.skyvdn.com/rtplive/R1_046/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_046.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 47,
+    "title": "I-640 W/O WASHINGTON",
+    "mm": 7.5,
+    "video": {
+      "URL": "https://mcleansfs4.us-east-1.skyvdn.com/rtplive/R1_047/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_047.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 48,
+    "title": "I-640 W/O WASHINGTON",
+    "mm": 7.6,
+    "video": {
+      "URL": "https://mcleansfs4.us-east-1.skyvdn.com/rtplive/R1_048/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_048.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 49,
+    "title": "I-640 AT WASHINGTON",
+    "mm": 8.3,
+    "video": {
+      "URL": "https://mcleansfs4.us-east-1.skyvdn.com/rtplive/R1_049/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_049.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 50,
+    "title": "I-640 AT MILLERTOWN PK",
+    "mm": 9.2,
+    "video": {
+      "URL": "https://mcleansfs5.us-east-1.skyvdn.com/rtplive/R1_050/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_050.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 51,
+    "title": "I-640 E/O MILLERTOWN",
+    "mm": 9.8,
+    "video": {
+      "URL": "https://mcleansfs5.us-east-1.skyvdn.com/rtplive/R1_051/playlist.m3u8",
+      "width": 320,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_051.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 52,
+    "title": "I-640 N/O I-40",
+    "mm": 10.3,
+    "video": {
+      "URL": "https://mcleansfs5.us-east-1.skyvdn.com/rtplive/R1_052/playlist.m3u8",
+      "width": 320,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_052.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 53,
+    "title": "ALCOA HWY S/O CHEROKEE",
+    "mm": 4.1,
+    "video": {
+      "URL": "https://mcleansfs5.us-east-1.skyvdn.com/rtplive/R1_053/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_053.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 54,
+    "title": "ALCOA HWY AT CHEROKEE",
+    "mm": 4.6,
+    "video": {
+      "URL": "https://mcleansfs5.us-east-1.skyvdn.com/rtplive/R1_054/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_054.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 55,
+    "title": "ALCOA HWY S/O CUMBERLAND",
+    "mm": 5.0,
+    "video": {
+      "URL": "https://mcleansfs5.us-east-1.skyvdn.com/rtplive/R1_055/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_055.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 56,
+    "title": "ALCOA HWY AT CUMBERLAND AVE",
+    "mm": 5.8,
+    "video": {
+      "URL": "https://mcleansfs5.us-east-1.skyvdn.com/rtplive/R1_056/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_056.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 57,
+    "title": "ALCOA HWY S/O I-40",
+    "mm": 6.0,
+    "video": {
+      "URL": "https://mcleansfs5.us-east-1.skyvdn.com/rtplive/R1_057/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_057.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 58,
+    "title": "I-275 AT BAXTER AVE",
+    "mm": 0.5,
+    "video": {
+      "URL": "https://mcleansfs5.us-east-1.skyvdn.com/rtplive/R1_058/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_058.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 59,
+    "title": "I-275 AT WOODLAND",
+    "mm": 1.3,
+    "video": {
+      "URL": "https://mcleansfs5.us-east-1.skyvdn.com/rtplive/R1_059/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_059.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 60,
+    "title": "I-275 N/O WOODLAND",
+    "mm": 1.7,
+    "video": {
+      "URL": "https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_060/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_060.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 61,
+    "title": "I-275 AT HEISKELL",
+    "mm": 2.4,
+    "video": {
+      "URL": "https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_061/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_061.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 62,
+    "title": "I-275 AT I-75/I-640",
+    "mm": 2.9,
+    "video": {
+      "URL": "https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_062/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_062.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 63,
+    "title": "I-75 N/O I-640",
+    "mm": 107.9,
+    "video": {
+      "URL": "https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_063/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_063.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 64,
+    "title": "I-75 AT MERCHANT",
+    "mm": 108.6,
+    "video": {
+      "URL": "https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_064/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_064.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 65,
+    "title": "I-75 N/O MERCHANT",
+    "mm": 109.1,
+    "video": {
+      "URL": "https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_065/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_065.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 66,
+    "title": "I-75 S/O CALLAHAN",
+    "mm": 109.6,
+    "video": {
+      "URL": "https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_066/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_066.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 67,
+    "video": {
+      "URL": "https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_067/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_067.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 68,
+    "title": "I-140",
+    "mm": 1.3,
+    "video": {
+      "URL": "https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_068/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_068.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 69,
+    "title": "I-140",
+    "mm": 0.5,
+    "video": {
+      "URL": "https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_069/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_069.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 70,
+    "title": "I-140 AT I-40",
+    "mm": 0.0,
+    "video": {
+      "URL": "https://mcleansfs2.us-east-1.skyvdn.com/rtplive/R1_070/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_070.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 71,
+    "title": "I-140",
+    "mm": 5.4,
+    "video": {
+      "URL": "https://mcleansfs2.us-east-1.skyvdn.com/rtplive/R1_071/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_071.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 72,
+    "title": "PELLISSIPPI PKWY AT DUTCHTOWN",
+    "mm": 4.7,
+    "video": {
+      "URL": "https://mcleansfs2.us-east-1.skyvdn.com/rtplive/R1_072/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_072.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 73,
+    "title": "PELLISSIPPI PKWY AT LOVELL RD",
+    "mm": 3.8,
+    "video": {
+      "URL": "https://mcleansfs2.us-east-1.skyvdn.com/rtplive/R1_073/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_073.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 74,
+    "title": "JAMES WHITE/HALL OF FAME AT SUMMIT HILL",
+    "mm": 3.6,
+    "video": {
+      "URL": "https://mcleansfs2.us-east-1.skyvdn.com/rtplive/R1_074/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_074.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 75,
+    "title": "I-275 N/O BAXTER",
+    "mm": 1.0,
+    "video": {
+      "URL": "https://mcleansfs2.us-east-1.skyvdn.com/rtplive/R1_075/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_075.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 76,
+    "video": {
+      "URL": "https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_076/playlist.m3u8",
+      "width": 293,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_076.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 77,
+    "title": "I-40",
+    "mm": 364.0,
+    "video": {
+      "URL": "https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_077/playlist.m3u8",
+      "width": 293,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_077.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 78,
+    "title": "I-40",
+    "mm": 364.9,
+    "video": {
+      "URL": "https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_078/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_078.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 79,
+    "title": "I-40 AT BUTTERMILK RD",
+    "mm": 366.8,
+    "video": {
+      "URL": "https://mcleansfs3.us-east-1.skyvdn.com/rtplive/R1_079/playlist.m3u8",
+      "width": 352,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_079.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 80,
+    "video": {
+      "URL": "https://mcleansfs3.us-east-1.skyvdn.com/rtplive/R1_080/playlist.m3u8",
+      "width": 352,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_080.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 81,
+    "title": "I-40",
+    "mm": 368.6,
+    "video": {
+      "URL": "https://mcleansfs1.us-east-1.skyvdn.com/rtplive/R1_081/playlist.m3u8",
+      "width": 274,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_081.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  },
+  {
+    "id": 82,
+    "title": "I-40 AT WATT RD",
+    "mm": 369.2,
+    "video": {
+      "URL": "https://mcleansfs3.us-east-1.skyvdn.com/rtplive/R1_082/playlist.m3u8",
+      "width": 360,
+      "height": 240
+    },
+    "image": {
+      "URL": "https://tnsnapshots.com/thumbs/R1_082.flv.png",
+      "width": 320,
+      "height": 240
+    }
+  }
+]

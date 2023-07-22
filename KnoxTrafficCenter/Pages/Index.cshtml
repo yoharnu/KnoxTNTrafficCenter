@@ -1,0 +1,91 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="row">
+    @foreach (var camera in Model.Cameras)
+    {
+        <div class="col g-1">
+            <div class="card p-2" style="width: @(camera.Image.Width)px">
+                @if (camera.Road != null && camera.Location != null)
+                {
+                    <h4 class="card-title">@camera.Road  @camera.Location</h4>
+                }
+                else
+                {
+                    <h4 class="card-title">@camera.Title</h4>
+                }
+                @if (camera.MM is not null)
+                {
+                    <h6 class="text-muted card-subtitle">MM @camera.MM</h6>
+                }
+                <a href="#" data-bs-toggle="modal" data-bs-target="#videoModal" data-bs-title="@camera.Road @camera.Location @camera.Title" data-bs-video-url="@(camera.Video.URL)">
+                    <img src="@camera.Image.URL" width="@(camera.Image.Width)px" height="@(camera.Image.Height)px" alt="camera image of @camera.Road @camera.Location @camera.Title" class="card-img-bottom rounded" />
+                </a>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="modal fade" tabindex="-1" id="videoModal">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    @if (Model.TDOTAPI != null)
+    {
+        @:console.log(@Model.TDOTAPI.ToString());
+    }
+</script>
+
+<script type="text/javascript">
+            var videoModal = document.getElementById('videoModal');
+    videoModal.addEventListener('show.bs.modal', function(event) {
+
+        var button = event.relatedTarget;
+
+        var URL = button.getAttribute('data-bs-video-url');
+        var width = button.getAttribute('data-bs-video-width');
+        var height = button.getAttribute('data-bs-video-height');
+        var title = button.getAttribute('data-bs-title');
+
+        var modalTitle = videoModal.querySelector('.modal-title');
+
+        modalTitle.textContent = title;
+
+        var modalBody = videoModal.getElementsByClassName('modal-body')[0];
+        var videoJS = document.createElement('video-js');
+        videoJS.id = 'modalVideoJS';
+        videoJS.classList.add('video-js');
+
+        modalBody.appendChild(videoJS);
+
+        var myPlayer = videojs('modalVideoJS');
+        myPlayer.muted(true);
+        myPlayer.autoplay(true);
+        myPlayer.controls(true);
+        myPlayer.fluid(true);
+        myPlayer.src(URL);
+        myPlayer.ready(function() {
+            myPlayer.play();
+        });
+    });
+    videoModal.addEventListener('hide.bs.modal', function(event) {
+        var modalTitle = videoModal.querySelector('.modal-title');
+        modalTitle.textContent = "";
+
+        var myPlayer = videojs('modalVideoJS');
+        myPlayer.dispose();
+    });
+</script>
