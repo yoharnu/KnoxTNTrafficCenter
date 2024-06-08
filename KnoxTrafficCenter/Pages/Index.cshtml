@@ -7,25 +7,25 @@
 <div class="row">
     @foreach (var camera in Model.Cameras)
     {
-        <div class="col g-1">
-            <div class="card p-2" style="width: @(camera.Image.Width)px">
-                @if (camera.Road != null && camera.Location != null)
+    <div class="col g-1">
+        <div class="card p-2" style="width: @(camera.Image.Width)px">
+            @if (camera.Road != null && camera.Location != null)
                 {
-                    <h4 class="card-title">@camera.Road  @camera.Location</h4>
+            <h4 class="card-title">@camera.Road  @camera.Location</h4>
                 }
                 else
                 {
-                    <h4 class="card-title">@camera.Title</h4>
+            <h4 class="card-title">@camera.Title</h4>
                 }
-                @if (camera.MM is not null)
+            @if (camera.MM is not null)
                 {
-                    <h6 class="text-muted card-subtitle">MM @camera.MM</h6>
+            <h6 class="text-muted card-subtitle">MM @camera.MM</h6>
                 }
-                <a href="#" data-bs-toggle="modal" data-bs-target="#videoModal" data-bs-title="@camera.Road @camera.Location @camera.Title" data-bs-video-url="@(camera.Video.URL)">
-                    <img src="@camera.Image.URL" width="@(camera.Image.Width)px" height="@(camera.Image.Height)px" alt="camera image of @camera.Road @camera.Location @camera.Title" class="card-img-bottom rounded" />
-                </a>
-            </div>
+            <a href="#" data-bs-toggle="modal" data-bs-target="#videoModal" data-bs-title="@camera.Road @camera.Location @camera.Title" data-bs-video-url="@(camera.Video.URL)">
+                <img src="@camera.Image.URL" width="@(camera.Image.Width)px" height="@(camera.Image.Height)px" alt="camera image of @camera.Road @camera.Location @camera.Title" class="card-img-bottom rounded" />
+            </a>
         </div>
+    </div>
     }
 </div>
 
@@ -50,8 +50,8 @@
 </script>
 
 <script type="text/javascript">
-            var videoModal = document.getElementById('videoModal');
-    videoModal.addEventListener('show.bs.modal', function(event) {
+    var videoModal = document.getElementById('videoModal');
+    videoModal.addEventListener('show.bs.modal', function (event) {
 
         var button = event.relatedTarget;
 
@@ -77,11 +77,11 @@
         myPlayer.controls(true);
         myPlayer.fluid(true);
         myPlayer.src(URL);
-        myPlayer.ready(function() {
+        myPlayer.ready(function () {
             myPlayer.play();
         });
     });
-    videoModal.addEventListener('hide.bs.modal', function(event) {
+    videoModal.addEventListener('hide.bs.modal', function (event) {
         var modalTitle = videoModal.querySelector('.modal-title');
         modalTitle.textContent = "";
 
