@@ -27,11 +27,10 @@ namespace KnoxTrafficCenter.Services
             HttpResponseMessage response = await HttpClient.GetAsync("config.prod.json");
             if (response.IsSuccessStatusCode)
             {
-                TDOTAPI = JsonSerializer.Deserialize<TDOTAPI>(await response.Content.ReadAsStreamAsync(),
-                new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                });
+                var stream = await response.Content.ReadAsStreamAsync();
+                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
+                TDOTAPI = JsonSerializer.Deserialize<TDOTAPI>(stream, options);
             }
         }
     }
