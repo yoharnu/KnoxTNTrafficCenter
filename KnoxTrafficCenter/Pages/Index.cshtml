@@ -7,25 +7,23 @@
 <div class="row">
     @foreach (var camera in Model.Cameras)
     {
-    <div class="col g-1">
-        <div class="card p-2" style="width: @(camera.Image.Width)px">
-            @if (camera.Road != null && camera.Location != null)
+        <div class="col g-1">
+            <div class="card p-2" style="width: @(camera.Image.Width)px">
+                <h4 class="card-title">
+                    @(camera.Road != null && camera.Location != null
+                        ? $"{camera.Road} {camera.Location}"
+                        : camera.Title)
+                </h4>
+
+                @if (camera.MM is not null)
                 {
-            <h4 class="card-title">@camera.Road  @camera.Location</h4>
+                    <h6 class="text-muted card-subtitle">MM @camera.MM</h6>
                 }
-                else
-                {
-            <h4 class="card-title">@camera.Title</h4>
-                }
-            @if (camera.MM is not null)
-                {
-            <h6 class="text-muted card-subtitle">MM @camera.MM</h6>
-                }
-            <a href="#" data-bs-toggle="modal" data-bs-target="#videoModal" data-bs-title="@camera.Road @camera.Location @camera.Title" data-bs-video-url="@(camera.Video.URL)">
-                <img src="@camera.Image.URL" width="@(camera.Image.Width)px" height="@(camera.Image.Height)px" alt="camera image of @camera.Road @camera.Location @camera.Title" class="card-img-bottom rounded" />
-            </a>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#videoModal" data-bs-title="@camera.Road @camera.Location @camera.Title" data-bs-video-url="@(camera.Video.URL)">
+                    <img src="@camera.Image.URL" width="@(camera.Image.Width)px" height="@(camera.Image.Height)px" alt="camera image of @camera.Road @camera.Location @camera.Title" class="card-img-bottom rounded" />
+                </a>
+            </div>
         </div>
-    </div>
     }
 </div>
 
