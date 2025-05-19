@@ -1,9 +1,5 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using KnoxTrafficCenter.Models;
 using System.Text.Json;
-using KnoxTrafficCenter.Models;
-using Microsoft.AspNetCore.Hosting;
 
 namespace KnoxTrafficCenter.Services
 {
