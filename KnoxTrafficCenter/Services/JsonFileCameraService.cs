@@ -3,19 +3,11 @@ using System.Text.Json;
 
 namespace KnoxTrafficCenter.Services
 {
-    public class JsonFileCameraService
+    public class JsonFileCameraService(IWebHostEnvironment webHostEnvironment)
     {
-        public JsonFileCameraService(IWebHostEnvironment webHostEnvironment)
-        {
-            WebHostEnvironment = webHostEnvironment;
-        }
+        private IWebHostEnvironment WebHostEnvironment { get; } = webHostEnvironment;
 
-        public IWebHostEnvironment WebHostEnvironment { get; }
-
-        private string JsonFileName
-        {
-            get { return Path.Combine(WebHostEnvironment.ContentRootPath, "data", "cameras.json"); }
-        }
+        private string JsonFileName => Path.Combine(WebHostEnvironment.ContentRootPath, "data", "cameras.json");
 
         public IEnumerable<Camera> GetCameras()
         {

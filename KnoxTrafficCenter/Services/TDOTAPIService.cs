@@ -18,11 +18,11 @@ namespace KnoxTrafficCenter.Services
             FetchAPI();
         }
 
-        public HttpClient HttpClient { get; set; }
+        private HttpClient HttpClient { get; set; }
 
-        public TDOTAPI? TDOTAPI { get; set; }
+        internal TDOTAPI? TDOTAPI { get; set; }
 
-        public async void FetchAPI()
+        private async void FetchAPI()
         {
             HttpResponseMessage response = await HttpClient.GetAsync("config.prod.json");
             if (response.IsSuccessStatusCode)
