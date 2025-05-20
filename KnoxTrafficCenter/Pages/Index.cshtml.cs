@@ -4,20 +4,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace KnoxTrafficCenter.Pages
 {
-    public class IndexModel : PageModel
+    public class IndexModel(ILogger<IndexModel> logger, JsonFileCameraService cameraService, TDOTAPIService tdotApiService) : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
-        public JsonFileCameraService CameraService;
-        public TDOTAPIService TDOTAPIService;
+        public JsonFileCameraService CameraService = cameraService;
+        public TDOTAPIService TDOTAPIService = tdotApiService;
         public IEnumerable<Camera> Cameras { get; private set; }
         public TDOTAPI TDOTAPI { get; private set; }
-
-        public IndexModel(ILogger<IndexModel> logger, JsonFileCameraService cameraService, TDOTAPIService tdotApiService)
-        {
-            CameraService = cameraService;
-            TDOTAPIService = tdotApiService;
-            _logger = logger;
-        }
 
         public void OnGet()
         {
