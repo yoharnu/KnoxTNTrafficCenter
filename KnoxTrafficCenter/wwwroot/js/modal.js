@@ -16,6 +16,10 @@
     videoJS.id = 'modalVideoJS';
     videoJS.classList.add('video-js');
 
+    while (modalBody.children.length > 0) {
+        modalBody.removeChild(modalBody.children[0]);
+    }
+
     modalBody.appendChild(videoJS);
 
     var myPlayer = videojs('modalVideoJS');
@@ -34,5 +38,6 @@ function HideModal(event) {
     modalTitle.textContent = "";
 
     var myPlayer = videojs('modalVideoJS');
-    myPlayer.dispose();
+    if (myPlayer)
+        myPlayer.dispose();
 }
