@@ -8,14 +8,12 @@
 {
     <div class="alert alert-warning text-center" role="alert">
         <strong>Traffic Incidents:</strong>
-        @foreach (var incident in Model.Incidents)
-        {
-            <span>@incident.Description</span>
-            @if (incident != Model.Incidents.Last())
+        <ul class="list-unstyled mb-0">
+            @foreach (var incident in Model.Incidents)
             {
-                <span> | </span>
+                <li class="mb-2">@incident.Description</li>
             }
-        }
+        </ul>
     </div>
 }
 
@@ -55,16 +53,6 @@
     </div>
 </div>
 
-<script type="text/javascript">
-    @if (Model.Incidents?.Any() == true)
-    {
-        @foreach (var incident in Model.Incidents)
-        {
-            @:console.log("@incident.ToString()");
-        }
-        @:console.log("@Model.Incidents.ToString()");
-    }
-</script>
 <script src="~/js/modal.js" type="text/javascript" asp-append-version="true"></script>
 <script type="text/javascript">
     var videoModal = document.getElementById('videoModal');

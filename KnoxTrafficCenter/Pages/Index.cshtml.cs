@@ -41,6 +41,7 @@ public class IndexModel(ILogger<IndexModel> logger, JsonFileCameraService camera
                 var stream = await response.Content.ReadAsStreamAsync();
                 var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
                 Incidents = await JsonSerializer.DeserializeAsync<List<Event>>(stream, options) ?? new();
+                Incidents = Incidents.Where(x => x.Locations.Select(x => x.CountyName).Contains("Knox")).ToList();
             }
         }
     }
