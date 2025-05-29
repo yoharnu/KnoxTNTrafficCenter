@@ -41,8 +41,8 @@
 <div class="row">
     @foreach (var camera in Model.Cameras)
     {
-        <div class="col g-1">
-            <div class="card p-2" style="width: @(camera.Image.Width)px">
+        <div class="col-12 col-md-6 col-lg-4 col-xl-3 col-xxl-2 g-1">
+            <div class="card p-2">
                 <h4 class="card-title">
                     @(camera.Road != null && camera.Location != null
                         ? $"{camera.Road} {camera.Location}"
@@ -54,7 +54,7 @@
                     <h6 class="text-muted card-subtitle">MM @camera.MM</h6>
                 }
                 <a href="#" data-bs-toggle="modal" data-bs-target="#videoModal" data-bs-title="@camera.Road @camera.Location @camera.Title" data-bs-video-url="@(camera.Video.URL)">
-                    <img src="@camera.Image.URL" width="@(camera.Image.Width)px" height="@(camera.Image.Height)px" alt="camera image of @camera.Road @camera.Location @camera.Title" class="card-img-bottom rounded" loading="lazy" />
+                    <img src="@camera.Image.URL" class="card-img-bottom rounded img-fluid" alt="camera image of @camera.Road @camera.Location @camera.Title" loading="lazy" />
                 </a>
             </div>
         </div>
