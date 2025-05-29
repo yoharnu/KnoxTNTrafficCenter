@@ -6,14 +6,18 @@
 
 @if (Model.Incidents?.Any() == true)
 {
-    <div class="alert alert-warning text-center" role="alert">
-        <strong>Traffic Incidents:</strong>
-        <ul class="list-unstyled mb-0">
-            @foreach (var incident in Model.Incidents)
-            {
-                <li class="mb-2">@incident.Description</li>
-            }
-        </ul>
+    <div class="alert alert-warning text-center mb-4" role="alert">
+        <button class="btn btn-link text-dark fw-bold p-0" type="button" data-bs-toggle="collapse" data-bs-target="#incidentsCollapse" aria-expanded="true" aria-controls="incidentsCollapse">
+            Traffic Incidents <span id="incidentsChevron" class="bi bi-chevron-up"></span>
+        </button>
+        <div class="collapse show mt-2" id="incidentsCollapse">
+            <ul class="list-unstyled mb-0">
+                @foreach (var incident in Model.Incidents)
+                {
+                    <li class="mb-2">@incident.Description</li>
+                }
+            </ul>
+        </div>
     </div>
 }
 
@@ -58,4 +62,21 @@
     var videoModal = document.getElementById('videoModal');
     videoModal.addEventListener('show.bs.modal', ShowModal);
     videoModal.addEventListener('hide.bs.modal', HideModal);
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var collapse = document.getElementById('incidentsCollapse');
+        var chevron = document.getElementById('incidentsChevron');
+        if (collapse && chevron) {
+            collapse.addEventListener('show.bs.collapse', function () {
+                chevron.classList.remove('bi-chevron-down');
+                chevron.classList.add('bi-chevron-up');
+            });
+            collapse.addEventListener('hide.bs.collapse', function () {
+                chevron.classList.remove('bi-chevron-up');
+                chevron.classList.add('bi-chevron-down');
+            });
+        }
+    });
 </script>
