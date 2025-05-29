@@ -42,6 +42,46 @@ public class TDOTAPIService
         return null;
     }
 
+    public async Task<List<Models.Camera>> GetCamerasAsync()
+    {
+        if (api == null)
+        {
+            logger.LogError("TDOTAPI is null. Please check the configuration or API availability.");
+            return [];
+        }
+
+        if (!string.IsNullOrEmpty(api.APIBaseURL) && !string.IsNullOrEmpty(api.APIKey) && !string.IsNullOrEmpty(api.Cameras))
+        {
+            using var httpClient = new HttpClient
+            {
+                BaseAddress = new Uri(api.APIBaseURL)
+            };
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+            httpClient.DefaultRequestHeaders.Add("apikey", api.APIKey);
+
+            logger.LogDebug($"Using API Base URL: {api.APIBaseURL}");
+            logger.LogDebug($"Using headers: {httpClient.DefaultRequestHeaders.ToString()}");
+            logger.LogDebug($"Requesting cameras from: {api.Cameras}");
+
+            var response = await httpClient.GetAsync(api.Cameras);
+            logger.LogDebug(response.ToString());
+            if (response.IsSuccessStatusCode)
+            {
+                var stream = await response.Content.ReadAsStreamAsync();
+                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                var tdotCameras = await JsonSerializer.DeserializeAsync<List<Models.TDOT.Camera>>(stream, options) ?? new();
+                tdotCameras = tdotCameras.Where(x => x.Jurisdiction == "Knoxville" && x.Active == "true").OrderBy(x => x.Id).ToList();
+                logger.LogDebug($"Retrieved {tdotCameras.Count} cameras from TDOT API.");
+                logger.LogDebug($"Camera Routes: {string.Join(", ", tdotCameras.Select(x => x.Route).Distinct())}");
+                return tdotCameras.Select(x => new Models.Camera(x)).Where(x => x.Road != "I-26" && x.Road != "I-81").ToList();
+            }
+        }
+        logger.LogError("Unable to retrieve cameras. Please check the configuration or API availability.");
+        return null;
+    }
+
     public async Task<List<Event>> GetIncidentsAsync()
     {
         if (api == null)
@@ -76,46 +116,6 @@ public class TDOTAPIService
             }
         }
         logger.LogError("Unable to retrieve incidents. Please check the configuration or API availability.");
-        return null;
-    }
-
-    public async Task<List<Models.Camera>> GetCamerasAsync()
-    {
-        if (api == null)
-        {
-            logger.LogError("TDOTAPI is null. Please check the configuration or API availability.");
-            return [];
-        }
-
-        if (!string.IsNullOrEmpty(api.APIBaseURL) && !string.IsNullOrEmpty(api.APIKey) && !string.IsNullOrEmpty(api.Cameras))
-        {
-            using var httpClient = new HttpClient
-            {
-                BaseAddress = new Uri(api.APIBaseURL)
-            };
-            httpClient.DefaultRequestHeaders.Accept.Clear();
-            httpClient.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-            httpClient.DefaultRequestHeaders.Add("apikey", api.APIKey);
-
-            logger.LogDebug($"Using API Base URL: {api.APIBaseURL}");
-            logger.LogDebug($"Using headers: {httpClient.DefaultRequestHeaders.ToString()}");
-            logger.LogDebug($"Requesting cameras from: {api.Cameras}");
-
-            var response = await httpClient.GetAsync(api.Cameras);
-            logger.LogDebug(response.ToString());
-            if (response.IsSuccessStatusCode)
-            {
-                var stream = await response.Content.ReadAsStreamAsync();
-                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-                var tdotCameras = await JsonSerializer.DeserializeAsync<List<Models.TDOT.Camera>>(stream, options) ?? new();
-                tdotCameras = tdotCameras.Where(x => x.Jurisdiction == "Knoxville" && x.Active == "true").OrderBy(x => x.Id).ToList();
-                logger.LogDebug($"Retrieved {tdotCameras.Count} cameras from TDOT API.");
-                logger.LogDebug($"Camera Routes: {string.Join(", ", tdotCameras.Select(x => x.Route).Distinct())}");
-                return tdotCameras.Select(x => new Models.Camera(x)).ToList();
-            }
-        }
-        logger.LogError("Unable to retrieve cameras. Please check the configuration or API availability.");
         return null;
     }
 

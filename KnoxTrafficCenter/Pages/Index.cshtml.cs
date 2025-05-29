@@ -15,6 +15,7 @@ public class IndexModel(ILogger<IndexModel> logger, TDOTAPIService tdotApiServic
     {
         var api = await tdotApiService.GetTDOTAPIAsync();
         Cameras = await tdotApiService.GetCamerasAsync();
+        Cameras = Cameras.OrderBy(x => x.Road).ThenBy(x => x.MM ?? float.MaxValue).ToList();
         logger.LogDebug("Routes: " + string.Join(", ", Cameras.Select(x => x.Road).Distinct()));
         Incidents = await tdotApiService.GetIncidentsAsync();
         ConstructionEvents = await tdotApiService.GetConstructionAsync();

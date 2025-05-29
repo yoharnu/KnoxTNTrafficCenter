@@ -44,9 +44,7 @@
         <div class="col-12 col-md-6 col-lg-4 col-xl-3 col-xxl-2 g-1">
             <div class="card p-2">
                 <h4 class="card-title">
-                    @(camera.Road != null && camera.Location != null
-                        ? $"{camera.Road} {camera.Location}"
-                        : camera.Title)
+                    @camera.Title
                 </h4>
 
                 @if (camera.MM is not null)
