@@ -5,7 +5,7 @@ using Camera = KnoxTrafficCenter.Models.Camera;
 
 namespace KnoxTrafficCenter.Pages;
 
-public class IndexModel(TDOTAPIService tdotApiService) : PageModel
+public class IndexModel(ILogger<IndexModel> logger, TDOTAPIService tdotApiService) : PageModel
 {
     public List<Camera> Cameras { get; private set; } = [];
     public List<Event> Incidents { get; private set; } = [];
@@ -15,6 +15,7 @@ public class IndexModel(TDOTAPIService tdotApiService) : PageModel
     {
         var api = await tdotApiService.GetTDOTAPIAsync();
         Cameras = await tdotApiService.GetCamerasAsync();
+        logger.LogDebug("Routes: " + string.Join(", ", Cameras.Select(x => x.Road).Distinct()));
         Incidents = await tdotApiService.GetIncidentsAsync();
         ConstructionEvents = await tdotApiService.GetConstructionAsync();
     }

@@ -24,6 +24,13 @@ namespace KnoxTrafficCenter.Models
         {
             Id = camera.Id;
             Title = camera.Title ?? camera.Route + " " + camera.Jurisdiction;
+            Road = camera.Route;
+            if (Road.Length > 0)
+            {
+                List<string> SRList = ["162", "115", "158"];
+                if (SRList.Contains(Road))
+                    Road = "SR-" + Road;
+            }
             MM = string.IsNullOrEmpty(camera.MileMarker) ? null : float.Parse(camera.MileMarker);
             Video = new Media
             {

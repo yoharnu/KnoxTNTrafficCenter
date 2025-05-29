@@ -110,6 +110,8 @@ public class TDOTAPIService
                 var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
                 var tdotCameras = await JsonSerializer.DeserializeAsync<List<Models.TDOT.Camera>>(stream, options) ?? new();
                 tdotCameras = tdotCameras.Where(x => x.Jurisdiction == "Knoxville" && x.Active == "true").OrderBy(x => x.Id).ToList();
+                logger.LogDebug($"Retrieved {tdotCameras.Count} cameras from TDOT API.");
+                logger.LogDebug($"Camera Routes: {string.Join(", ", tdotCameras.Select(x => x.Route).Distinct())}");
                 return tdotCameras.Select(x => new Models.Camera(x)).ToList();
             }
         }
