@@ -1,4 +1,4 @@
-﻿using KnoxTrafficCenter.Models;
+﻿using KnoxTrafficCenter.Models.TDOT;
 
 namespace KnoxTrafficCenter.Services
 {
@@ -11,7 +11,7 @@ namespace KnoxTrafficCenter.Services
 
         public HttpClient HttpClient { get; }
 
-        public IEnumerable<TDOTEvent> GetEvents()
+        public IEnumerable<Event> GetEvents()
         {
             return null;
         }

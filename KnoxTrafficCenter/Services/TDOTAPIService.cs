@@ -1,37 +1,33 @@
-﻿using KnoxTrafficCenter.Models;
+﻿using KnoxTrafficCenter.Models.TDOT;
 using System.Net.Http.Headers;
 using System.Text.Json;
 
-namespace KnoxTrafficCenter.Services
+namespace KnoxTrafficCenter.Services;
+
+public class TDOTAPIService
 {
-    public class TDOTAPIService
+    private readonly HttpClient HttpClient;
+
+    public TDOTAPIService()
     {
-        public TDOTAPIService()
+        HttpClient = new HttpClient
         {
-            HttpClient = new HttpClient
-            {
-                BaseAddress = new Uri("https://smartway.tn.gov/config/")
-            };
-            HttpClient.DefaultRequestHeaders.Accept.Clear();
-            HttpClient.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-            FetchAPI();
-        }
+            BaseAddress = new Uri("https://smartway.tn.gov/config/")
+        };
+        HttpClient.DefaultRequestHeaders.Accept.Clear();
+        HttpClient.DefaultRequestHeaders.Accept.Add(
+            new MediaTypeWithQualityHeaderValue("application/json"));
+    }
 
-        private HttpClient HttpClient { get; set; }
-
-        internal TDOTAPI? TDOTAPI { get; set; }
-
-        private async void FetchAPI()
+    public async Task<TDOTAPI?> GetTDOTAPIAsync()
+    {
+        HttpResponseMessage response = await HttpClient.GetAsync("config.prod.json");
+        if (response.IsSuccessStatusCode)
         {
-            HttpResponseMessage response = await HttpClient.GetAsync("config.prod.json");
-            if (response.IsSuccessStatusCode)
-            {
-                var stream = await response.Content.ReadAsStreamAsync();
-                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-
-                TDOTAPI = JsonSerializer.Deserialize<TDOTAPI>(stream, options);
-            }
+            var stream = await response.Content.ReadAsStreamAsync();
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            return JsonSerializer.Deserialize<TDOTAPI>(stream, options);
         }
+        return null;
     }
 }

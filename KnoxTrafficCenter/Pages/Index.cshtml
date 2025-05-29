@@ -4,6 +4,21 @@
     ViewData["Title"] = "Home page";
 }
 
+@if (Model.Incidents?.Any() == true)
+{
+    <div class="alert alert-warning text-center" role="alert">
+        <strong>Traffic Incidents:</strong>
+        @foreach (var incident in Model.Incidents)
+        {
+            <span>@incident.Description</span>
+            @if (incident != Model.Incidents.Last())
+            {
+                <span> | </span>
+            }
+        }
+    </div>
+}
+
 <div class="row">
     @foreach (var camera in Model.Cameras)
     {
@@ -41,9 +56,13 @@
 </div>
 
 <script type="text/javascript">
-    @if (Model.TDOTAPI != null)
+    @if (Model.Incidents?.Any() == true)
     {
-        @:console.log(@Model.TDOTAPI.ToString());
+        @foreach (var incident in Model.Incidents)
+        {
+            @:console.log("@incident.ToString()");
+        }
+        @:console.log("@Model.Incidents.ToString()");
     }
 </script>
 <script src="~/js/modal.js" type="text/javascript" asp-append-version="true"></script>

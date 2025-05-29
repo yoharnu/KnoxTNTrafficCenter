@@ -1,4 +1,4 @@
-﻿namespace KnoxTrafficCenter.Models
+﻿namespace KnoxTrafficCenter.Models.TDOT
 {
     public class TDOTAPI
     {
@@ -15,7 +15,7 @@
 
         public override string ToString()
         {
-            return System.Text.Json.JsonSerializer.Serialize<TDOTAPI>(this);
+            return System.Text.Json.JsonSerializer.Serialize(this);
         }
     }
 }
