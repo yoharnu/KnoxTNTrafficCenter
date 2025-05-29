@@ -116,4 +116,42 @@ public class TDOTAPIService
         logger.LogError("Unable to retrieve cameras. Please check the configuration or API availability.");
         return null;
     }
+
+    public async Task<List<Event>> GetConstructionAsync()
+    {
+
+        if (api == null)
+        {
+            logger.LogError("TDOTAPI is null. Please check the configuration or API availability.");
+            return [];
+        }
+
+        if (!string.IsNullOrEmpty(api.APIBaseURL) && !string.IsNullOrEmpty(api.APIKey) && !string.IsNullOrEmpty(api.Construction))
+        {
+            using var httpClient = new HttpClient
+            {
+                BaseAddress = new Uri(api.APIBaseURL)
+            };
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+            httpClient.DefaultRequestHeaders.Add("apikey", api.APIKey);
+
+            logger.LogDebug($"Using API Base URL: {api.APIBaseURL}");
+            logger.LogDebug($"Using headers: {httpClient.DefaultRequestHeaders.ToString()}");
+            logger.LogDebug($"Requesting construction events from: {api.Construction}");
+
+            var response = await httpClient.GetAsync(api.Construction);
+            logger.LogDebug(response.ToString());
+            if (response.IsSuccessStatusCode)
+            {
+                var stream = await response.Content.ReadAsStreamAsync();
+                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                var constructionEvents = await JsonSerializer.DeserializeAsync<List<Event>>(stream, options) ?? new();
+                return constructionEvents.Where(x => x.Locations.Select(x => x.CountyName).Contains("Knox")).ToList();
+            }
+        }
+        logger.LogError("Unable to retrieve construction events. Please check the configuration or API availability.");
+        return null;
+    }
 }

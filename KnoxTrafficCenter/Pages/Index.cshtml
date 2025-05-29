@@ -4,9 +4,9 @@
     ViewData["Title"] = "Home page";
 }
 
-@if (Model.Incidents?.Any() == true)
+@if (Model.Incidents.Any() == true)
 {
-    <div class="alert alert-warning text-center mb-4" role="alert">
+    <div class="alert alert-danger text-center mb-4" role="alert">
         <button class="btn btn-link text-dark fw-bold p-0" type="button" data-bs-toggle="collapse" data-bs-target="#incidentsCollapse" aria-expanded="true" aria-controls="incidentsCollapse">
             Traffic Incidents <span id="incidentsChevron" class="bi bi-chevron-up"></span>
         </button>
@@ -15,6 +15,23 @@
                 @foreach (var incident in Model.Incidents)
                 {
                     <li class="mb-2">@incident.Description</li>
+                }
+            </ul>
+        </div>
+    </div>
+}
+
+@if (Model.ConstructionEvents.Any() == true)
+{
+    <div class="alert alert-warning text-center mb-4" role="alert">
+        <button class="btn btn-link text-dark fw-bold p-0" type="button" data-bs-toggle="collapse" data-bs-target="#constructionCollapse" aria-expanded="true" aria-controls="constructionCollapse">
+            Construction <span id="constructionChevron" class="bi bi-chevron-down"></span>
+        </button>
+        <div class="collapse hide mt-2" id="constructionCollapse">
+            <ul class="list-unstyled mb-0">
+                @foreach (var constructionEvent in Model.ConstructionEvents)
+                {
+                    <li class="mb-2">@constructionEvent.Description</li>
                 }
             </ul>
         </div>
@@ -66,16 +83,31 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        var collapse = document.getElementById('incidentsCollapse');
-        var chevron = document.getElementById('incidentsChevron');
-        if (collapse && chevron) {
-            collapse.addEventListener('show.bs.collapse', function () {
-                chevron.classList.remove('bi-chevron-down');
-                chevron.classList.add('bi-chevron-up');
+        var incidentsCollapse = document.getElementById('incidentsCollapse');
+        var incidentsChevron = document.getElementById('incidentsChevron');
+        if (incidentsCollapse && incidentsChevron) {
+            incidentsCollapse.addEventListener('show.bs.incidentsCollapse', function () {
+                incidentsChevron.classList.remove('bi-chevron-down');
+                incidentsChevron.classList.add('bi-chevron-up');
             });
-            collapse.addEventListener('hide.bs.collapse', function () {
-                chevron.classList.remove('bi-chevron-up');
-                chevron.classList.add('bi-chevron-down');
+            incidentsCollapse.addEventListener('hide.bs.incidentsCollapse', function () {
+                incidentsChevron.classList.remove('bi-chevron-up');
+                incidentsChevron.classList.add('bi-chevron-down');
+            });
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var constructionCollapse = document.getElementById('constructionCollapse');
+        var constructionChevron = document.getElementById('constructionChevron');
+        if (constructionCollapse && constructionChevron) {
+            constructionCollapse.addEventListener('show.bs.collapse', function () {
+                constructionChevron.classList.remove('bi-chevron-down');
+                constructionChevron.classList.add('bi-chevron-up');
+            });
+            constructionCollapse.addEventListener('hide.bs.collapse', function () {
+                constructionChevron.classList.remove('bi-chevron-up');
+                constructionChevron.classList.add('bi-chevron-down');
             });
         }
     });
