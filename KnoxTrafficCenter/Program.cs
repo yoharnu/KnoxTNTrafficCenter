@@ -4,7 +4,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddTransient<JsonFileCameraService>();
 builder.Services.AddSingleton<TDOTAPIService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
