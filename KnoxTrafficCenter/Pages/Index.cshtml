@@ -7,9 +7,9 @@
 @if (Model.Incidents.Any() == true)
 {
     <div class="alert alert-danger text-center mb-4" role="alert">
-        <button class="btn btn-link text-dark fw-bold p-0" type="button" data-bs-toggle="collapse" data-bs-target="#incidentsCollapse" aria-expanded="true" aria-controls="incidentsCollapse">
-            Traffic Incidents <span id="incidentsChevron" class="bi bi-chevron-up"></span>
-        </button>
+        <h6 class="fw-bold p-0" data-bs-toggle="collapse" data-bs-target="#incidentsCollapse" aria-expanded="true" aria-controls="incidentsCollapse">
+            <span class="bi bi-exclamation-triangle-fill"></span> Traffic Incidents <span id="incidentsChevron" class="bi bi-chevron-up"></span>
+        </h6>
         <div class="collapse show mt-2" id="incidentsCollapse">
             <ul class="list-unstyled mb-0">
                 @foreach (var incident in Model.Incidents)
@@ -24,9 +24,9 @@
 @if (Model.ConstructionEvents.Any() == true)
 {
     <div class="alert alert-warning text-center mb-4" role="alert">
-        <button class="btn btn-link text-dark fw-bold p-0" type="button" data-bs-toggle="collapse" data-bs-target="#constructionCollapse" aria-expanded="true" aria-controls="constructionCollapse">
-            Construction <span id="constructionChevron" class="bi bi-chevron-down"></span>
-        </button>
+        <h6 class="fw-bold p-0" data-bs-toggle="collapse" data-bs-target="#constructionCollapse" aria-expanded="true" aria-controls="constructionCollapse">
+            <span class="bi bi-cone-striped"></span> Construction <span id="constructionChevron" class="bi bi-chevron-down"></span>
+        </h6>
         <div class="collapse hide mt-2" id="constructionCollapse">
             <ul class="list-unstyled mb-0">
                 @foreach (var constructionEvent in Model.ConstructionEvents)
@@ -42,17 +42,19 @@
     @foreach (var camera in Model.Cameras)
     {
         <div class="col-12 col-md-6 col-lg-4 col-xl-3 col-xxl-2 g-1">
-            <div class="card p-2">
-                <h4 class="card-title">
-                    @camera.Title
-                </h4>
+            <div class="card border border-info">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        @camera.Title
+                    </h5>
 
-                @if (camera.MM is not null)
-                {
-                    <h6 class="text-muted card-subtitle">MM @camera.MM</h6>
-                }
-                <a href="#" data-bs-toggle="modal" data-bs-target="#videoModal" data-bs-title="@camera.Road @camera.Location @camera.Title" data-bs-video-url="@(camera.Video.URL)">
-                    <img src="@camera.Image.URL" class="card-img-bottom rounded img-fluid" alt="camera image of @camera.Road @camera.Location @camera.Title" loading="lazy" />
+                    @if (camera.MM is not null)
+                    {
+                        <h6 class="text-muted card-subtitle">MM @camera.MM</h6>
+                    }
+                </div>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#videoModal" data-bs-title="@camera.Title" data-bs-video-url="@(camera.Video.URL)">
+                    <img src="@camera.Image.URL" class="card-img-bottom img-fluid" alt="camera image of @camera.Title" loading="lazy" />
                 </a>
             </div>
         </div>
@@ -84,11 +86,11 @@
         var incidentsCollapse = document.getElementById('incidentsCollapse');
         var incidentsChevron = document.getElementById('incidentsChevron');
         if (incidentsCollapse && incidentsChevron) {
-            incidentsCollapse.addEventListener('show.bs.incidentsCollapse', function () {
+            incidentsCollapse.addEventListener('show.bs.collapse', function () {
                 incidentsChevron.classList.remove('bi-chevron-down');
                 incidentsChevron.classList.add('bi-chevron-up');
             });
-            incidentsCollapse.addEventListener('hide.bs.incidentsCollapse', function () {
+            incidentsCollapse.addEventListener('hide.bs.collapse', function () {
                 incidentsChevron.classList.remove('bi-chevron-up');
                 incidentsChevron.classList.add('bi-chevron-down');
             });
