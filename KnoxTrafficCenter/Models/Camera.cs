@@ -47,9 +47,11 @@ namespace KnoxTrafficCenter.Models
 
             if (Road.Length == 0)
             {
-                if (Title.Contains("I-40/75")) Road = "I-40/75";
-                else if (Title.Contains("I-40")) Road = "I-40";
+                if (Title.Contains("I-40")) Road = "I-40";
+                else if (Title.Contains("I-640")) Road = "I-640";
                 else if (Title.Contains("I-75")) Road = "I-75";
+                else if (Title.Contains("I-275")) Road = "I-275";
+                else if (Title.Contains("I-81")) Road = "I-81";
                 else if (Title.Contains("I-26")) Road = "I-26";
             }
             else
@@ -66,7 +68,7 @@ namespace KnoxTrafficCenter.Models
 
             if ((Road == "I-40/75" || Road == "I-75") && MM >= 368 && MM <= 385)
                 Road = "I-40";
-            if (Road == "I-75" && MM <= 3.2)
+            if (Road == "I-75" && MM <= 3.4f)
                 Road = "I-640";
         }
     }
