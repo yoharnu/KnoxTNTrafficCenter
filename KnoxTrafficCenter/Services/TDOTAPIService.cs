@@ -1,4 +1,5 @@
-﻿using KnoxTrafficCenter.Models.TDOT;
+﻿using KnoxTrafficCenter.Models;
+using KnoxTrafficCenter.Models.TDOT;
 using System.Net.Http.Headers;
 using System.Text.Json;
 
@@ -42,7 +43,7 @@ public class TDOTAPIService
         return null;
     }
 
-    public async Task<List<Models.Camera>> GetCamerasAsync()
+    public async Task<List<CameraGroup>> GetCamerasAsync()
     {
         if (api == null)
         {
@@ -75,7 +76,25 @@ public class TDOTAPIService
                 tdotCameras = tdotCameras.Where(x => x.Jurisdiction == "Knoxville" && x.Active == "true").OrderBy(x => x.Id).ToList();
                 logger.LogDebug($"Retrieved {tdotCameras.Count} cameras from TDOT API.");
                 logger.LogDebug($"Camera Routes: {string.Join(", ", tdotCameras.Select(x => x.Route).Distinct())}");
-                return tdotCameras.Select(x => new Models.Camera(x)).Where(x => x.Road != "I-26" && x.Road != "I-81").ToList();
+                var cameras = tdotCameras.Select(x => new Models.Camera(x)).Where(x => x.Road != "I-26" && x.Road != "I-81").OrderBy(x => x.Road).ThenBy(x => x.MM ?? float.MaxValue).ToList();
+
+                var i40Group = new CameraGroup("I-40");
+                i40Group.AddRange(cameras.Where(x => x.Road == "I-40"));
+                var i640Group = new CameraGroup("I-640");
+                i640Group.AddRange(cameras.Where(x => x.Road == "I-640"));
+                var i75Group = new CameraGroup("I-75");
+                i75Group.AddRange(cameras.Where(x => x.Road == "I-75"));
+                var i275Group = new CameraGroup("I-275");
+                i275Group.AddRange(cameras.Where(x => x.Road == "I-275"));
+                var i140Group = new CameraGroup("Pellissippi Parkway");
+                i140Group.AddRange(cameras.Where(x => x.Road == "SR-162"));
+                i140Group.AddRange(cameras.Where(x => x.Road == "I-140"));
+                var sr115Group = new CameraGroup("Alcoa Highway");
+                sr115Group.AddRange(cameras.Where(x => x.Road == "SR-115"));
+                var otherGroup = new CameraGroup("Other");
+                otherGroup.AddRange(cameras.Where(x => x.Road != "I-40" && x.Road != "I-640" && x.Road != "I-75" && x.Road != "I-275" && x.Road != "I-140" && x.Road != "SR-162" && x.Road != "SR-115" && x.Road != "US-129"));
+
+                return [i40Group, i640Group, i75Group, i275Group, i140Group, sr115Group, otherGroup];
             }
         }
         logger.LogError("Unable to retrieve cameras. Please check the configuration or API availability.");

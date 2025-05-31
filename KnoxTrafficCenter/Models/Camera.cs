@@ -70,6 +70,8 @@ namespace KnoxTrafficCenter.Models
                 Road = "I-40";
             if (Road == "I-75" && MM <= 3.4f)
                 Road = "I-640";
+            if (Road == "US-129")
+                Road = "SR-115";
         }
     }
 

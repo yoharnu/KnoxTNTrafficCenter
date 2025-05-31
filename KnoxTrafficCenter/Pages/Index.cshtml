@@ -39,25 +39,32 @@
 }
 
 <div class="row">
-    @foreach (var camera in Model.Cameras)
+    @foreach (var group in Model.CameraGroups)
     {
-        <div class="col-12 col-md-6 col-lg-4 col-xl-3 col-xxl-2 g-1">
-            <div class="card border border-info">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        @camera.Title
-                    </h5>
-
-                    @if (camera.MM is not null)
-                    {
-                        <h6 class="text-muted card-subtitle">MM @camera.MM</h6>
-                    }
-                </div>
-                <a href="#" data-bs-toggle="modal" data-bs-target="#videoModal" data-bs-title="@camera.Title" data-bs-video-url="@(camera.Video.URL)">
-                    <img src="@camera.Image.URL" class="card-img-bottom img-fluid" alt="camera image of @camera.Title" loading="lazy" />
-                </a>
-            </div>
+        <div class="col-12">
+            <h2 class="mt-4 mb-3 fw-bold border-bottom pb-2 text-info">
+                @group.Title
+            </h2>
         </div>
+        @foreach (var camera in group.Cameras)
+        {
+            <div class="col-12 col-md-6 col-lg-4 col-xl-3 col-xxl-2 g-1">
+                <div class="card border border-info">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            @camera.Title
+                        </h5>
+                        @if (camera.MM is not null)
+                        {
+                            <h6 class="text-muted card-subtitle">MM @camera.MM</h6>
+                        }
+                    </div>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#videoModal" data-bs-title="@camera.Title" data-bs-video-url="@(camera.Video.URL)">
+                        <img src="@camera.Image.URL" class="card-img-bottom img-fluid" alt="camera image of @camera.Title" loading="lazy" />
+                    </a>
+                </div>
+            </div>
+        }
     }
 </div>
 
