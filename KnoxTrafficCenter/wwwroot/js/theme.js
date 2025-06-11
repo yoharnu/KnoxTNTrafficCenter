@@ -11,7 +11,7 @@
   }
 
   // On load, set theme from localStorage or default to light
-  var saved = localStorage.getItem('theme');
+  const saved = localStorage.getItem('theme');
   setTheme(saved === 'dark' ? 'dark' : 'light');
 
   // Expose toggle function globally
