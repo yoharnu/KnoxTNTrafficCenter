@@ -1,0 +1,21 @@
+@model IndexModel
+@{
+    var hasConstruction = Model.ConstructionEvents.Any();
+}
+
+@if (hasConstruction)
+{
+    <div class="alert alert-warning text-center mb-4" role="alert">
+        <h6 class="fw-bold p-0" data-bs-toggle="collapse" data-bs-target="#constructionCollapse" aria-expanded="true" aria-controls="constructionCollapse">
+            <span class="bi bi-cone-striped"></span> Construction <span id="constructionChevron" class="bi bi-chevron-down"></span>
+        </h6>
+        <div class="collapse hide mt-2" id="constructionCollapse">
+            <ul class="list-unstyled mb-0">
+                @foreach (var constructionEvent in Model.ConstructionEvents)
+                {
+                    <li class="mb-2">@constructionEvent.Description</li>
+                }
+            </ul>
+        </div>
+    </div>
+}
