@@ -97,19 +97,25 @@ document.addEventListener('DOMContentLoaded', function () {
       const incidentsRes = await fetch('/api/alerts/incidents');
       const incidents = await incidentsRes.json();
       renderAlerts('incidents-alerts-container', incidents, 'incidents', 'bi-exclamation-triangle-fill', 'bg-danger');
-    } catch {}
+    } catch (error) {
+      console.error('Error fetching incidents alerts:', error);
+    }
     // Construction
     try {
       const constructionRes = await fetch('/api/alerts/construction');
       const construction = await constructionRes.json();
       renderAlerts('construction-alerts-container', construction, 'construction', 'bi-cone-striped', 'bg-warning');
-    } catch {}
+    } catch (error) {
+      console.error('Error fetching construction alerts:', error);
+    }
     // Weather
     try {
       const weatherRes = await fetch('/api/alerts/weather');
       const weather = await weatherRes.json();
       renderAlerts('weather-alerts-container', weather, 'weather', 'bi-cloud-lightning-rain', 'bg-info');
-    } catch {}
+    } catch (error) {
+      console.error('Error fetching weather alerts:', error);
+    }
   }
 
   fetchAndRenderAlerts();
