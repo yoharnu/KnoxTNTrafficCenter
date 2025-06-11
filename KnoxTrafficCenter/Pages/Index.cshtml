@@ -4,10 +4,6 @@
     ViewData["Title"] = "Home page";
 }
 
-<div id="weatherAlertsSection">
-    <partial name="_WeatherAlerts" model="Model" />
-</div>
-
 @if (Model.Incidents.Any() == true)
 {
     <div class="alert alert-danger text-center mb-4" role="alert">
@@ -24,6 +20,10 @@
         </div>
     </div>
 }
+
+<div id="weatherAlertsSection">
+    <partial name="_WeatherAlerts" model="Model" />
+</div>
 
 @if (Model.ConstructionEvents.Any() == true)
 {
