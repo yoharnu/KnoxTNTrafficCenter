@@ -8,26 +8,24 @@ namespace KnoxTrafficCenter.Controllers
     [Route("api/[controller]")]
     public class AlertsController(TDOTAPIService tdotApiService) : ControllerBase
     {
-        private readonly TDOTAPIService _tdotApiService = tdotApiService;
-
         [HttpGet("incidents")]
         public async Task<IActionResult> GetIncidents()
         {
-            var api = await _tdotApiService.GetTDOTAPIAsync();
+            var api = await tdotApiService.GetTDOTAPIAsync();
             return Ok(api.Incidents);
         }
 
         [HttpGet("construction")]
         public async Task<IActionResult> GetConstruction()
         {
-            var api = await _tdotApiService.GetTDOTAPIAsync();
+            var api = await tdotApiService.GetTDOTAPIAsync();
             return Ok(api.Construction);
         }
 
         [HttpGet("weather")]
         public async Task<IActionResult> GetWeather()
         {
-            var api = await _tdotApiService.GetTDOTAPIAsync();
+            var api = await tdotApiService.GetTDOTAPIAsync();
             return Ok(api.Weather);
         }
     }
