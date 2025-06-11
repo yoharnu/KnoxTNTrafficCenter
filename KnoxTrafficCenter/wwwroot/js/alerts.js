@@ -48,4 +48,64 @@ document.addEventListener('DOMContentLoaded', function () {
       alert.style.animation = 'pulse 2s infinite';
     }
   });
+
+  // Helper to render alerts in Bootstrap style
+  function renderAlerts(containerId, alerts, type, icon, badgeClass) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    if (!alerts || alerts.length === 0) {
+      container.innerHTML = '';
+      return;
+    }
+    let chevronId = `${type}Chevron`;
+    let collapseId = `${type}Collapse`;
+    let alertClass = {
+      incidents: 'alert-danger',
+      construction: 'alert-warning',
+      weather: 'alert-info'
+    }[type] || 'alert-secondary';
+    let badge = badgeClass ? `<span class="badge ${badgeClass}">${type.charAt(0).toUpperCase() + type.slice(1)}</span> ` : '';
+    let html = `
+      <div class="alert ${alertClass} text-center mb-4" role="alert">
+        <h6 class="fw-bold p-0" data-bs-toggle="collapse" data-bs-target="#${collapseId}" aria-expanded="true" aria-controls="${collapseId}">
+          <span class="bi ${icon}"></span> ${type.charAt(0).toUpperCase() + type.slice(1)} Alerts <span id="${chevronId}" class="bi bi-chevron-up"></span>
+        </h6>
+        <div class="collapse show mt-2" id="${collapseId}">
+          <ul class="list-unstyled mb-0">
+            ${alerts.map(a => `<li class="mb-2">${badge}${a.description || a.Description}</li>`).join('')}
+          </ul>
+          <div class="text-end small text-muted mt-2">
+            <span>Last updated: ${new Date().toLocaleTimeString()}</span>
+          </div>
+        </div>
+      </div>
+    `;
+    container.innerHTML = html;
+    setupCollapseChevron(collapseId, chevronId);
+  }
+
+  async function fetchAndRenderAlerts() {
+    // Incidents
+    try {
+      const incidentsRes = await fetch('/api/alerts/incidents');
+      const incidents = await incidentsRes.json();
+      renderAlerts('incidents-alerts-container', incidents, 'incidents', 'bi-exclamation-triangle-fill', 'bg-danger');
+    } catch {}
+    // Construction
+    try {
+      const constructionRes = await fetch('/api/alerts/construction');
+      const construction = await constructionRes.json();
+      renderAlerts('construction-alerts-container', construction, 'construction', 'bi-cone-striped', 'bg-warning');
+    } catch {}
+    // Weather
+    try {
+      const weatherRes = await fetch('/api/alerts/weather');
+      const weather = await weatherRes.json();
+      renderAlerts('weather-alerts-container', weather, 'weather', 'bi-cloud-lightning-rain', 'bg-info');
+    } catch {}
+  }
+
+  fetchAndRenderAlerts();
+  // Optionally, refresh alerts every 60 seconds
+  setInterval(fetchAndRenderAlerts, 60000);
 });

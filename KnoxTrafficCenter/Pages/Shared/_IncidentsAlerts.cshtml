@@ -3,19 +3,5 @@
     var hasIncidents = Model.Incidents.Any();
 }
 
-@if (hasIncidents)
-{
-    <div class="alert alert-danger text-center mb-4" role="alert">
-        <h6 class="fw-bold p-0" data-bs-toggle="collapse" data-bs-target="#incidentsCollapse" aria-expanded="true" aria-controls="incidentsCollapse">
-            <span class="bi bi-exclamation-triangle-fill"></span> Traffic Incidents <span id="incidentsChevron" class="bi bi-chevron-up"></span>
-        </h6>
-        <div class="collapse show mt-2" id="incidentsCollapse">
-            <ul class="list-unstyled mb-0">
-                @foreach (var incident in Model.Incidents)
-                {
-                    <li class="mb-2">@incident.Description</li>
-                }
-            </ul>
-        </div>
-    </div>
-}
+@* Client-side container for incidents alerts *@
+<div id="incidents-alerts-container"></div>
