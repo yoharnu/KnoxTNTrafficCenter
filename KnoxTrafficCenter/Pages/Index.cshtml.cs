@@ -7,9 +7,11 @@ namespace KnoxTrafficCenter.Pages;
 
 public class IndexModel(ILogger<IndexModel> logger, TDOTAPIService tdotApiService) : PageModel
 {
-    public List<CameraGroup> CameraGroups { get; private set; } = [];
-    public List<Event> Incidents { get; private set; } = [];
-    public List<Event> ConstructionEvents { get; private set; } = [];
+    public List<CameraGroup> CameraGroups { get; set; } = [];
+    public List<Event> Incidents { get; set; } = [];
+    public List<Event> ConstructionEvents { get; set; } = [];
+    public List<Event> WeatherEvents { get; set; } = [];
+    public List<Event> CountyWideWeatherEvents { get; set; } = [];
 
     public async Task OnGetAsync()
     {
@@ -17,5 +19,7 @@ public class IndexModel(ILogger<IndexModel> logger, TDOTAPIService tdotApiServic
         CameraGroups = await tdotApiService.GetCamerasAsync();
         Incidents = await tdotApiService.GetIncidentsAsync();
         ConstructionEvents = await tdotApiService.GetConstructionAsync();
+        WeatherEvents = await tdotApiService.GetWeatherAsync();
+        CountyWideWeatherEvents = await tdotApiService.GetCountyWideWeatherAsync();
     }
 }
