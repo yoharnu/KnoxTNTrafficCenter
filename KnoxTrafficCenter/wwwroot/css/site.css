@@ -17,6 +17,22 @@ body {
   margin-bottom: 60px;
 }
 
+.alert h6 {
+  cursor: pointer;
+}
+
+/* Weather alert styling */
+.weather-alert {
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.weather-alert:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
 @media (min-width: 1600px) {
     .container-xxl {
         max-width: 1600px;

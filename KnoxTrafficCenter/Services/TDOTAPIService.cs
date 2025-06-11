@@ -175,4 +175,79 @@ public class TDOTAPIService
         logger.LogError("Unable to retrieve construction events. Please check the configuration or API availability.");
         return null;
     }
+
+    public async Task<List<Event>> GetWeatherAsync()
+    {
+        if (api == null)
+        {
+            logger.LogError("TDOTAPI is null. Please check the configuration or API availability.");
+            return [];
+        }
+
+        if (!string.IsNullOrEmpty(api.APIBaseURL) && !string.IsNullOrEmpty(api.APIKey) && !string.IsNullOrEmpty(api.Weather))
+        {
+            using var httpClient = new HttpClient
+            {
+                BaseAddress = new Uri(api.APIBaseURL)
+            };
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+            httpClient.DefaultRequestHeaders.Add("apikey", api.APIKey);
+
+            logger.LogDebug($"Using API Base URL: {api.APIBaseURL}");
+            logger.LogDebug($"Using headers: {httpClient.DefaultRequestHeaders}");
+            logger.LogDebug($"Requesting weather events from: {api.Weather}");
+
+            var response = await httpClient.GetAsync(api.Weather);
+            logger.LogDebug(response.ToString());
+            if (response.IsSuccessStatusCode)
+            {
+                var stream = await response.Content.ReadAsStreamAsync();
+                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                var weatherEvents = await JsonSerializer.DeserializeAsync<List<Event>>(stream, options) ?? [];
+                return weatherEvents.Where(x => x.Locations.Any(l => l.CountyName == "Knox")).ToList();
+            }
+        }
+        logger.LogError("Unable to retrieve weather events. Please check the configuration or API availability.");
+        return [];
+    }
+
+    public async Task<List<Event>> GetCountyWideWeatherAsync()
+    {
+        if (api == null)
+        {
+            logger.LogError("TDOTAPI is null. Please check the configuration or API availability.");
+            return [];
+        }
+
+        if (!string.IsNullOrEmpty(api.APIBaseURL) && !string.IsNullOrEmpty(api.APIKey) && !string.IsNullOrEmpty(api.CountyWideWeather))
+        {
+            using var httpClient = new HttpClient
+            {
+                BaseAddress = new Uri(api.APIBaseURL)
+            };
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+            httpClient.DefaultRequestHeaders.Add("apikey", api.APIKey);
+
+            logger.LogDebug($"Using API Base URL: {api.APIBaseURL}");
+            logger.LogDebug($"Using headers: {httpClient.DefaultRequestHeaders}");
+            logger.LogDebug($"Requesting county-wide weather events from: {api.CountyWideWeather}");
+
+            var response = await httpClient.GetAsync(api.CountyWideWeather);
+            logger.LogDebug(response.ToString());
+            if (response.IsSuccessStatusCode)
+            {
+                var stream = await response.Content.ReadAsStreamAsync();
+                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                var countyWeatherEvents = await JsonSerializer.DeserializeAsync<List<Event>>(stream, options) ?? [];
+                
+                return countyWeatherEvents.Where(x => x.Locations.Any(l => l.CountyName == "Knox")).ToList();
+            }
+        }
+        logger.LogError("Unable to retrieve county-wide weather events. Please check the configuration or API availability.");
+        return [];
+    }
 }
