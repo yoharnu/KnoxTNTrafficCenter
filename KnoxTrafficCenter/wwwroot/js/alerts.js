@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const chevronClass = startExpanded ? 'bi-chevron-up' : 'bi-chevron-down';
     const ariaExpanded = startExpanded ? 'true' : 'false';
     
-    let badge = badgeClass ? `<span class="badge ${badgeClass}">${type.charAt(0).toUpperCase() + type.slice(1)}</span> ` : '';
+    // Generate HTML for the alert container with collapsible content
     let html = `
       <div class="alert ${alertClass} text-center mb-4" role="alert">
         <h6 class="fw-bold p-0" data-bs-toggle="collapse" data-bs-target="#${collapseId}" aria-expanded="${ariaExpanded}" aria-controls="${collapseId}">
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
         </h6>
         <div class="collapse ${showClass} mt-2" id="${collapseId}">
           <ul class="list-unstyled mb-0">
-            ${alerts.map(a => `<li class="mb-2">${badge}${a.description || a.Description}</li>`).join('')}
+            ${alerts.map(a => `<li class="mb-2">${a.description || a.Description}</li>`).join('')}
           </ul>
           <div class="text-end small text-muted mt-2">
             <span>Last updated: ${new Date().toLocaleTimeString()}</span>
