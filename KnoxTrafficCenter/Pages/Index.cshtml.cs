@@ -11,7 +11,6 @@ public class IndexModel(ILogger<IndexModel> logger, TDOTAPIService tdotApiServic
     public List<Event> Incidents { get; set; } = [];
     public List<Event> ConstructionEvents { get; set; } = [];
     public List<Event> WeatherEvents { get; set; } = [];
-    public List<Event> CountyWideWeatherEvents { get; set; } = [];
 
     public async Task OnGetAsync()
     {
@@ -20,6 +19,5 @@ public class IndexModel(ILogger<IndexModel> logger, TDOTAPIService tdotApiServic
         Incidents = await tdotApiService.GetIncidentsAsync();
         ConstructionEvents = await tdotApiService.GetConstructionAsync();
         WeatherEvents = await tdotApiService.GetWeatherAsync();
-        CountyWideWeatherEvents = await tdotApiService.GetCountyWideWeatherAsync();
     }
 }

@@ -1,6 +1,6 @@
 @model IndexModel
 @{
-    var hasWeatherAlerts = Model.WeatherEvents.Any() || Model.CountyWideWeatherEvents.Any();
+    var hasWeatherAlerts = Model.WeatherEvents.Any();
 }
 
 @if (hasWeatherAlerts)
@@ -16,13 +16,6 @@
                     <li class="mb-2 weather-alert">
                         <span class="badge bg-info">TDOT Alert</span>
                         @weather.Description
-                    </li>
-                }
-                @foreach (var countyWeather in Model.CountyWideWeatherEvents)
-                {
-                    <li class="mb-2 weather-alert">
-                        <span class="badge bg-primary">County Alert</span>
-                        @countyWeather.Description
                     </li>
                 }
             </ul>
