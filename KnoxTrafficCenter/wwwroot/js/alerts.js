@@ -20,20 +20,23 @@ document.addEventListener('DOMContentLoaded', function () {
     
     // Add pulse effect for severe weather alerts
     const weatherAlerts = document.querySelectorAll('.weather-alert');
+    
+    // Add keyframes definition once
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.4); }
+        70% { box-shadow: 0 0 0 10px rgba(220, 53, 69, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+      }
+    `;
+    document.head.appendChild(style);
+    
     weatherAlerts.forEach(alert => {
       const badge = alert.querySelector('.badge');
       if (badge && badge.classList.contains('bg-danger')) {
         // Add pulsing effect for severe alerts
         alert.style.animation = 'pulse 2s infinite';
-        const style = document.createElement('style');
-        style.textContent = `
-          @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(220, 53, 69, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
-          }
-        `;
-        document.head.appendChild(style);
       }
     });
   }
