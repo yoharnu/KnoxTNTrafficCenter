@@ -1,4 +1,11 @@
-﻿function ShowModal(event) {
+﻿// Store event listener references to properly clean up later
+var videoEventListeners = {
+    loadeddata: [],
+    loadedmetadata: [],
+    error: []
+};
+
+function ShowModal(event) {
 
     var button = event.relatedTarget;
 
@@ -118,9 +125,11 @@
             });
             
             // Listen for video metadata to adjust aspect ratio if needed
-            videoElement.addEventListener('loadedmetadata', function() {
+            var metadataListener = function() {
                 adjustAspectRatio(containerDiv, videoElement);
-            });
+            };
+            videoElement.addEventListener('loadedmetadata', metadataListener);
+            videoEventListeners.loadedmetadata.push(metadataListener);
             
             hls.loadSource(URL);
             hls.attachMedia(videoElement);
@@ -129,34 +138,48 @@
             // For browsers that support HLS natively (Safari)
             console.log("Using native HLS support");
             videoElement.src = URL;
-            videoElement.addEventListener('loadedmetadata', function() {
+            var metadataListener = function() {
                 loadingIndicator.style.display = 'none';
                 adjustAspectRatio(containerDiv, videoElement);
                 videoElement.play().catch(function(error) {
                     console.warn("Autoplay prevented:", error);
                     showPlayButton(containerDiv, videoElement);
                 });
-            });
-            videoElement.addEventListener('error', function(e) {
+            };
+            videoElement.addEventListener('loadedmetadata', metadataListener);
+            videoEventListeners.loadedmetadata.push(metadataListener);
+            
+            var errorListener = function(e) {
                 console.error("Video error:", e);
                 showErrorMessage(containerDiv, loadingIndicator, "Error loading video. Please try again later.");
-            });
+            };
+            videoElement.addEventListener('error', errorListener);
+            videoEventListeners.error.push(errorListener);
         } else {
             showErrorMessage(containerDiv, loadingIndicator, "Your browser doesn't support HLS video playback.");
         }
     } else {
         // Handle regular video formats
         videoElement.src = URL;
-        videoElement.addEventListener('loadeddata', function() {
+        
+        var loadedDataListener = function() {
             loadingIndicator.style.display = 'none';
-        });
-        videoElement.addEventListener('loadedmetadata', function() {
+        };
+        videoElement.addEventListener('loadeddata', loadedDataListener);
+        videoEventListeners.loadeddata.push(loadedDataListener);
+        
+        var metadataListener = function() {
             adjustAspectRatio(containerDiv, videoElement);
-        });
-        videoElement.addEventListener('error', function(e) {
+        };
+        videoElement.addEventListener('loadedmetadata', metadataListener);
+        videoEventListeners.loadedmetadata.push(metadataListener);
+        
+        var errorListener = function(e) {
             console.error("Video error:", e);
             showErrorMessage(containerDiv, loadingIndicator, "Error loading video. Please try again later.");
-        });
+        };
+        videoElement.addEventListener('error', errorListener);
+        videoEventListeners.error.push(errorListener);
         
         videoElement.play().catch(function(error) {
             console.warn("Autoplay prevented:", error);
@@ -262,9 +285,23 @@ function HideModal(event) {
             videoElement.removeAttribute('src');
             videoElement.load();
             
-            // Remove event listeners
-            videoElement.onloadeddata = null;
-            videoElement.onerror = null;
+            // Properly remove all registered event listeners
+            videoEventListeners.loadeddata.forEach(function(listener) {
+                videoElement.removeEventListener('loadeddata', listener);
+            });
+            
+            videoEventListeners.loadedmetadata.forEach(function(listener) {
+                videoElement.removeEventListener('loadedmetadata', listener);
+            });
+            
+            videoEventListeners.error.forEach(function(listener) {
+                videoElement.removeEventListener('error', listener);
+            });
+            
+            // Reset event listeners array
+            videoEventListeners.loadeddata = [];
+            videoEventListeners.loadedmetadata = [];
+            videoEventListeners.error = [];
         } catch (e) {
             console.error("Error cleaning up video element:", e);
         }
