@@ -19,6 +19,29 @@
     containerDiv.style.backgroundColor = '#000';
     containerDiv.classList.add('video-container');
     
+    // Determine aspect ratio from width and height if available
+    if (width && height) {
+        var aspectRatio = parseFloat(width) / parseFloat(height);
+        console.log("Detected aspect ratio:", aspectRatio);
+        
+        // Apply appropriate aspect ratio class
+        if (Math.abs(aspectRatio - 1.33) < 0.1) { // Close to 4:3 (1.33)
+            containerDiv.classList.add('aspect-4-3');
+            console.log("Applied 4:3 aspect ratio");
+        } else if (Math.abs(aspectRatio - 1.78) < 0.1) { // Close to 16:9 (1.78)
+            containerDiv.classList.add('aspect-16-9');
+            console.log("Applied 16:9 aspect ratio");
+        } else {
+            // Custom aspect ratio
+            containerDiv.style.aspectRatio = `${width}/${height}`;
+            console.log("Applied custom aspect ratio:", `${width}/${height}`);
+        }
+    } else {
+        // Default to 4:3 as mentioned most videos are this ratio
+        containerDiv.classList.add('aspect-4-3');
+        console.log("Applied default 4:3 aspect ratio");
+    }
+    
     // Clear any existing content in the modal body
     while (modalBody.children.length > 0) {
         modalBody.removeChild(modalBody.children[0]);
@@ -82,6 +105,11 @@
                 });
             });
             
+            // Listen for video metadata to adjust aspect ratio if needed
+            videoElement.addEventListener('loadedmetadata', function() {
+                adjustAspectRatio(containerDiv, videoElement);
+            });
+            
             hls.loadSource(URL);
             hls.attachMedia(videoElement);
             videoElement.hls = hls; // Store reference for cleanup
@@ -91,6 +119,7 @@
             videoElement.src = URL;
             videoElement.addEventListener('loadedmetadata', function() {
                 loadingIndicator.style.display = 'none';
+                adjustAspectRatio(containerDiv, videoElement);
                 videoElement.play().catch(function(error) {
                     console.warn("Autoplay prevented:", error);
                     showPlayButton(containerDiv, videoElement);
@@ -108,6 +137,9 @@
         videoElement.src = URL;
         videoElement.addEventListener('loadeddata', function() {
             loadingIndicator.style.display = 'none';
+        });
+        videoElement.addEventListener('loadedmetadata', function() {
+            adjustAspectRatio(containerDiv, videoElement);
         });
         videoElement.addEventListener('error', function(e) {
             console.error("Video error:", e);
@@ -161,6 +193,32 @@ function showErrorMessage(container, loadingIndicator, message) {
     if (loadingIndicator) {
         loadingIndicator.textContent = message;
         loadingIndicator.style.color = '#ff6b6b';
+    }
+}
+
+// Helper function to adjust container aspect ratio based on video dimensions
+function adjustAspectRatio(container, videoElement) {
+    // Only adjust if video metadata has loaded and has valid dimensions
+    if (videoElement.videoWidth && videoElement.videoHeight) {
+        var videoAspectRatio = videoElement.videoWidth / videoElement.videoHeight;
+        console.log("Video metadata loaded. Actual dimensions:", videoElement.videoWidth, "x", videoElement.videoHeight);
+        console.log("Actual aspect ratio:", videoAspectRatio);
+        
+        // Remove any previously set aspect ratio classes
+        container.classList.remove('aspect-4-3', 'aspect-16-9');
+        
+        // Apply appropriate aspect ratio class based on actual video dimensions
+        if (Math.abs(videoAspectRatio - 1.33) < 0.1) { // Close to 4:3 (1.33)
+            container.classList.add('aspect-4-3');
+            console.log("Applied 4:3 aspect ratio from metadata");
+        } else if (Math.abs(videoAspectRatio - 1.78) < 0.1) { // Close to 16:9 (1.78)
+            container.classList.add('aspect-16-9');
+            console.log("Applied 16:9 aspect ratio from metadata");
+        } else {
+            // Set precise aspect ratio using style
+            container.style.aspectRatio = `${videoElement.videoWidth}/${videoElement.videoHeight}`;
+            console.log("Applied custom aspect ratio from metadata:", `${videoElement.videoWidth}/${videoElement.videoHeight}`);
+        }
     }
 }
 

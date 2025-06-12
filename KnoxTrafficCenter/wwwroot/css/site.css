@@ -39,19 +39,31 @@ body {
   overflow: hidden;
   background-color: #000;
   border-radius: 4px;
-  aspect-ratio: 16/9;
   max-height: 70vh;
+  /* Remove fixed aspect-ratio to allow adaptive sizing */
+  width: 100%;
 }
 
 .video-player {
   display: block;
   width: 100%;
-  height: 100%;
-  max-height: 70vh;
   background-color: #000;
   border-radius: 4px;
   position: relative;
   object-fit: contain;
+  /* Default aspect ratio for container sizing */
+  aspect-ratio: auto;
+  /* Set min-height to ensure player is visible even during loading */
+  min-height: 300px;
+}
+
+/* Additional classes for different aspect ratios */
+.aspect-4-3 {
+  aspect-ratio: 4/3;
+}
+
+.aspect-16-9 {
+  aspect-ratio: 16/9;
 }
 
 .video-play-button {
