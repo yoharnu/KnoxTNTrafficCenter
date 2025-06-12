@@ -65,8 +65,12 @@ document.addEventListener('DOMContentLoaded', function () {
       weather: 'alert-info'
     }[type] || 'alert-secondary';
     
-    // Default state based on alert type
-    const startExpanded = type === 'incidents';
+    // Check current collapse state before replacing
+    const currentCollapseEl = document.getElementById(collapseId);
+    const isCurrentlyExpanded = currentCollapseEl ? currentCollapseEl.classList.contains('show') : null;
+    
+    // Default state based on alert type, but preserve current state if it exists
+    const startExpanded = isCurrentlyExpanded !== null ? isCurrentlyExpanded : (type === 'incidents');
     const showClass = startExpanded ? 'show' : '';
     const chevronClass = startExpanded ? 'bi-chevron-up' : 'bi-chevron-down';
     const ariaExpanded = startExpanded ? 'true' : 'false';
