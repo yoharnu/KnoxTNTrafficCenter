@@ -8,10 +8,16 @@
     var title = button.getAttribute('data-bs-title');
 
     var modalTitle = videoModal.querySelector('.modal-title');
-
     modalTitle.textContent = title;
 
     var modalBody = videoModal.getElementsByClassName('modal-body')[0];
+    
+    // Create a container div for better positioning of elements
+    var containerDiv = document.createElement('div');
+    containerDiv.style.position = 'relative';
+    containerDiv.style.width = '100%';
+    containerDiv.style.backgroundColor = '#000';
+    containerDiv.classList.add('video-container');
     
     // Clear any existing content in the modal body
     while (modalBody.children.length > 0) {
@@ -26,57 +32,135 @@
     videoElement.controls = true;
     videoElement.autoplay = true;
     videoElement.muted = true;
-    videoElement.playsInline = true; // Required for autoplay in some browsers
-    videoElement.preload = 'auto';
+    videoElement.playsInline = true;
+    videoElement.crossOrigin = 'anonymous'; // Add cross-origin attribute
     
-    // Add source elements instead of directly setting src attribute
-    var sourceElement = document.createElement('source');
-    sourceElement.src = URL;
+    // Add loading indicator
+    var loadingIndicator = document.createElement('div');
+    loadingIndicator.id = 'videoLoadingIndicator';
+    loadingIndicator.style.position = 'absolute';
+    loadingIndicator.style.top = '50%';
+    loadingIndicator.style.left = '50%';
+    loadingIndicator.style.transform = 'translate(-50%, -50%)';
+    loadingIndicator.style.color = 'white';
+    loadingIndicator.style.fontSize = '1.2rem';
+    loadingIndicator.style.zIndex = '20';
+    loadingIndicator.textContent = 'Loading video...';
     
-    // Determine video type from URL
-    if (URL.toLowerCase().includes('.mp4')) {
-        sourceElement.type = 'video/mp4';
-    } else if (URL.toLowerCase().includes('.webm')) {
-        sourceElement.type = 'video/webm';
-    } else if (URL.toLowerCase().includes('.m3u8')) {
-        sourceElement.type = 'application/x-mpegURL';
+    containerDiv.appendChild(videoElement);
+    containerDiv.appendChild(loadingIndicator);
+    modalBody.appendChild(containerDiv);
+    
+    // Handle m3u8 videos with HLS.js if supported
+    if (URL.toLowerCase().includes('.m3u8')) {
+        // Show debugging info
+        console.log("Processing m3u8 stream");
+        
+        // Check if HLS.js is supported
+        if (typeof Hls !== 'undefined' && Hls.isSupported()) {
+            console.log("HLS.js is supported");
+            var hls = new Hls({
+                debug: false,
+                enableWorker: true,
+                lowLatencyMode: true,
+                backBufferLength: 90
+            });
+            
+            hls.on(Hls.Events.ERROR, function(event, data) {
+                console.error("HLS error:", data);
+                if (data.fatal) {
+                    showErrorMessage(containerDiv, loadingIndicator, "Error loading video stream. Please try again later.");
+                }
+            });
+            
+            hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                console.log("HLS manifest parsed, attempting to play");
+                loadingIndicator.style.display = 'none';
+                videoElement.play().catch(function(error) {
+                    console.warn("Autoplay prevented:", error);
+                    showPlayButton(containerDiv, videoElement);
+                });
+            });
+            
+            hls.loadSource(URL);
+            hls.attachMedia(videoElement);
+            videoElement.hls = hls; // Store reference for cleanup
+        } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
+            // For browsers that support HLS natively (Safari)
+            console.log("Using native HLS support");
+            videoElement.src = URL;
+            videoElement.addEventListener('loadedmetadata', function() {
+                loadingIndicator.style.display = 'none';
+                videoElement.play().catch(function(error) {
+                    console.warn("Autoplay prevented:", error);
+                    showPlayButton(containerDiv, videoElement);
+                });
+            });
+            videoElement.addEventListener('error', function(e) {
+                console.error("Video error:", e);
+                showErrorMessage(containerDiv, loadingIndicator, "Error loading video. Please try again later.");
+            });
+        } else {
+            showErrorMessage(containerDiv, loadingIndicator, "Your browser doesn't support HLS video playback.");
+        }
+    } else {
+        // Handle regular video formats
+        videoElement.src = URL;
+        videoElement.addEventListener('loadeddata', function() {
+            loadingIndicator.style.display = 'none';
+        });
+        videoElement.addEventListener('error', function(e) {
+            console.error("Video error:", e);
+            showErrorMessage(containerDiv, loadingIndicator, "Error loading video. Please try again later.");
+        });
+        
+        videoElement.play().catch(function(error) {
+            console.warn("Autoplay prevented:", error);
+            showPlayButton(containerDiv, videoElement);
+        });
+    }
+}
+
+// Helper function to show play button when autoplay is blocked
+function showPlayButton(container, videoElement) {
+    var loadingIndicator = document.getElementById('videoLoadingIndicator');
+    if (loadingIndicator) {
+        loadingIndicator.style.display = 'none';
     }
     
-    videoElement.appendChild(sourceElement);
-    modalBody.appendChild(videoElement);
+    var playButton = document.createElement('button');
+    playButton.classList.add('video-play-button');
+    playButton.innerHTML = '▶';
+    playButton.style.position = 'absolute';
+    playButton.style.top = '50%';
+    playButton.style.left = '50%';
+    playButton.style.transform = 'translate(-50%, -50%)';
+    playButton.style.fontSize = '3rem';
+    playButton.style.padding = '1rem 2rem';
+    playButton.style.background = 'rgba(0,0,0,0.5)';
+    playButton.style.color = 'white';
+    playButton.style.border = 'none';
+    playButton.style.borderRadius = '5px';
+    playButton.style.cursor = 'pointer';
+    playButton.style.zIndex = '20';
     
-    // Play using promise pattern to handle autoplay restrictions
-    var playPromise = videoElement.play();
-    
-    if (playPromise !== undefined) {
-        playPromise.then(_ => {
-            // Playback started successfully
-            console.log("Video playback started");
-        }).catch(error => {
-            console.log("Autoplay prevented by browser: " + error);
-            // Create play button overlay for user interaction
-            var playButton = document.createElement('button');
-            playButton.classList.add('video-play-button');
-            playButton.innerHTML = '▶';
-            playButton.style.position = 'absolute';
-            playButton.style.top = '50%';
-            playButton.style.left = '50%';
-            playButton.style.transform = 'translate(-50%, -50%)';
-            playButton.style.fontSize = '3rem';
-            playButton.style.padding = '1rem 2rem';
-            playButton.style.background = 'rgba(0,0,0,0.5)';
-            playButton.style.color = 'white';
-            playButton.style.border = 'none';
-            playButton.style.borderRadius = '5px';
-            playButton.style.cursor = 'pointer';
-            
-            playButton.onclick = function() {
-                videoElement.play();
-                this.remove();
-            };
-            
-            modalBody.appendChild(playButton);
+    playButton.onclick = function() {
+        videoElement.muted = true; // Ensure muted for autoplay
+        videoElement.play().then(function() {
+            playButton.remove();
+        }).catch(function(error) {
+            console.error("Play failed after button click:", error);
         });
+    };
+    
+    container.appendChild(playButton);
+}
+
+// Helper function to show error message
+function showErrorMessage(container, loadingIndicator, message) {
+    if (loadingIndicator) {
+        loadingIndicator.textContent = message;
+        loadingIndicator.style.color = '#ff6b6b';
     }
 }
 
@@ -87,9 +171,16 @@ function HideModal(event) {
     var videoElement = document.getElementById('modalVideo');
     if (videoElement) {
         try {
+            // Stop video playback
             videoElement.pause();
             
-            // Remove all sources
+            // Clean up HLS.js if it was used
+            if (videoElement.hls) {
+                videoElement.hls.destroy();
+                delete videoElement.hls;
+            }
+            
+            // Remove all child elements
             while(videoElement.firstChild) {
                 videoElement.removeChild(videoElement.firstChild);
             }
@@ -97,14 +188,29 @@ function HideModal(event) {
             // Reset source and load to ensure resources are fully released
             videoElement.removeAttribute('src');
             videoElement.load();
+            
+            // Remove event listeners
+            videoElement.onloadeddata = null;
+            videoElement.onerror = null;
         } catch (e) {
             console.error("Error cleaning up video element:", e);
         }
     }
     
-    // Remove any play button overlay if it exists
+    // Remove any play button overlay or loading indicator if they exist
     var playButton = document.querySelector('.video-play-button');
     if (playButton) {
         playButton.remove();
+    }
+    
+    var loadingIndicator = document.getElementById('videoLoadingIndicator');
+    if (loadingIndicator) {
+        loadingIndicator.remove();
+    }
+    
+    // Remove the container div
+    var videoContainer = document.querySelector('.video-container');
+    if (videoContainer) {
+        videoContainer.remove();
     }
 }
