@@ -1,5 +1,6 @@
 ﻿using KnoxTrafficCenter.Models;
 using KnoxTrafficCenter.Models.TDOT;
+using Microsoft.Extensions.Configuration;
 using System.Net.Http.Headers;
 using System.Text.Json;
 
@@ -10,8 +11,10 @@ public class TDOTAPIService
     private readonly HttpClient HttpClient;
     private ILogger<TDOTAPIService> logger;
     private TDOTAPI? api;
+    private DateTime lastConfigRefresh = DateTime.MinValue;
+    private readonly TimeSpan configRefreshInterval = TimeSpan.FromHours(24);
 
-    public TDOTAPIService(ILogger<TDOTAPIService> logger)
+    public TDOTAPIService(ILogger<TDOTAPIService> logger, IConfiguration configuration)
     {
         this.logger = logger;
 
@@ -22,10 +25,23 @@ public class TDOTAPIService
         HttpClient.DefaultRequestHeaders.Accept.Clear();
         HttpClient.DefaultRequestHeaders.Accept.Add(
             new MediaTypeWithQualityHeaderValue("application/json"));
+        
+        // Read config refresh interval from appsettings.json or use default
+        int refreshHours = configuration.GetValue<int>("TDOTApi:ConfigRefreshIntervalHours", 24);
+        configRefreshInterval = TimeSpan.FromHours(refreshHours);
+        logger.LogInformation($"TDOT API configuration will refresh every {refreshHours} hours");
     }
 
     public async Task<TDOTAPI?> GetTDOTAPIAsync()
     {
+        // Check if we already have a valid configuration and it's not time to refresh yet
+        if (api != null && DateTime.UtcNow - lastConfigRefresh < configRefreshInterval)
+        {
+            logger.LogDebug("Using cached TDOT API configuration");
+            return api;
+        }
+
+        logger.LogInformation("Refreshing TDOT API configuration");
         HttpResponseMessage response = await HttpClient.GetAsync("config.prod.json");
         if (response.IsSuccessStatusCode)
         {
@@ -36,10 +52,24 @@ public class TDOTAPIService
             {
                 logger.LogError("Unable to parse config for TDOT API");
             }
+            else
+            {
+                // Update the refresh timestamp
+                lastConfigRefresh = DateTime.UtcNow;
+                logger.LogInformation($"Successfully refreshed TDOT API configuration. Next refresh at: {lastConfigRefresh + configRefreshInterval}");
+            }
 
             return api;
         }
         logger.LogError("Unable to get config for TDOT API");
+        
+        // If refresh failed but we have an existing config, return it
+        if (api != null)
+        {
+            logger.LogWarning("Using stale TDOT API configuration because refresh failed");
+            return api;
+        }
+        
         return null;
     }
 
