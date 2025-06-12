@@ -76,6 +76,30 @@ body {
   transform: translate(-50%, -50%) scale(1.1) !important;
 }
 
+/* Camera refresh indicator styling */
+#refresh-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+}
+
+#refresh-indicator .bi {
+  animation: spin 1s linear;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive camera card image styles */
+.card-img-bottom {
+  transition: opacity 0.2s ease;
+  min-height: 180px;
+  object-fit: cover;
+}
+
 @media (min-width: 1600px) {
     .container-xxl {
         max-width: 1600px;
