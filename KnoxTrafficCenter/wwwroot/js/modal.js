@@ -16,7 +16,8 @@
     var containerDiv = document.createElement('div');
     containerDiv.style.position = 'relative';
     containerDiv.style.width = '100%';
-    containerDiv.style.backgroundColor = '#000';
+    // Use dark background that respects theme mode
+    containerDiv.style.backgroundColor = 'var(--card-bg, #23272b)';
     containerDiv.classList.add('video-container');
     
     // Determine aspect ratio from width and height if available
@@ -65,7 +66,7 @@
     loadingIndicator.style.top = '50%';
     loadingIndicator.style.left = '50%';
     loadingIndicator.style.transform = 'translate(-50%, -50%)';
-    loadingIndicator.style.color = 'white';
+    loadingIndicator.style.color = 'var(--text-color, white)';
     loadingIndicator.style.fontSize = '1.2rem';
     loadingIndicator.style.zIndex = '20';
     loadingIndicator.textContent = 'Loading video...';
@@ -169,8 +170,8 @@ function showPlayButton(container, videoElement) {
     playButton.style.transform = 'translate(-50%, -50%)';
     playButton.style.fontSize = '3rem';
     playButton.style.padding = '1rem 2rem';
-    playButton.style.background = 'rgba(0,0,0,0.5)';
-    playButton.style.color = 'white';
+    playButton.style.background = 'var(--card-bg, rgba(35,39,43,0.8))';
+    playButton.style.color = 'var(--text-color, white)';
     playButton.style.border = 'none';
     playButton.style.borderRadius = '5px';
     playButton.style.cursor = 'pointer';
@@ -192,7 +193,10 @@ function showPlayButton(container, videoElement) {
 function showErrorMessage(container, loadingIndicator, message) {
     if (loadingIndicator) {
         loadingIndicator.textContent = message;
+        // Use a red color that works in both light and dark themes
         loadingIndicator.style.color = '#ff6b6b';
+        // Add a warning icon for better visibility
+        loadingIndicator.innerHTML = '⚠️ ' + message;
     }
 }
 
