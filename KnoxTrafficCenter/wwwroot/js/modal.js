@@ -59,9 +59,15 @@
     videoElement.playsInline = true;
     videoElement.crossOrigin = 'anonymous'; // Add cross-origin attribute
     
-    // Apply dark mode styles to the video controls if in dark mode
+    // Apply appropriate color scheme based on current mode
     if (document.body.classList.contains('dark-mode')) {
-        videoElement.classList.add('dark-theme-video');
+        // Use a data attribute instead of a class to avoid side effects
+        videoElement.dataset.colorTheme = 'dark';
+        // Use the standard color-scheme property
+        videoElement.style.colorScheme = 'dark';
+    } else {
+        videoElement.dataset.colorTheme = 'light';
+        videoElement.style.colorScheme = 'light';
     }
     
     // Add loading indicator

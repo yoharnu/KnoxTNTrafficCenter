@@ -8,7 +8,8 @@
       // Update video player if it exists
       const videoPlayer = document.getElementById('modalVideo');
       if (videoPlayer) {
-        videoPlayer.classList.add('dark-theme-video');
+        videoPlayer.dataset.colorTheme = 'dark';
+        videoPlayer.style.colorScheme = 'dark';
       }
     } else {
       document.body.classList.remove('dark-mode');
@@ -17,7 +18,8 @@
       // Update video player if it exists
       const videoPlayer = document.getElementById('modalVideo');
       if (videoPlayer) {
-        videoPlayer.classList.remove('dark-theme-video');
+        videoPlayer.dataset.colorTheme = 'light';
+        videoPlayer.style.colorScheme = 'light';
       }
     }
   }

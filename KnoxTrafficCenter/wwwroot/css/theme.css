@@ -94,17 +94,16 @@ body.dark-mode .btn-close {
   filter: invert(1) grayscale(100%) brightness(200%);
 }
 
-/* Dark theme for video player controls */
-.dark-theme-video::-webkit-media-controls-panel {
-  background-color: rgba(35, 39, 43, 0.7);
+/* Video player dark theme - using browser's built-in dark mode for video controls */
+video[data-color-theme="dark"] {
+  color-scheme: dark;
 }
 
-.dark-theme-video::-webkit-media-controls-play-button,
-.dark-theme-video::-webkit-media-controls-volume-slider-container,
-.dark-theme-video::-webkit-media-controls-mute-button,
-.dark-theme-video::-webkit-media-controls-timeline,
-.dark-theme-video::-webkit-media-controls-current-time-display,
-.dark-theme-video::-webkit-media-controls-time-remaining-display,
-.dark-theme-video::-webkit-media-controls-fullscreen-button {
-  filter: brightness(1.5);
+video[data-color-theme="light"] {
+  color-scheme: light;
+}
+
+/* Remove any styles that might cause overlay issues */
+body.dark-mode .video-player {
+  background-color: transparent !important;
 }
