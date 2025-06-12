@@ -1,26 +1,23 @@
 // Theme toggle logic
 (function() {
+  // Helper function to update video player theme
+  function updateVideoPlayerTheme(theme) {
+    const videoPlayer = document.getElementById('modalVideo');
+    if (videoPlayer) {
+      videoPlayer.dataset.colorTheme = theme;
+      videoPlayer.style.colorScheme = theme;
+    }
+  }
+  
   function setTheme(mode) {
     if (mode === 'dark') {
       document.body.classList.add('dark-mode');
       localStorage.setItem('theme', 'dark');
-      
-      // Update video player if it exists
-      const videoPlayer = document.getElementById('modalVideo');
-      if (videoPlayer) {
-        videoPlayer.dataset.colorTheme = 'dark';
-        videoPlayer.style.colorScheme = 'dark';
-      }
+      updateVideoPlayerTheme('dark');
     } else {
       document.body.classList.remove('dark-mode');
       localStorage.setItem('theme', 'light');
-      
-      // Update video player if it exists
-      const videoPlayer = document.getElementById('modalVideo');
-      if (videoPlayer) {
-        videoPlayer.dataset.colorTheme = 'light';
-        videoPlayer.style.colorScheme = 'light';
-      }
+      updateVideoPlayerTheme('light');
     }
   }
 
