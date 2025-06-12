@@ -59,6 +59,11 @@
     videoElement.playsInline = true;
     videoElement.crossOrigin = 'anonymous'; // Add cross-origin attribute
     
+    // Apply dark mode styles to the video controls if in dark mode
+    if (document.body.classList.contains('dark-mode')) {
+        videoElement.classList.add('dark-theme-video');
+    }
+    
     // Add loading indicator
     var loadingIndicator = document.createElement('div');
     loadingIndicator.id = 'videoLoadingIndicator';

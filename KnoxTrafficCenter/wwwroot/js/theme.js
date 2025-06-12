@@ -4,9 +4,21 @@
     if (mode === 'dark') {
       document.body.classList.add('dark-mode');
       localStorage.setItem('theme', 'dark');
+      
+      // Update video player if it exists
+      const videoPlayer = document.getElementById('modalVideo');
+      if (videoPlayer) {
+        videoPlayer.classList.add('dark-theme-video');
+      }
     } else {
       document.body.classList.remove('dark-mode');
       localStorage.setItem('theme', 'light');
+      
+      // Update video player if it exists
+      const videoPlayer = document.getElementById('modalVideo');
+      if (videoPlayer) {
+        videoPlayer.classList.remove('dark-theme-video');
+      }
     }
   }
 
