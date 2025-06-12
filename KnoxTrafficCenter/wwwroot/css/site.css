@@ -33,6 +33,49 @@ body {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
+/* Video player styling (replacing video-js) */
+.video-container {
+  position: relative;
+  overflow: hidden;
+  background-color: #000;
+  border-radius: 4px;
+  max-height: 70vh;
+  /* Remove fixed aspect-ratio to allow adaptive sizing */
+  width: 100%;
+}
+
+.video-player {
+  display: block;
+  width: 100%;
+  background-color: #000;
+  border-radius: 4px;
+  position: relative;
+  object-fit: contain;
+  /* Default aspect ratio for container sizing */
+  aspect-ratio: auto;
+  /* Set min-height to ensure player is visible even during loading */
+  min-height: 300px;
+}
+
+/* Additional classes for different aspect ratios */
+.aspect-4-3 {
+  aspect-ratio: 4/3;
+}
+
+.aspect-16-9 {
+  aspect-ratio: 16/9;
+}
+
+.video-play-button {
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.video-play-button:hover {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  transform: translate(-50%, -50%) scale(1.1) !important;
+}
+
 @media (min-width: 1600px) {
     .container-xxl {
         max-width: 1600px;

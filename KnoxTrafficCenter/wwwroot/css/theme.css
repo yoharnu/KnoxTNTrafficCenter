@@ -43,6 +43,9 @@ body.dark-mode {
   --card-border: #343a40;
   --footer-bg: #23272b;
   --footer-text: #adb5bd;
+  --modal-bg: #23272b;
+  --modal-border: #343a40;
+  --modal-header-bg: #1e2124;
 }
 
 body.dark-mode .weather-alert {
@@ -67,4 +70,40 @@ body.dark-mode .navbar .navbar-brand, body.dark-mode .navbar .nav-link, body.dar
 body.dark-mode .footer {
   background: var(--footer-bg);
   color: var(--footer-text);
+}
+
+/* Add modal styling for dark mode */
+body.dark-mode .modal-content {
+  background-color: var(--modal-bg);
+  border-color: var(--modal-border);
+  color: var(--text-color);
+}
+
+body.dark-mode .modal-header {
+  background-color: var(--modal-header-bg);
+  border-color: var(--modal-border);
+  color: var(--text-color);
+}
+
+body.dark-mode .modal-footer {
+  background-color: var(--modal-bg);
+  border-color: var(--modal-border);
+}
+
+body.dark-mode .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* Video player dark theme - using browser's built-in dark mode for video controls */
+video[data-color-theme="dark"] {
+  color-scheme: dark;
+}
+
+video[data-color-theme="light"] {
+  color-scheme: light;
+}
+
+/* Remove any styles that might cause overlay issues */
+body.dark-mode .video-player {
+  background-color: transparent !important;
 }
