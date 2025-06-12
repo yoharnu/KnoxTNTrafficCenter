@@ -2,9 +2,9 @@
 
 public class Location
 {
-    public string Type { get; set; }
+    public string Type { get; set; } = string.Empty;
     public int CountyId { get; set; }
-    public string CountyName { get; set; }
+    public string CountyName { get; set; } = string.Empty;
 
     public override string ToString()
     {

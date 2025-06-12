@@ -2,16 +2,16 @@
 {
     public class TDOTAPI
     {
-        public string APIBaseURL { get; set; }
-        public string APIKey { get; set; }
-        public string Incidents { get; set; }
-        public string Construction { get; set; }
-        public string Cameras { get; set; }
-        public string MessageSigns { get; set; }
-        public string RestAreas { get; set; }
-        public string SpecialEvents { get; set; }
-        public string Weather { get; set; }
-        public string CountyWideWeather { get; set; }
+        public string APIBaseURL { get; set; } = string.Empty;
+        public string APIKey { get; set; } = string.Empty;
+        public string Incidents { get; set; } = string.Empty;
+        public string Construction { get; set; } = string.Empty;
+        public string Cameras { get; set; } = string.Empty;
+        public string MessageSigns { get; set; } = string.Empty;
+        public string RestAreas { get; set; } = string.Empty;
+        public string SpecialEvents { get; set; } = string.Empty;
+        public string Weather { get; set; } = string.Empty;
+        public string CountyWideWeather { get; set; } = string.Empty;
 
         public override string ToString()
         {

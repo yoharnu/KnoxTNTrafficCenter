@@ -75,6 +75,8 @@ public class TDOTAPIService
 
     public async Task<List<CameraGroup>> GetCamerasAsync()
     {
+        api = await GetTDOTAPIAsync();
+        
         if (api == null)
         {
             logger.LogError("TDOTAPI is null. Please check the configuration or API availability.");
@@ -133,6 +135,8 @@ public class TDOTAPIService
 
     public async Task<List<Event>> GetIncidentsAsync()
     {
+        api = await GetTDOTAPIAsync();
+        
         if (api == null)
         {
             logger.LogError("TDOTAPI is null. Please check the configuration or API availability.");
@@ -165,11 +169,12 @@ public class TDOTAPIService
             }
         }
         logger.LogError("Unable to retrieve incidents. Please check the configuration or API availability.");
-        return null;
+        return [];
     }
 
     public async Task<List<Event>> GetConstructionAsync()
     {
+        api = await GetTDOTAPIAsync();
 
         if (api == null)
         {
@@ -203,7 +208,7 @@ public class TDOTAPIService
             }
         }
         logger.LogError("Unable to retrieve construction events. Please check the configuration or API availability.");
-        return null;
+        return [];
     }
 
     public async Task<List<Event>> GetWeatherAsync()

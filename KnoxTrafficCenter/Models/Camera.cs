@@ -9,8 +9,8 @@ namespace KnoxTrafficCenter.Models
         public string Road { get; set; } = "";
         public string Location { get; set; } = "";
         public float? MM { get; set; }
-        public Media Video { get; set; }
-        public Media Image { get; set; }
+        public Media Video { get; set; } = new();
+        public Media Image { get; set; } = new();
 
         public override string ToString()
         {
@@ -77,7 +77,7 @@ namespace KnoxTrafficCenter.Models
 
     public class Media
     {
-        public string URL { get; set; }
+        public string URL { get; set; } = string.Empty;
         public int Width { get; set; }
         public int Height { get; set; }
     }

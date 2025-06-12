@@ -14,21 +14,21 @@ namespace KnoxTrafficCenter.Controllers
         public async Task<IActionResult> GetIncidents()
         {
             var incidents = await tdotApiService.GetIncidentsAsync();
-            return Ok(incidents ?? new List<Event>());
+            return Ok(incidents);
         }
 
         [HttpGet("construction")]
         public async Task<IActionResult> GetConstruction()
         {
             var construction = await tdotApiService.GetConstructionAsync();
-            return Ok(construction ?? new List<Event>());
+            return Ok(construction);
         }
 
         [HttpGet("weather")]
         public async Task<IActionResult> GetWeather()
         {
             var weather = await tdotApiService.GetWeatherAsync();
-            return Ok(weather ?? new List<Event>());
+            return Ok(weather);
         }
     }
 }
