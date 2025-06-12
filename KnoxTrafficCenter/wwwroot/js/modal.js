@@ -12,32 +12,30 @@
     modalTitle.textContent = title;
 
     var modalBody = videoModal.getElementsByClassName('modal-body')[0];
-    var videoJS = document.createElement('video-js');
-    videoJS.id = 'modalVideoJS';
-    videoJS.classList.add('video-js');
+    var videoElement = document.createElement('video');
+    videoElement.id = 'modalVideo';
+    videoElement.classList.add('video-player');
+    videoElement.style.width = '100%';
+    videoElement.controls = true;
+    videoElement.autoplay = true;
+    videoElement.muted = true;
+    videoElement.src = URL;
 
     while (modalBody.children.length > 0) {
         modalBody.removeChild(modalBody.children[0]);
     }
 
-    modalBody.appendChild(videoJS);
-
-    var myPlayer = videojs('modalVideoJS');
-    myPlayer.muted(true);
-    myPlayer.autoplay(true);
-    myPlayer.controls(true);
-    myPlayer.fluid(true);
-    myPlayer.src(URL);
-    myPlayer.ready(function () {
-        myPlayer.play();
-    });
+    modalBody.appendChild(videoElement);
+    videoElement.play();
 }
 
 function HideModal(event) {
     var modalTitle = videoModal.querySelector('.modal-title');
     modalTitle.textContent = "";
 
-    var myPlayer = videojs('modalVideoJS');
-    if (myPlayer)
-        myPlayer.dispose();
+    var videoElement = document.getElementById('modalVideo');
+    if (videoElement) {
+        videoElement.pause();
+        videoElement.src = '';
+    }
 }

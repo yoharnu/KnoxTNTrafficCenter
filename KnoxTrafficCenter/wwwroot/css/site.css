@@ -33,6 +33,15 @@ body {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
+/* Video player styling (replacing video-js) */
+.video-player {
+  display: block;
+  width: 100%;
+  max-height: 70vh;
+  background-color: #000;
+  border-radius: 4px;
+}
+
 @media (min-width: 1600px) {
     .container-xxl {
         max-width: 1600px;
