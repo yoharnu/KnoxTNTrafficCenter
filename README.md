@@ -23,7 +23,6 @@ KnoxTrafficCenter is an internal web application for monitoring traffic cameras,
 
 ### Services
 - **TDOTAPIService** - Core service that communicates with the TDOT Smartway API
-- **TDOTEventService** - Service for handling traffic events
 
 ### Models
 - **Camera** - Represents traffic cameras with video and image streams
