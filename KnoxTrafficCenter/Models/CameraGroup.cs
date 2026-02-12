@@ -1,9 +1,11 @@
-﻿using System.Runtime.CompilerServices;
+using System.Runtime.CompilerServices;
 
 namespace KnoxTrafficCenter.Models;
 
 public class CameraGroup(string title)
 {
+    private readonly HashSet<int> _cameraIds = [];
+
     public string Title { get; set; } = title;
     public List<Camera> Cameras { get; set; } = new List<Camera>();
     public override string ToString()
@@ -13,7 +15,7 @@ public class CameraGroup(string title)
 
     public void Add(Camera camera)
     {
-        if (!Cameras.Any(c => c.Id == camera.Id))
+        if (_cameraIds.Add(camera.Id))
         {
             Cameras.Add(camera);
         }
