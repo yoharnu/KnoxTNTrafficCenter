@@ -1,4 +1,4 @@
-﻿using KnoxTrafficCenter.Models;
+using KnoxTrafficCenter.Models;
 using KnoxTrafficCenter.Models.TDOT;
 using Microsoft.Extensions.Configuration;
 using System.Net.Http.Headers;
@@ -8,7 +8,7 @@ namespace KnoxTrafficCenter.Services;
 
 public class TDOTAPIService
 {
-    private readonly HttpClient HttpClient;
+    protected HttpClient _httpClient;
     private ILogger<TDOTAPIService> logger;
     private TDOTAPI? api;
     private DateTime lastConfigRefresh = DateTime.MinValue;
@@ -19,18 +19,28 @@ public class TDOTAPIService
         this.logger = logger;
 
         string baseUrl = configuration.GetValue<string>("TDOTApi:BaseUrl") ?? throw new ArgumentNullException("TDOTApi:BaseUrl", "TDOT API Base URL must be configured.");
-        HttpClient = new HttpClient
+        _httpClient = new HttpClient
         {
             BaseAddress = new Uri(baseUrl)
         };
-        HttpClient.DefaultRequestHeaders.Accept.Clear();
-        HttpClient.DefaultRequestHeaders.Accept.Add(
+        _httpClient.DefaultRequestHeaders.Accept.Clear();
+        _httpClient.DefaultRequestHeaders.Accept.Add(
             new MediaTypeWithQualityHeaderValue("application/json"));
         
         // Read config refresh interval from appsettings.json or use default
         int refreshHours = configuration.GetValue<int>("TDOTApi:ConfigRefreshIntervalHours", 24);
         configRefreshInterval = TimeSpan.FromHours(refreshHours);
         logger.LogInformation($"TDOT API configuration will refresh every {refreshHours} hours");
+    }
+
+    protected virtual HttpClient CreateHttpClient(string? baseAddress = null)
+    {
+        var client = new HttpClient();
+        if (baseAddress != null)
+        {
+            client.BaseAddress = new Uri(baseAddress);
+        }
+        return client;
     }
 
     public async Task<TDOTAPI?> GetTDOTAPIAsync()
@@ -43,7 +53,7 @@ public class TDOTAPIService
         }
 
         logger.LogInformation("Refreshing TDOT API configuration");
-        HttpResponseMessage response = await HttpClient.GetAsync("config.prod.json");
+        HttpResponseMessage response = await _httpClient.GetAsync("config.prod.json");
         if (response.IsSuccessStatusCode)
         {
             var stream = await response.Content.ReadAsStreamAsync();
@@ -86,10 +96,7 @@ public class TDOTAPIService
 
         if (!string.IsNullOrEmpty(api.APIBaseURL) && !string.IsNullOrEmpty(api.APIKey) && !string.IsNullOrEmpty(api.Cameras))
         {
-            using var httpClient = new HttpClient
-            {
-                BaseAddress = new Uri(api.APIBaseURL)
-            };
+            using var httpClient = CreateHttpClient(api.APIBaseURL);
             httpClient.DefaultRequestHeaders.Accept.Clear();
             httpClient.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
@@ -144,10 +151,7 @@ public class TDOTAPIService
 
         if (!string.IsNullOrEmpty(api.APIBaseURL) && !string.IsNullOrEmpty(api.APIKey) && !string.IsNullOrEmpty(api.Incidents))
         {
-            using var httpClient = new HttpClient
-            {
-                BaseAddress = new Uri(api.APIBaseURL)
-            };
+            using var httpClient = CreateHttpClient(api.APIBaseURL);
             httpClient.DefaultRequestHeaders.Accept.Clear();
             httpClient.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
@@ -181,10 +185,7 @@ public class TDOTAPIService
 
         if (!string.IsNullOrEmpty(api.APIBaseURL) && !string.IsNullOrEmpty(api.APIKey) && !string.IsNullOrEmpty(api.Construction))
         {
-            using var httpClient = new HttpClient
-            {
-                BaseAddress = new Uri(api.APIBaseURL)
-            };
+            using var httpClient = CreateHttpClient(api.APIBaseURL);
             httpClient.DefaultRequestHeaders.Accept.Clear();
             httpClient.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
@@ -208,6 +209,8 @@ public class TDOTAPIService
 
     public async Task<List<Event>> GetWeatherAsync()
     {
+        api = await GetTDOTAPIAsync();
+
         if (api == null)
         {
             logger.LogError("TDOTAPI is null. Please check the configuration or API availability.");
@@ -216,10 +219,7 @@ public class TDOTAPIService
 
         if (!string.IsNullOrEmpty(api.APIBaseURL) && !string.IsNullOrEmpty(api.APIKey) && !string.IsNullOrEmpty(api.Weather))
         {
-            using var httpClient = new HttpClient
-            {
-                BaseAddress = new Uri(api.APIBaseURL)
-            };
+            using var httpClient = CreateHttpClient(api.APIBaseURL);
             httpClient.DefaultRequestHeaders.Accept.Clear();
             httpClient.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
