@@ -33,9 +33,17 @@
                             <h6 class="text-muted card-subtitle">MM @camera.MM</h6>
                         }
                     </div>
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#videoModal" data-bs-title="@camera.Title" data-bs-video-url="@(camera.Video.URL)">
-                        <img src="@camera.Image.URL" class="card-img-bottom img-fluid" alt="camera image of @camera.Title" loading="lazy" />
-                    </a>
+                    <button type="button" class="btn p-0 border-0 w-100 camera-card-btn position-relative rounded-bottom"
+                            data-bs-toggle="modal"
+                            data-bs-target="#videoModal"
+                            data-bs-title="@camera.Title"
+                            data-bs-video-url="@(camera.Video.URL)"
+                            aria-label="View live camera feed for @camera.Title">
+                        <img src="@camera.Image.URL" class="card-img-bottom img-fluid w-100" alt="" loading="lazy" />
+                        <span class="play-overlay">
+                            <i class="bi bi-play-fill text-white fs-1"></i>
+                        </span>
+                    </button>
                 </div>
             </div>
         }
