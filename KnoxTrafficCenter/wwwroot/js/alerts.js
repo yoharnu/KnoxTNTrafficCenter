@@ -95,31 +95,22 @@ document.addEventListener('DOMContentLoaded', function () {
     setupCollapseChevron(collapseId, chevronId);
   }
 
+  async function fetchAndRenderAlert(url, containerId, type, icon, badgeClass) {
+    try {
+      const res = await fetch(url);
+      const alerts = await res.json();
+      renderAlerts(containerId, alerts, type, icon, badgeClass);
+    } catch (error) {
+      console.error(`Error fetching ${type} alerts:`, error);
+    }
+  }
+
   async function fetchAndRenderAlerts() {
-    // Incidents
-    try {
-      const incidentsRes = await fetch('/api/alerts/incidents');
-      const incidents = await incidentsRes.json();
-      renderAlerts('incidents-alerts-container', incidents, 'incidents', 'bi-exclamation-triangle-fill', 'bg-danger');
-    } catch (error) {
-      console.error('Error fetching incidents alerts:', error);
-    }
-    // Construction
-    try {
-      const constructionRes = await fetch('/api/alerts/construction');
-      const construction = await constructionRes.json();
-      renderAlerts('construction-alerts-container', construction, 'construction', 'bi-cone-striped', 'bg-warning');
-    } catch (error) {
-      console.error('Error fetching construction alerts:', error);
-    }
-    // Weather
-    try {
-      const weatherRes = await fetch('/api/alerts/weather');
-      const weather = await weatherRes.json();
-      renderAlerts('weather-alerts-container', weather, 'weather', 'bi-cloud-lightning-rain', 'bg-info');
-    } catch (error) {
-      console.error('Error fetching weather alerts:', error);
-    }
+    await Promise.all([
+      fetchAndRenderAlert('/api/alerts/incidents', 'incidents-alerts-container', 'incidents', 'bi-exclamation-triangle-fill', 'bg-danger'),
+      fetchAndRenderAlert('/api/alerts/construction', 'construction-alerts-container', 'construction', 'bi-cone-striped', 'bg-warning'),
+      fetchAndRenderAlert('/api/alerts/weather', 'weather-alerts-container', 'weather', 'bi-cloud-lightning-rain', 'bg-info')
+    ]);
   }
 
   fetchAndRenderAlerts();
