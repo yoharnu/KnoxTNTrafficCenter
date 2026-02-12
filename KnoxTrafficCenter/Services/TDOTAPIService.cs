@@ -96,11 +96,9 @@ public class TDOTAPIService
             httpClient.DefaultRequestHeaders.Add("apikey", api.APIKey);
 
             logger.LogDebug($"Using API Base URL: {api.APIBaseURL}");
-            logger.LogDebug($"Using headers: {httpClient.DefaultRequestHeaders.ToString()}");
             logger.LogDebug($"Requesting cameras from: {api.Cameras}");
 
             var response = await httpClient.GetAsync(api.Cameras);
-            logger.LogDebug(response.ToString());
             if (response.IsSuccessStatusCode)
             {
                 var stream = await response.Content.ReadAsStreamAsync();
@@ -156,11 +154,9 @@ public class TDOTAPIService
             httpClient.DefaultRequestHeaders.Add("apikey", api.APIKey);
 
             logger.LogDebug($"Using API Base URL: {api.APIBaseURL}");
-            logger.LogDebug($"Using headers: {httpClient.DefaultRequestHeaders.ToString()}");
             logger.LogDebug($"Requesting incidents from: {api.Incidents}");
 
             var response = await httpClient.GetAsync(api.Incidents);
-            logger.LogDebug(response.ToString());
             if (response.IsSuccessStatusCode)
             {
                 var stream = await response.Content.ReadAsStreamAsync();
@@ -195,11 +191,9 @@ public class TDOTAPIService
             httpClient.DefaultRequestHeaders.Add("apikey", api.APIKey);
 
             logger.LogDebug($"Using API Base URL: {api.APIBaseURL}");
-            logger.LogDebug($"Using headers: {httpClient.DefaultRequestHeaders.ToString()}");
             logger.LogDebug($"Requesting construction events from: {api.Construction}");
 
             var response = await httpClient.GetAsync(api.Construction);
-            logger.LogDebug(response.ToString());
             if (response.IsSuccessStatusCode)
             {
                 var stream = await response.Content.ReadAsStreamAsync();
@@ -232,11 +226,9 @@ public class TDOTAPIService
             httpClient.DefaultRequestHeaders.Add("apikey", api.APIKey);
 
             logger.LogDebug($"Using API Base URL: {api.APIBaseURL}");
-            logger.LogDebug($"Using headers: {httpClient.DefaultRequestHeaders}");
             logger.LogDebug($"Requesting weather events from: {api.Weather}");
 
             var response = await httpClient.GetAsync(api.Weather);
-            logger.LogDebug(response.ToString());
             if (response.IsSuccessStatusCode)
             {
                 var stream = await response.Content.ReadAsStreamAsync();
