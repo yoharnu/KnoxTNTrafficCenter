@@ -1,9 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
-using KnoxTrafficCenter.Services;
-using System.Threading.Tasks;
-using KnoxTrafficCenter.Models.TDOT;
-using System.Collections.Generic;
-
 namespace KnoxTrafficCenter.Controllers
 {
     [ApiController]
