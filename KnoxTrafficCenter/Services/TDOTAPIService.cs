@@ -18,9 +18,10 @@ public class TDOTAPIService
     {
         this.logger = logger;
 
+        string baseUrl = configuration.GetValue<string>("TDOTApi:BaseUrl") ?? throw new ArgumentNullException("TDOTApi:BaseUrl", "TDOT API Base URL must be configured.");
         HttpClient = new HttpClient
         {
-            BaseAddress = new Uri("https://smartway.tn.gov/config/")
+            BaseAddress = new Uri(baseUrl)
         };
         HttpClient.DefaultRequestHeaders.Accept.Clear();
         HttpClient.DefaultRequestHeaders.Accept.Add(
