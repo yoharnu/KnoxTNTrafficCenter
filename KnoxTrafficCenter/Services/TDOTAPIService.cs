@@ -32,6 +32,52 @@ public class TDOTAPIService
         logger.LogInformation($"TDOT API configuration will refresh every {refreshHours} hours");
     }
 
+    protected virtual HttpClient CreateHttpClient(Uri baseAddress)
+    {
+        return new HttpClient
+        {
+            BaseAddress = baseAddress
+        };
+    }
+
+    private async Task<T?> FetchDataAsync<T>(string? endpoint, string resourceName) where T : class, new()
+    {
+        if (api == null || string.IsNullOrEmpty(api.APIBaseURL) || string.IsNullOrEmpty(api.APIKey) || string.IsNullOrEmpty(endpoint))
+        {
+            logger.LogError($"Unable to retrieve {resourceName}. Please check the configuration or API availability.");
+            return null;
+        }
+
+        using var httpClient = CreateHttpClient(new Uri(api.APIBaseURL));
+        httpClient.DefaultRequestHeaders.Accept.Clear();
+        httpClient.DefaultRequestHeaders.Accept.Add(
+            new MediaTypeWithQualityHeaderValue("application/json"));
+        httpClient.DefaultRequestHeaders.Add("apikey", api.APIKey);
+
+        logger.LogDebug($"Using API Base URL: {api.APIBaseURL}");
+        logger.LogDebug($"Using headers: {httpClient.DefaultRequestHeaders}");
+        logger.LogDebug($"Requesting {resourceName} from: {endpoint}");
+
+        try
+        {
+            var response = await httpClient.GetAsync(endpoint);
+            logger.LogDebug(response.ToString());
+            if (response.IsSuccessStatusCode)
+            {
+                var stream = await response.Content.ReadAsStreamAsync();
+                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                return await JsonSerializer.DeserializeAsync<T>(stream, options) ?? new T();
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, $"Exception while retrieving {resourceName}");
+        }
+
+        logger.LogError($"Unable to retrieve {resourceName}. Please check the configuration or API availability.");
+        return null;
+    }
+
     public async Task<TDOTAPI?> GetTDOTAPIAsync()
     {
         // Check if we already have a valid configuration and it's not time to refresh yet
@@ -83,53 +129,33 @@ public class TDOTAPIService
             return [];
         }
 
-        if (!string.IsNullOrEmpty(api.APIBaseURL) && !string.IsNullOrEmpty(api.APIKey) && !string.IsNullOrEmpty(api.Cameras))
+        var tdotCameras = await FetchDataAsync<List<Models.TDOT.Camera>>(api.Cameras, "cameras");
+        if (tdotCameras != null)
         {
-            using var httpClient = new HttpClient
-            {
-                BaseAddress = new Uri(api.APIBaseURL)
-            };
-            httpClient.DefaultRequestHeaders.Accept.Clear();
-            httpClient.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-            httpClient.DefaultRequestHeaders.Add("apikey", api.APIKey);
+            tdotCameras = tdotCameras.Where(x => x.Jurisdiction == "Knoxville" && x.Active == "true").OrderBy(x => x.Id).ToList();
+            logger.LogDebug($"Retrieved {tdotCameras.Count} cameras from TDOT API.");
+            logger.LogDebug($"Camera Routes: {string.Join(", ", tdotCameras.Select(x => x.Route).Distinct())}");
+            var cameras = tdotCameras.Select(x => new Models.Camera(x)).Where(x => x.Road != "I-26" && x.Road != "I-81").OrderBy(x => x.Road).ThenBy(x => x.MM ?? float.MaxValue).ToList();
 
-            logger.LogDebug($"Using API Base URL: {api.APIBaseURL}");
-            logger.LogDebug($"Using headers: {httpClient.DefaultRequestHeaders.ToString()}");
-            logger.LogDebug($"Requesting cameras from: {api.Cameras}");
+            var i40Group = new CameraGroup("I-40");
+            i40Group.AddRange(cameras.Where(x => x.Road == "I-40"));
+            var i640Group = new CameraGroup("I-640");
+            i640Group.AddRange(cameras.Where(x => x.Road == "I-640"));
+            var i75Group = new CameraGroup("I-75");
+            i75Group.AddRange(cameras.Where(x => x.Road == "I-75"));
+            var i275Group = new CameraGroup("I-275");
+            i275Group.AddRange(cameras.Where(x => x.Road == "I-275"));
+            var i140Group = new CameraGroup("Pellissippi Parkway");
+            i140Group.AddRange(cameras.Where(x => x.Road == "SR-162"));
+            i140Group.AddRange(cameras.Where(x => x.Road == "I-140"));
+            var sr115Group = new CameraGroup("Alcoa Highway");
+            sr115Group.AddRange(cameras.Where(x => x.Road == "SR-115"));
+            var otherGroup = new CameraGroup("Other");
+            otherGroup.AddRange(cameras.Where(x => x.Road != "I-40" && x.Road != "I-640" && x.Road != "I-75" && x.Road != "I-275" && x.Road != "I-140" && x.Road != "SR-162" && x.Road != "SR-115" && x.Road != "US-129"));
 
-            var response = await httpClient.GetAsync(api.Cameras);
-            logger.LogDebug(response.ToString());
-            if (response.IsSuccessStatusCode)
-            {
-                var stream = await response.Content.ReadAsStreamAsync();
-                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-                var tdotCameras = await JsonSerializer.DeserializeAsync<List<Models.TDOT.Camera>>(stream, options) ?? new();
-                tdotCameras = tdotCameras.Where(x => x.Jurisdiction == "Knoxville" && x.Active == "true").OrderBy(x => x.Id).ToList();
-                logger.LogDebug($"Retrieved {tdotCameras.Count} cameras from TDOT API.");
-                logger.LogDebug($"Camera Routes: {string.Join(", ", tdotCameras.Select(x => x.Route).Distinct())}");
-                var cameras = tdotCameras.Select(x => new Models.Camera(x)).Where(x => x.Road != "I-26" && x.Road != "I-81").OrderBy(x => x.Road).ThenBy(x => x.MM ?? float.MaxValue).ToList();
-
-                var i40Group = new CameraGroup("I-40");
-                i40Group.AddRange(cameras.Where(x => x.Road == "I-40"));
-                var i640Group = new CameraGroup("I-640");
-                i640Group.AddRange(cameras.Where(x => x.Road == "I-640"));
-                var i75Group = new CameraGroup("I-75");
-                i75Group.AddRange(cameras.Where(x => x.Road == "I-75"));
-                var i275Group = new CameraGroup("I-275");
-                i275Group.AddRange(cameras.Where(x => x.Road == "I-275"));
-                var i140Group = new CameraGroup("Pellissippi Parkway");
-                i140Group.AddRange(cameras.Where(x => x.Road == "SR-162"));
-                i140Group.AddRange(cameras.Where(x => x.Road == "I-140"));
-                var sr115Group = new CameraGroup("Alcoa Highway");
-                sr115Group.AddRange(cameras.Where(x => x.Road == "SR-115"));
-                var otherGroup = new CameraGroup("Other");
-                otherGroup.AddRange(cameras.Where(x => x.Road != "I-40" && x.Road != "I-640" && x.Road != "I-75" && x.Road != "I-275" && x.Road != "I-140" && x.Road != "SR-162" && x.Road != "SR-115" && x.Road != "US-129"));
-
-                return [i40Group, i640Group, i75Group, i275Group, i140Group, sr115Group, otherGroup];
-            }
+            return [i40Group, i640Group, i75Group, i275Group, i140Group, sr115Group, otherGroup];
         }
-        logger.LogError("Unable to retrieve cameras. Please check the configuration or API availability.");
+
         return null;
     }
 
@@ -143,33 +169,8 @@ public class TDOTAPIService
             return [];
         }
 
-        if (!string.IsNullOrEmpty(api.APIBaseURL) && !string.IsNullOrEmpty(api.APIKey) && !string.IsNullOrEmpty(api.Incidents))
-        {
-            using var httpClient = new HttpClient
-            {
-                BaseAddress = new Uri(api.APIBaseURL)
-            };
-            httpClient.DefaultRequestHeaders.Accept.Clear();
-            httpClient.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-            httpClient.DefaultRequestHeaders.Add("apikey", api.APIKey);
-
-            logger.LogDebug($"Using API Base URL: {api.APIBaseURL}");
-            logger.LogDebug($"Using headers: {httpClient.DefaultRequestHeaders.ToString()}");
-            logger.LogDebug($"Requesting incidents from: {api.Incidents}");
-
-            var response = await httpClient.GetAsync(api.Incidents);
-            logger.LogDebug(response.ToString());
-            if (response.IsSuccessStatusCode)
-            {
-                var stream = await response.Content.ReadAsStreamAsync();
-                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-                var incidents = await JsonSerializer.DeserializeAsync<List<Event>>(stream, options) ?? new();
-                return incidents.Where(x => x.Locations.Select(x => x.CountyName).Contains("Knox")).ToList();
-            }
-        }
-        logger.LogError("Unable to retrieve incidents. Please check the configuration or API availability.");
-        return [];
+        var incidents = await FetchDataAsync<List<Event>>(api.Incidents, "incidents");
+        return incidents?.Where(x => x.Locations.Select(x => x.CountyName).Contains("Knox")).ToList() ?? [];
     }
 
     public async Task<List<Event>> GetConstructionAsync()
@@ -182,33 +183,8 @@ public class TDOTAPIService
             return [];
         }
 
-        if (!string.IsNullOrEmpty(api.APIBaseURL) && !string.IsNullOrEmpty(api.APIKey) && !string.IsNullOrEmpty(api.Construction))
-        {
-            using var httpClient = new HttpClient
-            {
-                BaseAddress = new Uri(api.APIBaseURL)
-            };
-            httpClient.DefaultRequestHeaders.Accept.Clear();
-            httpClient.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-            httpClient.DefaultRequestHeaders.Add("apikey", api.APIKey);
-
-            logger.LogDebug($"Using API Base URL: {api.APIBaseURL}");
-            logger.LogDebug($"Using headers: {httpClient.DefaultRequestHeaders.ToString()}");
-            logger.LogDebug($"Requesting construction events from: {api.Construction}");
-
-            var response = await httpClient.GetAsync(api.Construction);
-            logger.LogDebug(response.ToString());
-            if (response.IsSuccessStatusCode)
-            {
-                var stream = await response.Content.ReadAsStreamAsync();
-                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-                var constructionEvents = await JsonSerializer.DeserializeAsync<List<Event>>(stream, options) ?? new();
-                return constructionEvents.Where(x => x.Locations.Select(x => x.CountyName).Contains("Knox")).ToList();
-            }
-        }
-        logger.LogError("Unable to retrieve construction events. Please check the configuration or API availability.");
-        return [];
+        var constructionEvents = await FetchDataAsync<List<Event>>(api.Construction, "construction events");
+        return constructionEvents?.Where(x => x.Locations.Select(x => x.CountyName).Contains("Knox")).ToList() ?? [];
     }
 
     public async Task<List<Event>> GetWeatherAsync()
@@ -219,32 +195,7 @@ public class TDOTAPIService
             return [];
         }
 
-        if (!string.IsNullOrEmpty(api.APIBaseURL) && !string.IsNullOrEmpty(api.APIKey) && !string.IsNullOrEmpty(api.Weather))
-        {
-            using var httpClient = new HttpClient
-            {
-                BaseAddress = new Uri(api.APIBaseURL)
-            };
-            httpClient.DefaultRequestHeaders.Accept.Clear();
-            httpClient.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-            httpClient.DefaultRequestHeaders.Add("apikey", api.APIKey);
-
-            logger.LogDebug($"Using API Base URL: {api.APIBaseURL}");
-            logger.LogDebug($"Using headers: {httpClient.DefaultRequestHeaders}");
-            logger.LogDebug($"Requesting weather events from: {api.Weather}");
-
-            var response = await httpClient.GetAsync(api.Weather);
-            logger.LogDebug(response.ToString());
-            if (response.IsSuccessStatusCode)
-            {
-                var stream = await response.Content.ReadAsStreamAsync();
-                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-                var weatherEvents = await JsonSerializer.DeserializeAsync<List<Event>>(stream, options) ?? [];
-                return weatherEvents.Where(x => x.Locations.Any(l => l.CountyName == "Knox")).ToList();
-            }
-        }
-        logger.LogError("Unable to retrieve weather events. Please check the configuration or API availability.");
-        return [];
+        var weatherEvents = await FetchDataAsync<List<Event>>(api.Weather, "weather events");
+        return weatherEvents?.Where(x => x.Locations.Any(l => l.CountyName == "Knox")).ToList() ?? [];
     }
 }
