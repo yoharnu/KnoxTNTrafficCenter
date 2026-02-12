@@ -25,7 +25,7 @@ public class TDOTAPIService
         HttpClient.DefaultRequestHeaders.Accept.Clear();
         HttpClient.DefaultRequestHeaders.Accept.Add(
             new MediaTypeWithQualityHeaderValue("application/json"));
-        
+
         // Read config refresh interval from appsettings.json or use default
         int refreshHours = configuration.GetValue<int>("TDOTApi:ConfigRefreshIntervalHours", 24);
         configRefreshInterval = TimeSpan.FromHours(refreshHours);
@@ -108,21 +108,21 @@ public class TDOTAPIService
             return api;
         }
         logger.LogError("Unable to get config for TDOT API");
-        
+
         // If refresh failed but we have an existing config, return it
         if (api != null)
         {
             logger.LogWarning("Using stale TDOT API configuration because refresh failed");
             return api;
         }
-        
+
         return null;
     }
 
     public async Task<List<CameraGroup>> GetCamerasAsync()
     {
         api = await GetTDOTAPIAsync();
-        
+
         if (api == null)
         {
             logger.LogError("TDOTAPI is null. Please check the configuration or API availability.");
@@ -162,7 +162,7 @@ public class TDOTAPIService
     public async Task<List<Event>> GetIncidentsAsync()
     {
         api = await GetTDOTAPIAsync();
-        
+
         if (api == null)
         {
             logger.LogError("TDOTAPI is null. Please check the configuration or API availability.");
