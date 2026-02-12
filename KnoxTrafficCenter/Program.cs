@@ -41,6 +41,7 @@ app.MapRazorPages();
 
 app.MapControllers();
 
+// Ensure Swagger is only available in Development environment to prevent information disclosure
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
