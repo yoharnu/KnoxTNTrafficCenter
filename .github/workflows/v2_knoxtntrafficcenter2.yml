@@ -33,7 +33,7 @@ jobs:
         run: dotnet test --configuration Release --no-build
 
       - name: dotnet publish
-        run: dotnet publish KnoxTrafficCenter/KnoxTrafficCenter.csproj -c Release -o myapp
+        run: dotnet publish KnoxTrafficCenter/KnoxTrafficCenter.csproj -c Release -o myapp -r linux-x64 --self-contained false
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -71,4 +71,4 @@ jobs:
         with:
           app-name: 'KnoxTNTrafficCenter2'
           slot-name: 'Production'
-          package: myapp
+          package: .
