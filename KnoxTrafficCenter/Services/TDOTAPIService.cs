@@ -84,17 +84,19 @@ public class TDOTAPIService
         return null;
     }
 
-    public async Task<List<CameraGroup>> GetCamerasAsync()
+    private async Task<T?> GetFromTDOTApiAsync<T>(Func<TDOTAPI, string?> endpointSelector, string resourceName) where T : class, new()
     {
         api = await GetTDOTAPIAsync();
-        
+
         if (api == null)
         {
             logger.LogError("TDOTAPI is null. Please check the configuration or API availability.");
-            return [];
+            return null;
         }
 
-        if (!string.IsNullOrEmpty(api.APIBaseURL) && !string.IsNullOrEmpty(api.APIKey) && !string.IsNullOrEmpty(api.Cameras))
+        string? endpoint = endpointSelector(api);
+
+        if (!string.IsNullOrEmpty(api.APIBaseURL) && !string.IsNullOrEmpty(api.APIKey) && !string.IsNullOrEmpty(endpoint))
         {
             using var httpClient = CreateHttpClient(api.APIBaseURL);
             httpClient.DefaultRequestHeaders.Accept.Clear();
@@ -103,150 +105,81 @@ public class TDOTAPIService
             httpClient.DefaultRequestHeaders.Add("apikey", api.APIKey);
 
             logger.LogDebug($"Using API Base URL: {api.APIBaseURL}");
-            logger.LogDebug($"Requesting cameras from: {api.Cameras}");
+            logger.LogDebug($"Requesting {resourceName} from: {endpoint}");
 
-            var response = await httpClient.GetAsync(api.Cameras);
+            var response = await httpClient.GetAsync(endpoint);
             if (response.IsSuccessStatusCode)
             {
                 var stream = await response.Content.ReadAsStreamAsync();
                 var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-                var tdotCameras = await JsonSerializer.DeserializeAsync<List<Models.TDOT.Camera>>(stream, options) ?? new();
-                tdotCameras = tdotCameras.Where(x => x.Jurisdiction == "Knoxville" && x.Active == "true").OrderBy(x => x.Id).ToList();
-                logger.LogDebug($"Retrieved {tdotCameras.Count} cameras from TDOT API.");
-                logger.LogDebug($"Camera Routes: {string.Join(", ", tdotCameras.Select(x => x.Route).Distinct())}");
-                var cameras = tdotCameras.Select(x => new Models.Camera(x)).Where(x => x.Road != "I-26" && x.Road != "I-81").OrderBy(x => x.Road).ThenBy(x => x.MM ?? float.MaxValue).ToList();
-                var cameraGroups = cameras.ToLookup(x => x.Road);
-
-                var i40Group = new CameraGroup("I-40");
-                if (cameraGroups.Contains("I-40")) i40Group.AddRange(cameraGroups["I-40"]);
-                var i640Group = new CameraGroup("I-640");
-                if (cameraGroups.Contains("I-640")) i640Group.AddRange(cameraGroups["I-640"]);
-                var i75Group = new CameraGroup("I-75");
-                if (cameraGroups.Contains("I-75")) i75Group.AddRange(cameraGroups["I-75"]);
-                var i275Group = new CameraGroup("I-275");
-                if (cameraGroups.Contains("I-275")) i275Group.AddRange(cameraGroups["I-275"]);
-                var i140Group = new CameraGroup("Pellissippi Parkway");
-                if (cameraGroups.Contains("SR-162")) i140Group.AddRange(cameraGroups["SR-162"]);
-                if (cameraGroups.Contains("I-140")) i140Group.AddRange(cameraGroups["I-140"]);
-                var sr115Group = new CameraGroup("Alcoa Highway");
-                if (cameraGroups.Contains("SR-115")) sr115Group.AddRange(cameraGroups["SR-115"]);
-
-                var otherGroup = new CameraGroup("Other");
-                var excludedRoads = new HashSet<string> { "I-40", "I-640", "I-75", "I-275", "I-140", "SR-162", "SR-115", "US-129" };
-                foreach (var group in cameraGroups)
-                {
-                    if (!excludedRoads.Contains(group.Key))
-                    {
-                        otherGroup.AddRange(group);
-                    }
-                }
-
-                return [i40Group, i640Group, i75Group, i275Group, i140Group, sr115Group, otherGroup];
+                return await JsonSerializer.DeserializeAsync<T>(stream, options) ?? new T();
             }
         }
-        logger.LogError("Unable to retrieve cameras. Please check the configuration or API availability.");
+
+        logger.LogError($"Unable to retrieve {resourceName}. Please check the configuration or API availability.");
         return null;
+    }
+
+    private async Task<List<Event>> GetKnoxEventsAsync(Func<TDOTAPI, string?> endpointSelector, string resourceName)
+    {
+        var events = await GetFromTDOTApiAsync<List<Event>>(endpointSelector, resourceName) ?? [];
+        return events.Where(x => x.Locations.Any(l => l.CountyName == "Knox")).ToList();
+    }
+
+    public async Task<List<CameraGroup>> GetCamerasAsync()
+    {
+        var tdotCameras = await GetFromTDOTApiAsync<List<Models.TDOT.Camera>>(a => a.Cameras, "cameras");
+
+        if (tdotCameras == null)
+        {
+            return null;
+        }
+
+        tdotCameras = tdotCameras.Where(x => x.Jurisdiction == "Knoxville" && x.Active == "true").OrderBy(x => x.Id).ToList();
+        logger.LogDebug($"Retrieved {tdotCameras.Count} cameras from TDOT API.");
+        logger.LogDebug($"Camera Routes: {string.Join(", ", tdotCameras.Select(x => x.Route).Distinct())}");
+        var cameras = tdotCameras.Select(x => new Models.Camera(x)).Where(x => x.Road != "I-26" && x.Road != "I-81").OrderBy(x => x.Road).ThenBy(x => x.MM ?? float.MaxValue).ToList();
+        var cameraGroups = cameras.ToLookup(x => x.Road);
+
+        var i40Group = new CameraGroup("I-40");
+        if (cameraGroups.Contains("I-40")) i40Group.AddRange(cameraGroups["I-40"]);
+        var i640Group = new CameraGroup("I-640");
+        if (cameraGroups.Contains("I-640")) i640Group.AddRange(cameraGroups["I-640"]);
+        var i75Group = new CameraGroup("I-75");
+        if (cameraGroups.Contains("I-75")) i75Group.AddRange(cameraGroups["I-75"]);
+        var i275Group = new CameraGroup("I-275");
+        if (cameraGroups.Contains("I-275")) i275Group.AddRange(cameraGroups["I-275"]);
+        var i140Group = new CameraGroup("Pellissippi Parkway");
+        if (cameraGroups.Contains("SR-162")) i140Group.AddRange(cameraGroups["SR-162"]);
+        if (cameraGroups.Contains("I-140")) i140Group.AddRange(cameraGroups["I-140"]);
+        var sr115Group = new CameraGroup("Alcoa Highway");
+        if (cameraGroups.Contains("SR-115")) sr115Group.AddRange(cameraGroups["SR-115"]);
+
+        var otherGroup = new CameraGroup("Other");
+        var excludedRoads = new HashSet<string> { "I-40", "I-640", "I-75", "I-275", "I-140", "SR-162", "SR-115", "US-129" };
+        foreach (var group in cameraGroups)
+        {
+            if (!excludedRoads.Contains(group.Key))
+            {
+                otherGroup.AddRange(group);
+            }
+        }
+
+        return [i40Group, i640Group, i75Group, i275Group, i140Group, sr115Group, otherGroup];
     }
 
     public async Task<List<Event>> GetIncidentsAsync()
     {
-        api = await GetTDOTAPIAsync();
-        
-        if (api == null)
-        {
-            logger.LogError("TDOTAPI is null. Please check the configuration or API availability.");
-            return [];
-        }
-
-        if (!string.IsNullOrEmpty(api.APIBaseURL) && !string.IsNullOrEmpty(api.APIKey) && !string.IsNullOrEmpty(api.Incidents))
-        {
-            using var httpClient = CreateHttpClient(api.APIBaseURL);
-            httpClient.DefaultRequestHeaders.Accept.Clear();
-            httpClient.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-            httpClient.DefaultRequestHeaders.Add("apikey", api.APIKey);
-
-            logger.LogDebug($"Using API Base URL: {api.APIBaseURL}");
-            logger.LogDebug($"Requesting incidents from: {api.Incidents}");
-
-            var response = await httpClient.GetAsync(api.Incidents);
-            if (response.IsSuccessStatusCode)
-            {
-                var stream = await response.Content.ReadAsStreamAsync();
-                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-                var incidents = await JsonSerializer.DeserializeAsync<List<Event>>(stream, options) ?? new();
-                return incidents.Where(x => x.Locations.Select(x => x.CountyName).Contains("Knox")).ToList();
-            }
-        }
-        logger.LogError("Unable to retrieve incidents. Please check the configuration or API availability.");
-        return [];
+        return await GetKnoxEventsAsync(a => a.Incidents, "incidents");
     }
 
     public async Task<List<Event>> GetConstructionAsync()
     {
-        api = await GetTDOTAPIAsync();
-
-        if (api == null)
-        {
-            logger.LogError("TDOTAPI is null. Please check the configuration or API availability.");
-            return [];
-        }
-
-        if (!string.IsNullOrEmpty(api.APIBaseURL) && !string.IsNullOrEmpty(api.APIKey) && !string.IsNullOrEmpty(api.Construction))
-        {
-            using var httpClient = CreateHttpClient(api.APIBaseURL);
-            httpClient.DefaultRequestHeaders.Accept.Clear();
-            httpClient.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-            httpClient.DefaultRequestHeaders.Add("apikey", api.APIKey);
-
-            logger.LogDebug($"Using API Base URL: {api.APIBaseURL}");
-            logger.LogDebug($"Requesting construction events from: {api.Construction}");
-
-            var response = await httpClient.GetAsync(api.Construction);
-            if (response.IsSuccessStatusCode)
-            {
-                var stream = await response.Content.ReadAsStreamAsync();
-                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-                var constructionEvents = await JsonSerializer.DeserializeAsync<List<Event>>(stream, options) ?? new();
-                return constructionEvents.Where(x => x.Locations.Select(x => x.CountyName).Contains("Knox")).ToList();
-            }
-        }
-        logger.LogError("Unable to retrieve construction events. Please check the configuration or API availability.");
-        return [];
+        return await GetKnoxEventsAsync(a => a.Construction, "construction events");
     }
 
     public async Task<List<Event>> GetWeatherAsync()
     {
-        api = await GetTDOTAPIAsync();
-
-        if (api == null)
-        {
-            logger.LogError("TDOTAPI is null. Please check the configuration or API availability.");
-            return [];
-        }
-
-        if (!string.IsNullOrEmpty(api.APIBaseURL) && !string.IsNullOrEmpty(api.APIKey) && !string.IsNullOrEmpty(api.Weather))
-        {
-            using var httpClient = CreateHttpClient(api.APIBaseURL);
-            httpClient.DefaultRequestHeaders.Accept.Clear();
-            httpClient.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-            httpClient.DefaultRequestHeaders.Add("apikey", api.APIKey);
-
-            logger.LogDebug($"Using API Base URL: {api.APIBaseURL}");
-            logger.LogDebug($"Requesting weather events from: {api.Weather}");
-
-            var response = await httpClient.GetAsync(api.Weather);
-            if (response.IsSuccessStatusCode)
-            {
-                var stream = await response.Content.ReadAsStreamAsync();
-                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-                var weatherEvents = await JsonSerializer.DeserializeAsync<List<Event>>(stream, options) ?? [];
-                return weatherEvents.Where(x => x.Locations.Any(l => l.CountyName == "Knox")).ToList();
-            }
-        }
-        logger.LogError("Unable to retrieve weather events. Please check the configuration or API availability.");
-        return [];
+        return await GetKnoxEventsAsync(a => a.Weather, "weather events");
     }
 }
