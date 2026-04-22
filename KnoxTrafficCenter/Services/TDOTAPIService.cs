@@ -117,22 +117,34 @@ public class TDOTAPIService
                 var cameras = tdotCameras.Select(x => new Models.Camera(x)).Where(x => x.Road != "I-26" && x.Road != "I-81").OrderBy(x => x.Road).ThenBy(x => x.MM ?? float.MaxValue).ToList();
                 var cameraGroups = cameras.ToLookup(x => x.Road);
 
-                var i40Group = new CameraGroup("I-40");
-                if (cameraGroups.Contains("I-40")) i40Group.AddRange(cameraGroups["I-40"]);
-                var i640Group = new CameraGroup("I-640");
-                if (cameraGroups.Contains("I-640")) i640Group.AddRange(cameraGroups["I-640"]);
-                var i75Group = new CameraGroup("I-75");
-                if (cameraGroups.Contains("I-75")) i75Group.AddRange(cameraGroups["I-75"]);
-                var i275Group = new CameraGroup("I-275");
-                if (cameraGroups.Contains("I-275")) i275Group.AddRange(cameraGroups["I-275"]);
-                var i140Group = new CameraGroup("Pellissippi Parkway");
-                if (cameraGroups.Contains("SR-162")) i140Group.AddRange(cameraGroups["SR-162"]);
-                if (cameraGroups.Contains("I-140")) i140Group.AddRange(cameraGroups["I-140"]);
-                var sr115Group = new CameraGroup("Alcoa Highway");
-                if (cameraGroups.Contains("SR-115")) sr115Group.AddRange(cameraGroups["SR-115"]);
+                var groupDefinitions = new List<(string Name, string[] Roads)>
+                {
+                    ("I-40", ["I-40"]),
+                    ("I-640", ["I-640"]),
+                    ("I-75", ["I-75"]),
+                    ("I-275", ["I-275"]),
+                    ("Pellissippi Parkway", ["SR-162", "I-140"]),
+                    ("Alcoa Highway", ["SR-115"])
+                };
+
+                var returnedGroups = new List<CameraGroup>();
+                var excludedRoads = new HashSet<string> { "US-129" };
+
+                foreach (var (name, roads) in groupDefinitions)
+                {
+                    var group = new CameraGroup(name);
+                    foreach (var road in roads)
+                    {
+                        if (cameraGroups.Contains(road))
+                        {
+                            group.AddRange(cameraGroups[road]);
+                        }
+                        excludedRoads.Add(road);
+                    }
+                    returnedGroups.Add(group);
+                }
 
                 var otherGroup = new CameraGroup("Other");
-                var excludedRoads = new HashSet<string> { "I-40", "I-640", "I-75", "I-275", "I-140", "SR-162", "SR-115", "US-129" };
                 foreach (var group in cameraGroups)
                 {
                     if (!excludedRoads.Contains(group.Key))
@@ -140,8 +152,9 @@ public class TDOTAPIService
                         otherGroup.AddRange(group);
                     }
                 }
+                returnedGroups.Add(otherGroup);
 
-                return [i40Group, i640Group, i75Group, i275Group, i140Group, sr115Group, otherGroup];
+                return returnedGroups;
             }
         }
         logger.LogError("Unable to retrieve cameras. Please check the configuration or API availability.");
