@@ -8,6 +8,11 @@ namespace KnoxTrafficCenter.Services;
 
 public class TDOTAPIService
 {
+    private static readonly HashSet<string> _excludedRoads = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "I-40", "I-640", "I-75", "I-275", "I-140", "SR-162", "SR-115", "US-129"
+    };
+
     protected HttpClient _httpClient;
     private ILogger<TDOTAPIService> logger;
     private TDOTAPI? api;
@@ -132,10 +137,9 @@ public class TDOTAPIService
                 if (cameraGroups.Contains("SR-115")) sr115Group.AddRange(cameraGroups["SR-115"]);
 
                 var otherGroup = new CameraGroup("Other");
-                var excludedRoads = new HashSet<string> { "I-40", "I-640", "I-75", "I-275", "I-140", "SR-162", "SR-115", "US-129" };
                 foreach (var group in cameraGroups)
                 {
-                    if (!excludedRoads.Contains(group.Key))
+                    if (!_excludedRoads.Contains(group.Key))
                     {
                         otherGroup.AddRange(group);
                     }
