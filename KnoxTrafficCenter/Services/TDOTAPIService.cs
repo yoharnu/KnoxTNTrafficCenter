@@ -175,7 +175,7 @@ public class TDOTAPIService
                 var stream = await response.Content.ReadAsStreamAsync();
                 var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
                 var incidents = await JsonSerializer.DeserializeAsync<List<Event>>(stream, options) ?? new();
-                return incidents.Where(x => x.Locations.Select(x => x.CountyName).Contains("Knox")).ToList();
+                return incidents.Where(x => x.Locations.Any(l => l.CountyName == "Knox")).ToList();
             }
         }
         logger.LogError("Unable to retrieve incidents. Please check the configuration or API availability.");
@@ -209,7 +209,7 @@ public class TDOTAPIService
                 var stream = await response.Content.ReadAsStreamAsync();
                 var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
                 var constructionEvents = await JsonSerializer.DeserializeAsync<List<Event>>(stream, options) ?? new();
-                return constructionEvents.Where(x => x.Locations.Select(x => x.CountyName).Contains("Knox")).ToList();
+                return constructionEvents.Where(x => x.Locations.Any(l => l.CountyName == "Knox")).ToList();
             }
         }
         logger.LogError("Unable to retrieve construction events. Please check the configuration or API availability.");
