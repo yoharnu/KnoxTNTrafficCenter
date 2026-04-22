@@ -114,30 +114,53 @@ public class TDOTAPIService
                 tdotCameras = tdotCameras.Where(x => x.Jurisdiction == "Knoxville" && x.Active == "true").OrderBy(x => x.Id).ToList();
                 logger.LogDebug($"Retrieved {tdotCameras.Count} cameras from TDOT API.");
                 logger.LogDebug($"Camera Routes: {string.Join(", ", tdotCameras.Select(x => x.Route).Distinct())}");
-                var cameras = tdotCameras.Select(x => new Models.Camera(x)).Where(x => x.Road != "I-26" && x.Road != "I-81").OrderBy(x => x.Road).ThenBy(x => x.MM ?? float.MaxValue).ToList();
-                var cameraGroups = cameras.ToLookup(x => x.Road);
+                var cameras = tdotCameras.Select(x => new Models.Camera(x))
+                    .Where(x => x.Road != "I-26" && x.Road != "I-81")
+                    .OrderBy(x => x.Road)
+                    .ThenBy(x => x.MM ?? float.MaxValue);
 
                 var i40Group = new CameraGroup("I-40");
-                if (cameraGroups.Contains("I-40")) i40Group.AddRange(cameraGroups["I-40"]);
                 var i640Group = new CameraGroup("I-640");
-                if (cameraGroups.Contains("I-640")) i640Group.AddRange(cameraGroups["I-640"]);
                 var i75Group = new CameraGroup("I-75");
-                if (cameraGroups.Contains("I-75")) i75Group.AddRange(cameraGroups["I-75"]);
                 var i275Group = new CameraGroup("I-275");
-                if (cameraGroups.Contains("I-275")) i275Group.AddRange(cameraGroups["I-275"]);
                 var i140Group = new CameraGroup("Pellissippi Parkway");
-                if (cameraGroups.Contains("SR-162")) i140Group.AddRange(cameraGroups["SR-162"]);
-                if (cameraGroups.Contains("I-140")) i140Group.AddRange(cameraGroups["I-140"]);
                 var sr115Group = new CameraGroup("Alcoa Highway");
-                if (cameraGroups.Contains("SR-115")) sr115Group.AddRange(cameraGroups["SR-115"]);
-
                 var otherGroup = new CameraGroup("Other");
-                var excludedRoads = new HashSet<string> { "I-40", "I-640", "I-75", "I-275", "I-140", "SR-162", "SR-115", "US-129" };
-                foreach (var group in cameraGroups)
+
+                var roadToGroup = new Dictionary<string, CameraGroup>(StringComparer.OrdinalIgnoreCase)
                 {
-                    if (!excludedRoads.Contains(group.Key))
+                    { "I-40", i40Group },
+                    { "I-640", i640Group },
+                    { "I-75", i75Group },
+                    { "I-275", i275Group },
+                    { "SR-115", sr115Group }
+                };
+
+                // Create a list to preserve ordering if needed, or handle specifically
+                // In original code, Pellissippi Parkway (i140Group) was SR-162 then I-140
+                // US-129 was excluded from Other but not added elsewhere.
+                var cameraList = cameras.ToList();
+
+                foreach (var camera in cameraList.Where(x => x.Road == "SR-162")) i140Group.Add(camera);
+                foreach (var camera in cameraList.Where(x => x.Road == "I-140")) i140Group.Add(camera);
+
+                foreach (var camera in cameraList)
+                {
+                    if (string.IsNullOrEmpty(camera.Road))
                     {
-                        otherGroup.AddRange(group);
+                        otherGroup.Add(camera);
+                        continue;
+                    }
+
+                    if (camera.Road == "SR-162" || camera.Road == "I-140") continue; // Already handled
+
+                    if (roadToGroup.TryGetValue(camera.Road, out var group))
+                    {
+                        group.Add(camera);
+                    }
+                    else if (camera.Road != "US-129") // Original excludedRoads included US-129 but didn't add it to any group
+                    {
+                        otherGroup.Add(camera);
                     }
                 }
 
