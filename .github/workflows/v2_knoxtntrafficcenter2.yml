@@ -72,3 +72,4 @@ jobs:
           app-name: 'KnoxTNTrafficCenter2'
           slot-name: 'Production'
           package: .
+          startup-command: 'dotnet KnoxTrafficCenter.dll'
