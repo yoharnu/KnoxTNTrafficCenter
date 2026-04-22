@@ -14,6 +14,20 @@ public class TDOTAPIService
     private DateTime lastConfigRefresh = DateTime.MinValue;
     private readonly TimeSpan configRefreshInterval = TimeSpan.FromHours(24);
 
+    private List<CameraGroup>? cachedCameras;
+    private DateTime lastCamerasRefresh = DateTime.MinValue;
+
+    private List<Event>? cachedIncidents;
+    private DateTime lastIncidentsRefresh = DateTime.MinValue;
+
+    private List<Event>? cachedConstruction;
+    private DateTime lastConstructionRefresh = DateTime.MinValue;
+
+    private List<Event>? cachedWeather;
+    private DateTime lastWeatherRefresh = DateTime.MinValue;
+
+    private readonly TimeSpan dataRefreshInterval = TimeSpan.FromMinutes(2);
+
     public TDOTAPIService(ILogger<TDOTAPIService> logger, IConfiguration configuration)
     {
         this.logger = logger;
@@ -86,6 +100,11 @@ public class TDOTAPIService
 
     public async Task<List<CameraGroup>> GetCamerasAsync()
     {
+        if (cachedCameras != null && DateTime.UtcNow - lastCamerasRefresh < dataRefreshInterval)
+        {
+            return cachedCameras;
+        }
+
         api = await GetTDOTAPIAsync();
         
         if (api == null)
@@ -141,15 +160,22 @@ public class TDOTAPIService
                     }
                 }
 
-                return [i40Group, i640Group, i75Group, i275Group, i140Group, sr115Group, otherGroup];
+                cachedCameras = [i40Group, i640Group, i75Group, i275Group, i140Group, sr115Group, otherGroup];
+                lastCamerasRefresh = DateTime.UtcNow;
+                return cachedCameras;
             }
         }
         logger.LogError("Unable to retrieve cameras. Please check the configuration or API availability.");
-        return null;
+        return cachedCameras ?? [];
     }
 
     public async Task<List<Event>> GetIncidentsAsync()
     {
+        if (cachedIncidents != null && DateTime.UtcNow - lastIncidentsRefresh < dataRefreshInterval)
+        {
+            return cachedIncidents;
+        }
+
         api = await GetTDOTAPIAsync();
         
         if (api == null)
@@ -175,15 +201,22 @@ public class TDOTAPIService
                 var stream = await response.Content.ReadAsStreamAsync();
                 var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
                 var incidents = await JsonSerializer.DeserializeAsync<List<Event>>(stream, options) ?? new();
-                return incidents.Where(x => x.Locations.Select(x => x.CountyName).Contains("Knox")).ToList();
+                cachedIncidents = incidents.Where(x => x.Locations.Select(x => x.CountyName).Contains("Knox")).ToList();
+                lastIncidentsRefresh = DateTime.UtcNow;
+                return cachedIncidents;
             }
         }
         logger.LogError("Unable to retrieve incidents. Please check the configuration or API availability.");
-        return [];
+        return cachedIncidents ?? [];
     }
 
     public async Task<List<Event>> GetConstructionAsync()
     {
+        if (cachedConstruction != null && DateTime.UtcNow - lastConstructionRefresh < dataRefreshInterval)
+        {
+            return cachedConstruction;
+        }
+
         api = await GetTDOTAPIAsync();
 
         if (api == null)
@@ -209,15 +242,22 @@ public class TDOTAPIService
                 var stream = await response.Content.ReadAsStreamAsync();
                 var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
                 var constructionEvents = await JsonSerializer.DeserializeAsync<List<Event>>(stream, options) ?? new();
-                return constructionEvents.Where(x => x.Locations.Select(x => x.CountyName).Contains("Knox")).ToList();
+                cachedConstruction = constructionEvents.Where(x => x.Locations.Select(x => x.CountyName).Contains("Knox")).ToList();
+                lastConstructionRefresh = DateTime.UtcNow;
+                return cachedConstruction;
             }
         }
         logger.LogError("Unable to retrieve construction events. Please check the configuration or API availability.");
-        return [];
+        return cachedConstruction ?? [];
     }
 
     public async Task<List<Event>> GetWeatherAsync()
     {
+        if (cachedWeather != null && DateTime.UtcNow - lastWeatherRefresh < dataRefreshInterval)
+        {
+            return cachedWeather;
+        }
+
         api = await GetTDOTAPIAsync();
 
         if (api == null)
@@ -243,10 +283,12 @@ public class TDOTAPIService
                 var stream = await response.Content.ReadAsStreamAsync();
                 var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
                 var weatherEvents = await JsonSerializer.DeserializeAsync<List<Event>>(stream, options) ?? [];
-                return weatherEvents.Where(x => x.Locations.Any(l => l.CountyName == "Knox")).ToList();
+                cachedWeather = weatherEvents.Where(x => x.Locations.Any(l => l.CountyName == "Knox")).ToList();
+                lastWeatherRefresh = DateTime.UtcNow;
+                return cachedWeather;
             }
         }
         logger.LogError("Unable to retrieve weather events. Please check the configuration or API availability.");
-        return [];
+        return cachedWeather ?? [];
     }
 }
