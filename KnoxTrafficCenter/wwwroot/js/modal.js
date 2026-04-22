@@ -197,7 +197,7 @@ function showPlayButton(container, videoElement) {
     
     var playButton = document.createElement('button');
     playButton.classList.add('video-play-button');
-    playButton.innerHTML = '▶';
+    playButton.textContent = '▶';
     playButton.style.position = 'absolute';
     playButton.style.top = '50%';
     playButton.style.left = '50%';
@@ -226,11 +226,10 @@ function showPlayButton(container, videoElement) {
 // Helper function to show error message
 function showErrorMessage(container, loadingIndicator, message) {
     if (loadingIndicator) {
-        loadingIndicator.textContent = message;
         // Use a red color that works in both light and dark themes
         loadingIndicator.style.color = '#ff6b6b';
-        // Add a warning icon for better visibility
-        loadingIndicator.innerHTML = '⚠️ ' + message;
+        // Add a warning icon for better visibility and safely set text content
+        loadingIndicator.textContent = '⚠️ ' + message;
     }
 }
 
