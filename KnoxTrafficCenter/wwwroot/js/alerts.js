@@ -49,6 +49,17 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
+  // Helper function to escape HTML entities to prevent XSS
+  function escapeHtml(text) {
+    if (!text) return text;
+    return text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
   // Helper to render alerts in Bootstrap style
   function renderAlerts(containerId, alerts, type, icon, badgeClass) {
     const container = document.getElementById(containerId);
@@ -83,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
         </h6>
         <div class="collapse ${showClass} mt-2" id="${collapseId}">
           <ul class="list-unstyled mb-0">
-            ${alerts.map(a => `<li class="mb-2">${a.description || a.Description}</li>`).join('')}
+            ${alerts.map(a => `<li class="mb-2">${escapeHtml(a.description || a.Description)}</li>`).join('')}
           </ul>
           <div class="text-end small text-muted mt-2">
             <span>Last updated: ${new Date().toLocaleTimeString()}</span>
