@@ -88,6 +88,61 @@ public class TDOTAPIServiceTests
         result.Should().BeNull();
     }
 
+    [Theory]
+    [InlineData(null, "key123", "cameras")]
+    [InlineData("https://api.tdot.com/", null, "cameras")]
+    [InlineData("https://api.tdot.com/", "key123", null)]
+    [InlineData("", "key123", "cameras")]
+    public async Task GetCamerasAsync_ReturnsNull_WhenApiConfigIsInvalid(string? baseUrl, string? apiKey, string? cameras)
+    {
+        // Arrange
+        var tdotApi = new TDOTAPI
+        {
+            APIBaseURL = baseUrl!,
+            APIKey = apiKey!,
+            Cameras = cameras!
+        };
+
+        SetupConfigResponse(tdotApi);
+
+        // Act
+        var result = await _service.GetCamerasAsync();
+
+        // Assert
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task GetCamerasAsync_ReturnsNull_WhenApiCallFails()
+    {
+        // Arrange
+        var tdotApi = new TDOTAPI
+        {
+            APIBaseURL = "https://api.tdot.com/",
+            APIKey = "key123",
+            Cameras = "cameras"
+        };
+
+        SetupConfigResponse(tdotApi);
+
+        _httpHandlerMock.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(req => req.RequestUri!.ToString() == "https://api.tdot.com/cameras"),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.InternalServerError
+            });
+
+        // Act
+        var result = await _service.GetCamerasAsync();
+
+        // Assert
+        result.Should().BeNull();
+    }
+
     [Fact]
     public async Task GetCamerasAsync_ReturnsGroups_WhenSuccess()
     {
