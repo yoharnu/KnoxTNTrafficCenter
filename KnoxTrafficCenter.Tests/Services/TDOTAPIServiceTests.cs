@@ -88,6 +88,61 @@ public class TDOTAPIServiceTests
         result.Should().BeNull();
     }
 
+    [Theory]
+    [InlineData(null, "key123", "cameras")]
+    [InlineData("https://api.tdot.com/", null, "cameras")]
+    [InlineData("https://api.tdot.com/", "key123", null)]
+    [InlineData("", "key123", "cameras")]
+    public async Task GetCamerasAsync_ReturnsNull_WhenApiConfigIsInvalid(string? baseUrl, string? apiKey, string? cameras)
+    {
+        // Arrange
+        var tdotApi = new TDOTAPI
+        {
+            APIBaseURL = baseUrl!,
+            APIKey = apiKey!,
+            Cameras = cameras!
+        };
+
+        SetupConfigResponse(tdotApi);
+
+        // Act
+        var result = await _service.GetCamerasAsync();
+
+        // Assert
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task GetCamerasAsync_ReturnsNull_WhenApiCallFails()
+    {
+        // Arrange
+        var tdotApi = new TDOTAPI
+        {
+            APIBaseURL = "https://api.tdot.com/",
+            APIKey = "key123",
+            Cameras = "cameras"
+        };
+
+        SetupConfigResponse(tdotApi);
+
+        _httpHandlerMock.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(req => req.RequestUri!.ToString() == "https://api.tdot.com/cameras"),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.InternalServerError
+            });
+
+        // Act
+        var result = await _service.GetCamerasAsync();
+
+        // Assert
+        result.Should().BeNull();
+    }
+
     [Fact]
     public async Task GetCamerasAsync_ReturnsGroups_WhenSuccess()
     {
@@ -171,6 +226,102 @@ public class TDOTAPIServiceTests
 
         // Act
         var result = await _service.GetIncidentsAsync();
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().HaveCount(1);
+        result.First().Id.Should().Be(1);
+    }
+
+    [Fact]
+    public async Task GetConstructionAsync_ReturnsEmptyList_WhenApiConfigIsNull()
+    {
+        // Arrange
+        // Simulate a failure to get the config
+        _httpHandlerMock.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(req => req.RequestUri!.ToString().EndsWith("config.prod.json")),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.InternalServerError
+            });
+
+        // Act
+        var result = await _service.GetConstructionAsync();
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task GetConstructionAsync_ReturnsEmptyList_WhenApiFails()
+    {
+        // Arrange
+        var tdotApi = new TDOTAPI
+        {
+            APIBaseURL = "https://api.tdot.com/",
+            APIKey = "key123",
+            Construction = "construction"
+        };
+        SetupConfigResponse(tdotApi);
+
+        _httpHandlerMock.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(req => req.RequestUri!.ToString() == "https://api.tdot.com/construction"),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.InternalServerError
+            });
+
+        // Act
+        var result = await _service.GetConstructionAsync();
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task GetConstructionAsync_ReturnsKnoxConstruction()
+    {
+        // Arrange
+        var tdotApi = new TDOTAPI
+        {
+            APIBaseURL = "https://api.tdot.com/",
+            APIKey = "key123",
+            Construction = "construction"
+        };
+        SetupConfigResponse(tdotApi);
+
+        var constructionEvents = new List<Event>
+        {
+            new() { Id = 1, Locations = [new Location { CountyName = "Knox" }] },
+            new() { Id = 2, Locations = [new Location { CountyName = "Davidson" }] }
+        };
+
+        var constructionJson = JsonSerializer.Serialize(constructionEvents);
+
+        _httpHandlerMock.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(req => req.RequestUri!.ToString() == "https://api.tdot.com/construction"),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(constructionJson)
+            });
+
+        // Act
+        var result = await _service.GetConstructionAsync();
 
         // Assert
         result.Should().NotBeNull();

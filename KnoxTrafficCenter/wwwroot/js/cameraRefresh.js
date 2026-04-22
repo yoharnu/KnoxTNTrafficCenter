@@ -114,14 +114,30 @@ document.addEventListener('DOMContentLoaded', function () {
   function updateRefreshStatus(isInitial = false, refreshStats = null) {
     const now = new Date();
     
+    // Clear existing content safely
+    refreshIndicator.textContent = '';
+
+    const icon = document.createElement('span');
+    icon.classList.add('bi');
+
+    const textNode = document.createTextNode(' ');
+    const messageNode = document.createTextNode('');
+
     if (isInitial) {
-      refreshIndicator.innerHTML = `<span class="bi bi-arrow-repeat"></span> Camera images will refresh every minute`;
+      icon.classList.add('bi-arrow-repeat');
+      messageNode.textContent = 'Camera images will refresh every minute';
     } else if (refreshStats) {
-      refreshIndicator.innerHTML = `<span class="bi bi-arrow-clockwise"></span> ${refreshStats.refreshedCount} images refreshed at ${now.toLocaleTimeString()}`;
+      icon.classList.add('bi-arrow-clockwise');
+      messageNode.textContent = `${refreshStats.refreshedCount} images refreshed at ${now.toLocaleTimeString()}`;
     } else {
-      refreshIndicator.innerHTML = `<span class="bi bi-arrow-clockwise"></span> Images refreshed at ${now.toLocaleTimeString()}`;
+      icon.classList.add('bi-arrow-clockwise');
+      messageNode.textContent = `Images refreshed at ${now.toLocaleTimeString()}`;
     }
     
+    refreshIndicator.appendChild(icon);
+    refreshIndicator.appendChild(textNode);
+    refreshIndicator.appendChild(messageNode);
+
     refreshIndicator.style.opacity = '1';
     
     setTimeout(() => {
