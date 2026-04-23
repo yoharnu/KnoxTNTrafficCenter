@@ -13,6 +13,7 @@ public class TDOTAPIService
     private TDOTAPI? api;
     private DateTime lastConfigRefresh = DateTime.MinValue;
     private readonly TimeSpan configRefreshInterval = TimeSpan.FromHours(24);
+    private static readonly HashSet<string> ExcludedRoads = ["I-40", "I-640", "I-75", "I-275", "I-140", "SR-162", "SR-115", "US-129"];
 
     public TDOTAPIService(ILogger<TDOTAPIService> logger, IConfiguration configuration)
     {
@@ -156,10 +157,9 @@ public class TDOTAPIService
         if (cameraGroups.Contains("SR-115")) sr115Group.AddRange(cameraGroups["SR-115"]);
 
         var otherGroup = new CameraGroup("Other");
-        var excludedRoads = new HashSet<string> { "I-40", "I-640", "I-75", "I-275", "I-140", "SR-162", "SR-115", "US-129" };
         foreach (var group in cameraGroups)
         {
-            if (!excludedRoads.Contains(group.Key))
+            if (!ExcludedRoads.Contains(group.Key))
             {
                 otherGroup.AddRange(group);
             }
