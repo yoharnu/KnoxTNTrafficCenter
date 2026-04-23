@@ -136,10 +136,14 @@ public class TDOTAPIService
             return null;
         }
 
-        tdotCameras = tdotCameras.Where(x => x.Jurisdiction == "Knoxville" && x.Active == "true").OrderBy(x => x.Id).ToList();
-        logger.LogDebug($"Retrieved {tdotCameras.Count} cameras from TDOT API.");
-        logger.LogDebug($"Camera Routes: {string.Join(", ", tdotCameras.Select(x => x.Route).Distinct())}");
-        var cameras = tdotCameras.Select(x => new Models.Camera(x)).Where(x => x.Road != "I-26" && x.Road != "I-81").OrderBy(x => x.Road).ThenBy(x => x.MM ?? float.MaxValue).ToList();
+        var tdotCamerasQuery = tdotCameras.Where(x => x.Jurisdiction == "Knoxville" && x.Active == "true");
+        if (logger.IsEnabled(LogLevel.Debug))
+        {
+            var tdotCamerasList = tdotCamerasQuery.ToList();
+            logger.LogDebug($"Retrieved {tdotCamerasList.Count} cameras from TDOT API.");
+            logger.LogDebug($"Camera Routes: {string.Join(", ", tdotCamerasList.Select(x => x.Route).Distinct())}");
+        }
+        var cameras = tdotCamerasQuery.Select(x => new Models.Camera(x)).Where(x => x.Road != "I-26" && x.Road != "I-81").OrderBy(x => x.Road).ThenBy(x => x.MM ?? float.MaxValue).ToList();
         var cameraGroups = cameras.ToLookup(x => x.Road);
 
         var i40Group = new CameraGroup("I-40");
